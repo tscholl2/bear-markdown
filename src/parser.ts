@@ -7,9 +7,9 @@ export interface Rule<S extends {} = { inline?: boolean }> {
   match(source: string, state: Readonly<S>, previousMatch: string): undefined | null | RuleCapture;
   parse(
     capture: RuleCapture,
-    recusiveParse: (source: string, state: Readonly<S>) => Node | Array<Node>,
+    recusiveParse: (source: string, state: Readonly<S>) => undefined | Node | Array<Node>,
     state: S,
-  ): Node | Array<Node>;
+  ): undefined | Node | Array<Node>;
 }
 
 /**
@@ -46,7 +46,7 @@ export function newParser(Rules: Rule[]) {
           const node = rule.parse(capture, parse, state);
           if (Array.isArray(node)) {
             result.push(...node);
-          } else {
+          } else if (node != null) {
             result.push(node);
           }
           previousCapture = capture[0];

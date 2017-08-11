@@ -19,18 +19,17 @@
   },
   "devDependencies": {
     "@types/power-assert": "^1.4.29",
-    "awesome-typescript-loader": "^3.2.1",
+    "awesome-typescript-loader": "^3.2.2",
     "benchmark": "^2.1.4",
     "copyfiles": "^1.2.0",
-    "jison": "git+ssh://git@github.com/GerHobbelt/jison.git#3c086ab3367f4e8df99b5b5321e2b58da2b080ed",
-    "mocha": "^3.4.2",
+    "mocha": "^3.5.0",
     "power-assert": "^1.4.4",
     "prettier": "^1.5.3",
     "ts-mocha": "^1.0.3",
     "ts-node": "^3.2.1",
     "typescript": "^2.4.2",
-    "uglify-js": "^3.0.25",
-    "webpack": "^3.3.0"
+    "uglify-js": "^3.0.27",
+    "webpack": "^3.5.3"
   },
   "dependencies": {
     "tslib": "^1.7.1"
