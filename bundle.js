@@ -271,9 +271,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 var defaultParser = Object(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* newParser */])(__WEBPACK_IMPORTED_MODULE_1__rules__["a" /* defaultRules */]);
-var p = Object(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* newParser */])(__WEBPACK_IMPORTED_MODULE_1__rules__["a" /* defaultRules */]);
-var s = "* 1\n  - a\n";
 /*
+const p = newParser(defaultRules);
+const s = `* 1
+  - a
+`;
 var require: any;
 const m = require("./simple.js");
 console.log(JSON.stringify(m.defaultParse(s), null, 2));
@@ -281,9 +283,9 @@ console.log(JSON.stringify(m.defaultParse(s), null, 2));
 // import list from "./rules/list";
 // console.log(list.match(s, { inline: false }, ""));
 
-*/
-var t = p(s);
+const t = p(s);
 console.log(JSON.stringify(t, null, 2));
+*/
 
 
 /***/ }),
@@ -531,7 +533,7 @@ var re = new RegExp("^" +
     // look for between 1 and 6 #'s
     "(#{1,6})\\s*" +
     // then any characters
-    "([\\s\\S]*)" +
+    "([^\\n]*)" +
     // until the end of the line, which may have some #'s also
     "(?:\\s*#*\\s*)?(?=\n|$)");
 /* harmony default export */ __webpack_exports__["a"] = ({

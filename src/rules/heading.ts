@@ -5,7 +5,7 @@ const re = new RegExp(
     // look for between 1 and 6 #'s
     "(#{1,6})\\s*" +
     // then any characters
-    "([\\s\\S]*)" +
+    "([^\\n]*)" +
     // until the end of the line, which may have some #'s also
     "(?:\\s*#*\\s*)?(?=\n|$)",
 );
