@@ -1,21 +1,19 @@
 import { Rule } from "../parser";
 
-const LINK_INSIDE = "(?:\\[[^\\]]*\\]|[^\\]]|\\](?=[^\\[]*\\]))*";
-const LINK_HREF_AND_TITLE = "\\s*<?((?:[^\\s\\\\]|\\\\.)*?)>?(?:\\s+['\"]([\\s\\S]*?)['\"])?\\s*";
-const UNESCAPE_URL_R = /\\([^0-9A-Za-z\s])/g;
-const re = new RegExp("^\\[(" + LINK_INSIDE + ")\\]\\(" + LINK_HREF_AND_TITLE + "\\)");
-
-function unescapeUrl(rawUrlString: string) {
-  return rawUrlString.replace(UNESCAPE_URL_R, "$1");
-}
+const re = new RegExp(
+  "^" +
+    // look for stuff inside brackets [...]
+    "\\[([^\\]]+)\\]" +
+    // look for stuff inside parens (...)
+    "\\(([^\\)]+)\\)",
+);
 
 export default <Rule>{
-  order: 16,
+  order: -1,
   match: (s, { inline }) => (inline ? re.exec(s) : null),
   parse: (capture, parse, state) => ({
     type: "link",
-    content: parse(capture[1], state),
-    target: unescapeUrl(capture[2]),
-    title: capture[3],
+    href: capture[2],
+    content: parse(capture[1], { ...state, inline: true }),
   }),
 };

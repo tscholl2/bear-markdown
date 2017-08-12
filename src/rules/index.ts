@@ -1,41 +1,36 @@
 import { Rule } from "../parser";
 
 import blockQuote from "./block-quote";
-import br from "./br";
 import codeBlock from "./code-block";
 import comment from "./comment";
-import del from "./del";
-import em from "./em";
+import emphasis from "./emphasis";
+import escape from "./escape";
 import heading from "./heading";
-import hr from "./hr";
 import image from "./image";
 import inlineCode from "./inline-code";
 import link from "./link";
 import list from "./list";
-import newline from "./newline";
 import paragraph from "./paragraph";
-import strong from "./strong";
 import table from "./table";
 import text from "./text";
-import u from "./u";
+import newline from "./newline";
 
 export const defaultRules: Rule[] = [
-  blockQuote,
-  br,
-  codeBlock,
-  comment,
-  del,
-  em,
-  heading,
-  hr,
-  image,
-  inlineCode,
-  link,
-  list,
-  newline,
-  paragraph,
-  strong,
-  table,
-  text,
-  u,
+  // ANY
+  { ...comment, order: 0 },
+  // BLOCKS
+  { ...newline, order: 1 },
+  { ...blockQuote, order: 2 },
+  { ...heading, order: 3 },
+  { ...codeBlock, order: 4 },
+  { ...list, order: 5 },
+  { ...table, order: 6 },
+  { ...paragraph, order: 7 },
+  // INLINE
+  { ...inlineCode, order: 8 },
+  { ...escape, order: 9 },
+  { ...emphasis, order: 10 }, // emphasis should be after list cause could start with * in sublist
+  { ...image, order: 11 },
+  { ...link, order: 12 }, // link must be after image because link is subset of image match
+  { ...text, order: 13 },
 ];

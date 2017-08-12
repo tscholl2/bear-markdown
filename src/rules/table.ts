@@ -17,7 +17,6 @@ A table is a:
 - table row
 - ...
 - table row
-
 */
 
 // a row is
@@ -72,26 +71,3 @@ export default <Rule>{
     ),
   }),
 };
-
-/*
-let s = `| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
-| not a row`;
-
-s = `| A | B |
-| - | - |
-| 1 | 2 |
-`;
-
-console.log(tableRowRE.exec(s))
-console.log(s.split("\n").map(l => tableRowRE.test(l)));
-console.log(s.split("\n").map(l => tableAlignRE.test(l)));
-
-console.log(
-  R.match(s, {}, "")![3]
-    .replace(/^\s*\|\s*|\s*\|\s*$/g, "") // remove beggenning and ending |'s
-);
-*/

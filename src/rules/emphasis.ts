@@ -2,6 +2,7 @@ import { Rule } from "../parser";
 
 const re = new RegExp(
   "^" +
+    // delimters are __, **, ~~, _, *, or ~
     "(__|\\*\\*|~~|_|\\*|~)" +
     // match until the next matching delimiter
     "([^(?:\\1)]*)?" +

@@ -52,7 +52,6 @@ export function newParser(Rules: Rule[]) {
           previousCapture = capture[0];
           break;
         }
-        // TODO(aria): Write tests for this
         if (i === rules.length - 1) {
           throw new Error("could not find rule to match content: " + JSON.stringify(source));
         }

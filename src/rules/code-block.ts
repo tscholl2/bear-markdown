@@ -1,10 +1,18 @@
 import { Rule } from "../parser";
 
+const re = new RegExp(
+  "^" +
+    "```" +
+    // match anything between ```'s greedy so stops at first ```
+    "([\\s\\S]+)?" +
+    "```",
+);
+
 export default <Rule>{
-  order: 4,
-  match: (s, { inline }) => (inline ? null : /^(?:    [^\n]+\n*)+(?:\n *)+\n/.exec(s)),
+  order: 24,
+  match: (s, { inline }) => (inline ? null : re.exec(s)),
   parse: capture => ({
     type: "codeBlock",
-    content: capture[0].replace(/^    /gm, "").replace(/\n+$/, ""),
+    content: capture[1],
   }),
 };

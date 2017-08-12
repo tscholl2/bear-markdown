@@ -1,11 +1,12 @@
 import { newParser } from "./parser";
-import { defaultRules } from "./rules2";
+import { defaultRules } from "./rules";
 export { newParser, defaultRules };
 export const defaultParser = newParser(defaultRules);
 
 const p = newParser(defaultRules);
-const s = `* a
-* b`;
+const s = `* 1
+  - a
+`;
 /*
 var require: any;
 const m = require("./simple.js");
