@@ -264,15 +264,15 @@ function __asyncValues(o) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultParser", function() { return defaultParser; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parser__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__rules2__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__rules__ = __webpack_require__(3);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "newParser", function() { return __WEBPACK_IMPORTED_MODULE_0__parser__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "defaultRules", function() { return __WEBPACK_IMPORTED_MODULE_1__rules2__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "defaultRules", function() { return __WEBPACK_IMPORTED_MODULE_1__rules__["a"]; });
 
 
 
-var defaultParser = Object(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* newParser */])(__WEBPACK_IMPORTED_MODULE_1__rules2__["a" /* defaultRules */]);
-var p = Object(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* newParser */])(__WEBPACK_IMPORTED_MODULE_1__rules2__["a" /* defaultRules */]);
-var s = "* a\n* b";
+var defaultParser = Object(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* newParser */])(__WEBPACK_IMPORTED_MODULE_1__rules__["a" /* defaultRules */]);
+var p = Object(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* newParser */])(__WEBPACK_IMPORTED_MODULE_1__rules__["a" /* defaultRules */]);
+var s = "* 1\n  - a\n";
 /*
 var require: any;
 const m = require("./simple.js");
@@ -320,7 +320,6 @@ function newParser(Rules) {
                     previousCapture = capture[0];
                     break;
                 }
-                // TODO(aria): Write tests for this
                 if (i === rules.length - 1) {
                     throw new Error("could not find rule to match content: " + JSON.stringify(source));
                 }
@@ -465,6 +464,7 @@ var re = new RegExp("^" +
 
 "use strict";
 var re = new RegExp("^" +
+    // delimters are __, **, ~~, _, *, or ~
     "(__|\\*\\*|~~|_|\\*|~)" +
     // match until the next matching delimiter
     "([^(?:\\1)]*)?" +
@@ -653,6 +653,11 @@ var listItemRE = new RegExp(
         if (previousMatch && !previousMatch.endsWith("\n")) {
             return;
         }
+        // if we are inside a list and previous match is empty, then we are not on a newline
+        // so we return. That is: "1. * a" is not a list in a list
+        if (_list && previousMatch === "") {
+            return;
+        }
         // a list must be either a new block or inline inside a list (e.g. a sublist)
         if (inline && !_list) {
             return;
@@ -693,6 +698,7 @@ var listItemRE = new RegExp(
     parse: function (capture, parse, state) {
         return {
             type: "list",
+            bullet: capture[1][2],
             items: capture.slice(1).map(function (item) {
                 var content = item[3]
                     .replace(new RegExp("^" + item[1], "gm"), "");
@@ -826,8 +832,11 @@ var tableAlignRE = /^\s*\|((?:\s*:?\-+:?\s*\|)+)\s*(?=\n)/;
     order: -1,
     match: function (s, _a) {
         var inline = _a.inline;
-        // TODO: thing about
-        return inline ? /^[\s\S]+?(?=[^0-9A-Za-z\s\u00c0-\uffff]|\n\n| {2,}\n|\w+:\S|$)/.exec(s) : null;
+        // take at least one letter (that isn't a newline)
+        // and keep going until we get to something that
+        // might possibly match something else (image, emphasis, etc.)
+        // or the end of the match
+        return inline ? /^[^\n]+?(?=[^0-9A-Za-z\s\u00c0-\uffff]|\n|$)/.exec(s) : null;
     },
     parse: function (capture) { return ({
         type: "text",
@@ -843,10 +852,7 @@ var tableAlignRE = /^\s*\|((?:\s*:?\-+:?\s*\|)+)\s*(?=\n)/;
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
     order: -1,
-    match: function (s, _a) {
-        var inline = _a.inline;
-        return (inline ? undefined : /^\n/.exec(s));
-    },
+    match: function (s) { return /^\n/.exec(s); },
     parse: function () { return undefined; },
 });
 
