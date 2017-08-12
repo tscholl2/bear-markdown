@@ -18,9 +18,14 @@ function debounce(wait, func, immediate) {
   };
 }
 
+
+// parser
 const parse = defaultParser;
 
 function render(markdown) {
+  // its done this way because i copied it from
+  // something that did an async network call
+  // and im too lazy to un-promisfy it
   return new Promise((resolve, reject) => {
     try {
       resolve(parse(markdown));
@@ -30,6 +35,7 @@ function render(markdown) {
   });
 }
 
+// view stuff
 const { h, app } = hyperapp;
 
 const Input = ({ value, update }) =>
@@ -60,7 +66,7 @@ app({
   state: {
     value: "",
     preview: {
-      value: "",
+      value: [],
       error: undefined,
       loading: false,
     },
