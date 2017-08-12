@@ -21,7 +21,6 @@ function debounce(wait, func, immediate) {
 const parse = defaultParser;
 
 function render(markdown) {
-  // return fetch("https://tws.website:8001/chk", {
   return new Promise((resolve, reject) => {
     try {
       resolve(parse(markdown));
@@ -87,7 +86,7 @@ app({
   actions: {
     update: (state, actions, stuff) => Object.assign({}, state, stuff),
     requestPreview: (() =>
-      debounce(1000, (state, actions) =>
+      debounce(250, (state, actions) =>
         render(state.value)
           .then(tree =>
             actions.update({

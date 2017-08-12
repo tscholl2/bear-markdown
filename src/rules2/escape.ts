@@ -17,7 +17,8 @@ const re = new RegExp(
   "\\<" + // <   less-than    <-- added in Spec Markdown
   "\\>" + // >   greater-than <-- added in Spec Markdown
   "\\|" + // |   pipe         <-- added in Spec Markdown
-  "\\$" + // $   dollar sign  <-- added by me
+  "\\$" + // $   dollar sign  <-- added by me (b/c math)
+  "\\~" + // ~   tilde        <-- added by me (b/c ~ is used in emphasis)
     "])",
 );
 
