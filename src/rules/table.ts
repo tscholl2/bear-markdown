@@ -60,13 +60,20 @@ export default <Rule>{
     type: "table",
     head: capture[1]
       .replace(/^\s*\|\s*|\s*\|\s*$/g, "") // remove beggenning and ending |'s
-      .split(/\s*\|\s*/)
+      .split(/\s*\|\s*/) // split on |'s
       .map(h => parse(h, Object.assign({}, state, { inline: true }))),
-    align: capture[2], // TODO
+    align: capture[2]
+      .replace(/^\s*\|\s*|\s*\|\s*$/g, "") // remove beggenning and ending |'s
+      .split(/\s*\|\s*/) // split on |'s
+      .map(a => {
+        const left = a.startsWith(":");
+        const right = a.endsWith(":");
+        return left === right ? "center" : left ? "left" : "right";
+      }),
     rows: capture.slice(3).map(row =>
       row
         .replace(/^\s*\|\s*|\s*\|\s*$/g, "") // remove beggenning and ending |'s
-        .split(/\s*\|\s*/)
+        .split(/\s*\|\s*/) // split on |'s
         .map(h => parse(h, { ...state, inline: true })),
     ),
   }),

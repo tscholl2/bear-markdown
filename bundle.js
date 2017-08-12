@@ -810,13 +810,20 @@ var tableAlignRE = /^\s*\|((?:\s*:?\-+:?\s*\|)+)\s*(?=\n)/;
         type: "table",
         head: capture[1]
             .replace(/^\s*\|\s*|\s*\|\s*$/g, "") // remove beggenning and ending |'s
-            .split(/\s*\|\s*/)
+            .split(/\s*\|\s*/) // split on |'s
             .map(function (h) { return parse(h, Object.assign({}, state, { inline: true })); }),
-        align: capture[2],
+        align: capture[2]
+            .replace(/^\s*\|\s*|\s*\|\s*$/g, "") // remove beggenning and ending |'s
+            .split(/\s*\|\s*/) // split on |'s
+            .map(function (a) {
+            var left = a.startsWith(":");
+            var right = a.endsWith(":");
+            return left === right ? "center" : left ? "left" : "right";
+        }),
         rows: capture.slice(3).map(function (row) {
             return row
                 .replace(/^\s*\|\s*|\s*\|\s*$/g, "") // remove beggenning and ending |'s
-                .split(/\s*\|\s*/)
+                .split(/\s*\|\s*/) // split on |'s
                 .map(function (h) { return parse(h, __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, state, { inline: true })); });
         }),
     }); },
