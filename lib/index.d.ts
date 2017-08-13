@@ -1,6 +1,5 @@
-import { newParser } from "./parser";
+import { newParser, Node } from "./parser";
 import { defaultRules } from "./rules";
+export { printHTML } from "./html-printer";
 export { newParser, defaultRules };
-export declare const defaultParser: (source: string, state?: {}) => {
-    type: string;
-}[];
+export declare const defaultParser: (markdown: string) => Node[];

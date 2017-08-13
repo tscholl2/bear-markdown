@@ -23,15 +23,6 @@ export default <Rule>{
   },
   parse: (capture, parse, state) => ({
     type: "paragraph",
-    content: parse(capture[1].trim(), { ...state, inline: true }),
+    children: parse(capture[1].trim(), { ...state, inline: true }),
   }),
-  /*
-  parse: (capture, parse, state) =>
-    /^\s*$/.test(capture[1])
-      ? undefined
-      : {
-          type: "paragraph",
-          content: parse(capture[1].trim(), { ...state, inline: true }),
-        },
-*/
 };

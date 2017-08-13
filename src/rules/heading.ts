@@ -16,6 +16,6 @@ export default <Rule>{
   parse: (capture, parse, state = {}) => ({
     type: "heading",
     level: capture[1].length,
-    content: parse(capture[2], { ...state, inline: true }),
+    children: parse(capture[2], { ...state, inline: true }),
   }),
 };

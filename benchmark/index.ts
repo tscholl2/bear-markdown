@@ -1,11 +1,39 @@
 import * as Benchmark from "benchmark";
 import { defaultParser as parse } from "../src/index";
 declare const require: any;
+
+// marked
 const marked = require("marked");
-const SimpleMarkdownParse = require("simple-markdown").defaultBlockParse;
+function MarkedParse(s) {
+  return marked(s);
+}
+// simple markdown
+const SimpleMarkdown = require("simple-markdown");
+const rules = SimpleMarkdown.defaultRules;
+const parser = SimpleMarkdown.parserFor(rules);
+const htmlOutput = SimpleMarkdown.reactFor(SimpleMarkdown.ruleOutput(rules, "html"));
+const SimpleMarkdownParse = function(source) {
+  const blockSource = source + "\n\n";
+  const parseTree = parser(blockSource, { inline: false });
+  const outputResult = htmlOutput(parseTree);
+  return outputResult;
+};
+// markdown
 const markdown = require("markdown").markdown;
-var showdown = new require("showdown").Converter();
+function MarkdownParse(s) {
+  return markdown.toHTML(s);
+}
+// showdown
+const showdown = require("showdown");
+const converter = new showdown.Converter();
+function ShowDownParse(s) {
+  return converter.makeHtml(s);
+}
+// micromarkdown
 const mmd = require("micromarkdown");
+function MicroMarkdownParse(s) {
+  return mmd.parse(s);
+}
 
 const s = `
 # header
@@ -25,19 +53,19 @@ new (Benchmark as any).Suite()
     parse(s);
   })
   .add("marked", () => {
-    marked(s);
+    MarkedParse(s);
   })
   .add("simple markdown", () => {
     SimpleMarkdownParse(s);
   })
   .add("markdown", () => {
-    markdown.toHTML(s);
+    MarkdownParse(s);
   })
   .add("showdown", () => {
-    showdown.makeHtml(s);
+    ShowDownParse(s);
   })
   .add("micromarkdown", () => {
-    mmd.parse(s);
+    MicroMarkdownParse(s);
   })
   // add listeners
   .on("cycle", (event: any) => {

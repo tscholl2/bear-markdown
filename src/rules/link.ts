@@ -14,6 +14,6 @@ export default <Rule>{
   parse: (capture, parse, state) => ({
     type: "link",
     href: capture[2],
-    content: parse(capture[1], { ...state, inline: true }),
+    children: parse(capture[1], { ...state, inline: true }),
   }),
 };

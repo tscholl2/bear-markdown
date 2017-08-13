@@ -1,13 +1,26 @@
-import { newParser } from "./parser";
+import { newParser, Node } from "./parser";
+import { printHTML } from "./html-printer";
 import { defaultRules } from "./rules";
+export { printHTML } from "./html-printer";
 export { newParser, defaultRules };
-export const defaultParser = newParser(defaultRules);
+export const defaultParser: (markdown: string) => Node[] = newParser(defaultRules);
 
-/*
 const p = newParser(defaultRules);
-const s = `* 1
-  - a
-`;
+const s = `# header
+
+![image](url)
+
+some text
+
+1. a
+2. b
+3. c
+
+this is a [link](url)
+
+this is an ![image](url)`;
+console.log(printHTML(p(s)));
+/*
 var require: any;
 const m = require("./simple.js");
 console.log(JSON.stringify(m.defaultParse(s), null, 2));

@@ -18,6 +18,6 @@ export default <Rule>{
   parse: (capture, parse, state) => ({
     type: "blockQuote",
     // parse by replacing the initial ">" in front of lines
-    content: parse(capture[0].replace(/^ *> ?/gm, ""), state),
+    children: parse(capture[0].replace(/^ *> ?/gm, ""), state),
   }),
 };

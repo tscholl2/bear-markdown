@@ -30,7 +30,7 @@ export const defaultRules: Rule[] = [
   { ...inlineCode, order: 8 },
   { ...escape, order: 9 },
   { ...emphasis, order: 10 }, // emphasis should be after list cause could start with * in sublist
-  { ...image, order: 11 },
+  { ...image, order: 6 }, // should be before paragraph because image can be block
   { ...link, order: 12 }, // link must be after image because link is subset of image match
   { ...text, order: 13 },
 ];

@@ -16,11 +16,11 @@ const re = new RegExp(
 
 export default <Rule>{
   order: 17,
-  match: (s, { inline }) => (inline ? re.exec(s) : null),
+  match: s => re.exec(s),
   parse: capture => ({
     type: "image",
-    alt: capture[1],
-    target: capture[2],
-    title: capture[3],
+    alt: capture[1] || "",
+    src: capture[2] || "",
+    title: capture[3] || "",
   }),
 };

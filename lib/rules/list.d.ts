@@ -1,5 +1,6 @@
 import { Rule } from "../parser";
 declare const _default: Rule<{
-    inline?: boolean | undefined;
+    inline: boolean;
+    _list?: boolean | undefined;
 }>;
 export default _default;

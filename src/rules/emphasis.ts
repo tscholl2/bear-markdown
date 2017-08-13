@@ -15,6 +15,6 @@ export default <Rule>{
   parse: (capture, parse, state) => ({
     type: "emphasis",
     delimiter: capture[1],
-    content: parse(capture[2], state),
+    children: parse(capture[2], state),
   }),
 };
