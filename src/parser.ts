@@ -24,7 +24,7 @@ export type RuleCapture = RegExpExecArray | Array<string>;
  * Nodes in the AST are plain objects with at least a key: "type" declaring what
  * kind of node they are.
  */
-export type Node = { type: string, children?: Node[] };
+export type Node = { type: string };
 
 /**
  * A parser-creator.

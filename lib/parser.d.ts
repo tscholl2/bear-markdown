@@ -23,7 +23,6 @@ export declare type RuleCapture = RegExpExecArray | Array<string>;
  */
 export declare type Node = {
     type: string;
-    children?: Node[];
 };
 /**
  * A parser-creator.
