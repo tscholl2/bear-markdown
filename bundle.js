@@ -670,9 +670,9 @@ var re = new RegExp("^\\!" +
     match: function (s) { return re.exec(s); },
     parse: function (capture) { return ({
         type: "image",
-        alt: capture[1],
-        src: capture[2],
-        title: capture[3],
+        alt: capture[1] || "",
+        src: capture[2] || "",
+        title: capture[3] || "",
     }); },
 });
 

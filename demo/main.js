@@ -18,7 +18,6 @@ function debounce(wait, func, immediate) {
   };
 }
 
-
 // parser
 const parse = defaultParser;
 
@@ -62,11 +61,24 @@ const Preview = ({ value, isLoading, error }) =>
         ),
   );
 
+const HTMLPreview = ({ value, isLoading, error }) =>
+  h(
+    "div",
+    undefined,
+    isLoading || error
+      ? h("progress", undefined)
+      : h("pre", {
+          style: { display: "inline-block", border: `2px solid green` },
+          innerHTML: !value ? "" : new XMLSerializer().serializeToString(value),
+        }),
+  );
+
 app({
   state: {
     value: "",
     preview: {
       value: [],
+      html: undefined,
       error: undefined,
       loading: false,
     },
@@ -83,6 +95,11 @@ app({
         },
       }),
       h("br"),
+      HTMLPreview({
+        value: state.preview.html,
+        isLoading: state.preview.loading,
+        error: state.preview.error,
+      }),
       Preview({
         value: state.preview.value,
         isLoading: state.preview.loading,
@@ -94,14 +111,22 @@ app({
     requestPreview: (() =>
       debounce(250, (state, actions) =>
         render(state.value)
-          .then(tree =>
-            actions.update({
-              preview: Object.assign(state.preview, {
-                value: tree,
-                error: undefined,
-                loading: false,
+          .then(
+            tree =>
+              console.log(printHTML(tree)) ||
+              actions.update({
+                preview: Object.assign(state.preview, {
+                  value: tree,
+                  html: (() => {
+                    const body = document.createElement("div");
+                    const arr = printHTML(tree);
+                    arr.forEach(a => body.appendChild(a));
+                    return body;
+                  })(),
+                  error: undefined,
+                  loading: false,
+                }),
               }),
-            }),
           )
           .catch(
             error =>
