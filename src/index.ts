@@ -1,18 +1,12 @@
 import { newParser } from "./parser";
 import { newPrinter } from "./printer";
-import { printers } from "./printers";
+import { html } from "./printers";
 import { defaultRules } from "./rules";
 export { newParser, defaultRules };
 export { newPrinter };
 
 export const defaultParser = newParser(defaultRules);
-const defaultPrinters: any = {};
-for (let key in printers) {
-  if (printers.hasOwnProperty(key)) {
-    defaultPrinters[key] = printers[key].html;
-  }
-}
-export const defaultHTMLPrinter = newPrinter(defaultPrinters);
+export const defaultHTMLPrinter = newPrinter(html);
 
 const p = newParser(defaultRules);
 const s = `# header

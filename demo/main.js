@@ -111,22 +111,20 @@ app({
     requestPreview: (() =>
       debounce(250, (state, actions) =>
         render(state.value)
-          .then(
-            tree =>
-              console.log(defaultHTMLPrinter(tree)) ||
-              actions.update({
-                preview: Object.assign(state.preview, {
-                  value: tree,
-                  html: (() => {
-                    const body = document.createElement("div");
-                    const arr = defaultHTMLPrinter(tree);
-                    arr.forEach(a => body.appendChild(a));
-                    return body;
-                  })(),
-                  error: undefined,
-                  loading: false,
-                }),
+          .then(tree =>
+            actions.update({
+              preview: Object.assign(state.preview, {
+                value: tree,
+                html: (() => {
+                  const body = document.createElement("div");
+                  const arr = defaultHTMLPrinter(tree);
+                  arr.forEach(a => body.appendChild(a));
+                  return body;
+                })(),
+                error: undefined,
+                loading: false,
               }),
+            }),
           )
           .catch(
             error =>
