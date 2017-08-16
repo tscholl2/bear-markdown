@@ -1,1 +1,1 @@
-export declare function printHTML(tree?: any[], state?: any): (HTMLElement | Text | Comment)[];
+export declare function printHTML(tree?: any[], state?: any): (Text | HTMLElement | Comment)[];
