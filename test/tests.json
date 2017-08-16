@@ -1,0 +1,66 @@
+[
+  {
+    "description": "plain text",
+    "input": "something",
+    "output": [{ "type": "paragraph", "children": [{ "type": "text", "content": "something" }] }]
+  },
+  {
+    "description": "emphasis",
+    "input": "this is **something**",
+    "output": [
+      {
+        "type": "paragraph",
+        "children": [
+          { "type": "text", "content": "this is " },
+          {
+            "type": "emphasis",
+            "delimiter": "**",
+            "children": [{ "type": "text", "content": "something" }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "list",
+    "input": "* A\n* B\n* C",
+    "output": [
+      {
+        "type": "list",
+        "bullet": "*",
+        "items": [
+          [{ "type": "text", "content": "A" }],
+          [{ "type": "text", "content": "B" }],
+          [{ "type": "text", "content": "C" }]
+        ]
+      }
+    ]
+  },
+  {
+    "description": "emphasis not list",
+    "input": "*hello*",
+    "output": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "emphasis",
+            "delimiter": "*",
+            "children": [{ "type": "text", "content": "hello" }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "list not emphasis",
+    "input": "* hello*",
+    "output": [
+      {
+        "type": "list",
+        "bullet": "*",
+        "items": [[{ "type": "text", "content": "hello" }, { "type": "text", "content": "*" }]]
+      }
+    ]
+  }
+]

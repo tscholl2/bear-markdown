@@ -5,6 +5,8 @@ const listItemRE = new RegExp(
   "^( *)" +
     // followed by a bullet
     "([\\*\\-\\+]|\\d+\\.)" +
+    // followed by a space
+    " " +
     // followed by anything
     "([\\s\\S]*?)" +
     // until EOF, 2 newlines, or the same indent and a bullet
