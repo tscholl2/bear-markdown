@@ -695,7 +695,7 @@ var re = new RegExp("^" +
     },
     parse: function (capture) { return ({
         type: "inlineCode",
-        content: capture[2],
+        content: capture[1],
     }); },
 });
 

@@ -13,6 +13,6 @@ export default <Rule>{
   match: (s, { inline }) => (inline ? re.exec(s) : null),
   parse: capture => ({
     type: "inlineCode",
-    content: capture[2],
+    content: capture[1],
   }),
 };
