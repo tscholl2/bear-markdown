@@ -113,13 +113,13 @@ app({
         render(state.value)
           .then(
             tree =>
-              console.log(printHTML(tree)) ||
+              console.log(defaultHTMLPrinter(tree)) ||
               actions.update({
                 preview: Object.assign(state.preview, {
                   value: tree,
                   html: (() => {
                     const body = document.createElement("div");
-                    const arr = printHTML(tree);
+                    const arr = defaultHTMLPrinter(tree);
                     arr.forEach(a => body.appendChild(a));
                     return body;
                   })(),

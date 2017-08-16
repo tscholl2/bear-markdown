@@ -8,8 +8,8 @@ export interface PrintRule<N = Node, S = {}, T = any> {
 }
 
 export function newPrinter(printers: { [type: string]: PrintRule }) {
-  const output: any[] = [];
-  function print(tree: Array<Node>, state = {}) {
+  return function print(tree: Array<Node>, state = {}) {
+    const output: any[] = [];
     for (let i = 0; i < tree.length; i++) {
       const node = tree[i];
       if (!printers.hasOwnProperty(node.type)) {
@@ -18,6 +18,5 @@ export function newPrinter(printers: { [type: string]: PrintRule }) {
       output.push(printers[node.type](node, state, print));
     }
     return output;
-  }
-  return print;
+  };
 }

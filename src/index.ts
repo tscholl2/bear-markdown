@@ -1,9 +1,18 @@
-import { newParser, Node } from "./parser";
-import { printHTML } from "./html-printer";
+import { newParser } from "./parser";
+import { newPrinter } from "./printer";
+import { printers } from "./printers";
 import { defaultRules } from "./rules";
-export { printHTML } from "./html-printer";
 export { newParser, defaultRules };
-export const defaultParser: (markdown: string) => Node[] = newParser(defaultRules);
+export { newPrinter };
+
+export const defaultParser = newParser(defaultRules);
+const defaultPrinters: any = {};
+for (let key in printers) {
+  if (printers.hasOwnProperty(key)) {
+    defaultPrinters[key] = printers[key].html;
+  }
+}
+export const defaultHTMLPrinter = newPrinter(defaultPrinters);
 
 const p = newParser(defaultRules);
 const s = `# header
@@ -19,7 +28,7 @@ some text
 this is a [link](url)
 
 this is an ![image](url)`;
-console.log(printHTML(p(s)));
+console.log(defaultHTMLPrinter(p(s)));
 /*
 var require: any;
 const m = require("./simple.js");

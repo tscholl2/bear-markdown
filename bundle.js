@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -261,116 +261,33 @@ function __asyncValues(o) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = printHTML;
-function printHTML(tree, state) {
-    if (tree === void 0) { tree = []; }
-    if (state === void 0) { state = {}; }
-    return tree.map(function (n) {
-        switch (n.type) {
-            case "text":
-                return document.createTextNode(n.content);
-            case "table":
-                var table = document.createElement("table");
-                var head_1 = document.createElement("thead");
-                n.head.forEach(function (d, i) {
-                    var th = document.createElement("th");
-                    th.align = n.align[i];
-                    printHTML(d, state).forEach(function (c) { return th.appendChild(c); });
-                    head_1.appendChild(th);
-                });
-                table.appendChild(head_1);
-                var body_1 = document.createElement("tbody");
-                n.rows.forEach(function (r) {
-                    var row = document.createElement("tr");
-                    printHTML(r, state).forEach(function (c) { return row.appendChild(c); });
-                    body_1.appendChild(row);
-                });
-                table.appendChild(body_1);
-                return table;
-            case "paragraph":
-                var p_1 = document.createElement("p");
-                printHTML(n.children, state).forEach(function (c) { return p_1.appendChild(c); });
-                return p_1;
-            case "list":
-                var l_1 = document.createElement(/^\d/.test(n.bullet) ? "ol" : "ul");
-                n.items.forEach(function (item) {
-                    var i = document.createElement("li");
-                    printHTML(item, state).forEach(function (c) { return i.appendChild(c); });
-                    l_1.appendChild(i);
-                });
-                return l_1;
-            case "link":
-                var a_1 = document.createElement("a");
-                a_1.href = n.href;
-                printHTML(n.children, state).forEach(function (c) { return a_1.appendChild(c); });
-                return a_1;
-            case "image":
-                var i = document.createElement("img");
-                i.alt = n.alt;
-                i.src = n.src;
-                i.title = n.title;
-                return i;
-            case "heading":
-                var h_1 = document.createElement("h" + n.level);
-                printHTML(n.children, state).forEach(function (c) { return h_1.appendChild(c); });
-                return h_1;
-            case "emphasis":
-                var delimiters = {
-                    __: "u",
-                    _: "em",
-                    "~~": "s",
-                    "~": "em",
-                    "**": "strong",
-                    "*": "mark",
-                };
-                var e_1 = document.createElement(delimiters[n.delimiter]);
-                printHTML(n.children, state).forEach(function (c) { return e_1.appendChild(c); });
-                return e_1;
-            case "comment":
-                return document.createComment(n.content);
-            case "codeBlock":
-                var pr = document.createElement("pre");
-                var c = document.createElement("code");
-                c.appendChild(document.createTextNode(n.content));
-                pr.appendChild(c);
-                return pr;
-            case "blockQuote":
-                var bq_1 = document.createElement("blockquote");
-                printHTML(n.children, state).forEach(function (c) { return bq_1.appendChild(c); });
-                return bq_1;
-            case "inlineCode":
-                var cd = document.createElement("code");
-                cd.appendChild(document.createTextNode(n.content));
-                return cd;
-            default:
-                throw new Error("unimplemented node: " + n.type);
-        }
-    });
-}
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultParser", function() { return defaultParser; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parser__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__html_printer__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__rules__ = __webpack_require__(4);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "printHTML", function() { return __WEBPACK_IMPORTED_MODULE_1__html_printer__["a"]; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultHTMLPrinter", function() { return defaultHTMLPrinter; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parser__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__printer__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__printers__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__rules__ = __webpack_require__(5);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "newParser", function() { return __WEBPACK_IMPORTED_MODULE_0__parser__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "defaultRules", function() { return __WEBPACK_IMPORTED_MODULE_2__rules__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "defaultRules", function() { return __WEBPACK_IMPORTED_MODULE_3__rules__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "newPrinter", function() { return __WEBPACK_IMPORTED_MODULE_1__printer__["a"]; });
 
 
 
 
 
-var defaultParser = Object(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* newParser */])(__WEBPACK_IMPORTED_MODULE_2__rules__["a" /* defaultRules */]);
-var p = Object(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* newParser */])(__WEBPACK_IMPORTED_MODULE_2__rules__["a" /* defaultRules */]);
+
+var defaultParser = Object(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* newParser */])(__WEBPACK_IMPORTED_MODULE_3__rules__["a" /* defaultRules */]);
+var defaultPrinters = {};
+for (var key in __WEBPACK_IMPORTED_MODULE_2__printers__["a" /* printers */]) {
+    if (__WEBPACK_IMPORTED_MODULE_2__printers__["a" /* printers */].hasOwnProperty(key)) {
+        defaultPrinters[key] = __WEBPACK_IMPORTED_MODULE_2__printers__["a" /* printers */][key].html;
+    }
+}
+var defaultHTMLPrinter = Object(__WEBPACK_IMPORTED_MODULE_1__printer__["a" /* newPrinter */])(defaultPrinters);
+var p = Object(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* newParser */])(__WEBPACK_IMPORTED_MODULE_3__rules__["a" /* defaultRules */]);
 var s = "# header\n\n![image](url)\n\nsome text\n\n1. a\n2. b\n3. c\n\nthis is a [link](url)\n\nthis is an ![image](url)";
-console.log(Object(__WEBPACK_IMPORTED_MODULE_1__html_printer__["a" /* printHTML */])(p(s)));
+console.log(defaultHTMLPrinter(p(s)));
 /*
 var require: any;
 const m = require("./simple.js");
@@ -385,7 +302,7 @@ console.log(JSON.stringify(t, null, 2));
 
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -430,26 +347,165 @@ function newParser(Rules) {
 
 
 /***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = newPrinter;
+function newPrinter(printers) {
+    return function print(tree, state) {
+        if (state === void 0) { state = {}; }
+        var output = [];
+        for (var i = 0; i < tree.length; i++) {
+            var node = tree[i];
+            if (!printers.hasOwnProperty(node.type)) {
+                throw new Error("no printer for type " + node.type);
+            }
+            output.push(printers[node.type](node, state, print));
+        }
+        return output;
+    };
+}
+
+
+/***/ }),
 /* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return printers; });
+var printers = {
+    text: {
+        html: function (n) { return document.createTextNode(n.content); },
+    },
+    table: {
+        html: function (n, s, output) {
+            var table = document.createElement("table");
+            var head = document.createElement("thead");
+            output(n.head).forEach(function (c, i) {
+                var th = document.createElement("th");
+                th.align = n.align[i];
+                th.appendChild(c);
+                head.appendChild(th);
+            });
+            table.appendChild(head);
+            var body = document.createElement("tbody");
+            n.rows.map(function (r) { return output(r, s); }).forEach(function (r) {
+                var row = document.createElement("tr");
+                r.forEach(function (c) { return row.appendChild(c); });
+                body.appendChild(row);
+            });
+            table.appendChild(body);
+            return table;
+        },
+    },
+    paragraph: {
+        html: function (n, s, output) {
+            var p = document.createElement("p");
+            output(n.children, s).forEach(function (c) { return p.appendChild(c); });
+            return p;
+        },
+    },
+    list: {
+        html: function (n, s, output) {
+            var l = document.createElement(/^\d/.test(n.bullet) ? "ol" : "ul");
+            n.items.forEach(function (item) {
+                var i = document.createElement("li");
+                output(item, s).forEach(function (c) { return i.appendChild(c); });
+                l.appendChild(i);
+            });
+            return l;
+        },
+    },
+    link: {
+        html: function (n, s, output) {
+            var a = document.createElement("a");
+            a.href = n.href;
+            output(n.children, s).forEach(function (c) { return a.appendChild(c); });
+            return a;
+        },
+    },
+    image: {
+        html: function (n) {
+            var i = document.createElement("img");
+            i.alt = n.alt;
+            i.src = n.src;
+            i.title = n.title;
+            return i;
+        },
+    },
+    heading: {
+        html: function (n, s, output) {
+            var h = document.createElement("h" + n.level);
+            output(n.children, s).forEach(function (c) { return h.appendChild(c); });
+            return h;
+        },
+    },
+    emphasis: {
+        html: function (n, s, output) {
+            var delimiters = {
+                __: "u",
+                _: "em",
+                "~~": "s",
+                "~": "em",
+                "**": "strong",
+                "*": "mark",
+            };
+            var e = document.createElement(delimiters[n.delimiter]);
+            output(n.children, s).forEach(function (c) { return e.appendChild(c); });
+            return e;
+        },
+    },
+    comment: {
+        html: function (n) { return document.createComment(n.content); },
+    },
+    codeBlock: {
+        html: function (n) {
+            var pr = document.createElement("pre");
+            var c = document.createElement("code");
+            c.appendChild(document.createTextNode(n.content));
+            pr.appendChild(c);
+            return pr;
+        },
+    },
+    blockQuote: {
+        html: function (n, s, output) {
+            var bq = document.createElement("blockquote");
+            output(n.children, s).forEach(function (c) { return bq.appendChild(c); });
+            return bq;
+        },
+    },
+    inlineCode: {
+        html: function (n) {
+            var cd = document.createElement("code");
+            cd.appendChild(document.createTextNode(n.content));
+            return cd;
+        },
+    },
+};
+
+
+/***/ }),
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return defaultRules; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__block_quote__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__code_block__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__comment__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__emphasis__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__escape__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__heading__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__image__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__inline_code__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__link__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__list__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__paragraph__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__table__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__text__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__newline__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__block_quote__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__code_block__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__comment__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__emphasis__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__escape__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__heading__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__image__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__inline_code__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__link__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__list__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__paragraph__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__table__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__text__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__newline__ = __webpack_require__(19);
 
 
 
@@ -484,7 +540,7 @@ var defaultRules = [
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -512,7 +568,7 @@ var re = new RegExp("^(" +
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -535,7 +591,7 @@ var re = new RegExp("^" +
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -557,7 +613,7 @@ var re = new RegExp("^" +
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -582,7 +638,7 @@ var re = new RegExp("^" +
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -619,7 +675,7 @@ var re = new RegExp("^\\\\([" +
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -650,7 +706,7 @@ var re = new RegExp("^" +
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -678,7 +734,7 @@ var re = new RegExp("^\\!" +
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -701,7 +757,7 @@ var re = new RegExp("^" +
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -727,7 +783,7 @@ var re = new RegExp("^" +
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -807,7 +863,7 @@ var listItemRE = new RegExp(
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -840,7 +896,7 @@ var re = new RegExp("^" +
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -926,7 +982,7 @@ var tableAlignRE = /^\s*\|((?:\s*:?\-+:?\s*\|)+)\s*(?=\n)/;
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -948,7 +1004,7 @@ var tableAlignRE = /^\s*\|((?:\s*:?\-+:?\s*\|)+)\s*(?=\n)/;
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
