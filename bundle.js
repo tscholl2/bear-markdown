@@ -279,10 +279,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var defaultParser = Object(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* newParser */])(__WEBPACK_IMPORTED_MODULE_3__rules__["a" /* defaultRules */]);
 var defaultHTMLPrinter = Object(__WEBPACK_IMPORTED_MODULE_1__printer__["a" /* newPrinter */])(__WEBPACK_IMPORTED_MODULE_2__printers__["a" /* html */]);
-var p = Object(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* newParser */])(__WEBPACK_IMPORTED_MODULE_3__rules__["a" /* defaultRules */]);
-var s = "# header\n\n![image](url)\n\nsome text\n\n1. a\n2. b\n3. c\n\nthis is a [link](url)\n\nthis is an ![image](url)";
-console.log(defaultHTMLPrinter(p(s)));
 /*
+const p = newParser(defaultRules);
+const s = `*hello*`;
+console.log(p(s));
 var require: any;
 const m = require("./simple.js");
 console.log(JSON.stringify(m.defaultParse(s), null, 2));
@@ -531,7 +531,7 @@ var re = new RegExp("^(" +
     "[^\\n]*" +
     // find all lines like this
     ")+" +
-    // until a newline
+    // repeat until a newline
     "\\n");
 /* harmony default export */ __webpack_exports__["a"] = ({
     order: 6,
@@ -555,7 +555,8 @@ var re = new RegExp("^(" +
 var re = new RegExp("^" +
     "```" +
     // match anything between ```'s greedy so stops at first ```
-    "([\\s\\S]+)?" +
+    // note: we include escaped delimiters e.g. "\```"
+    "((?:[\\s\\S]|\\\\```)+)?" +
     "```");
 /* harmony default export */ __webpack_exports__["a"] = ({
     order: 24,
@@ -565,7 +566,7 @@ var re = new RegExp("^" +
     },
     parse: function (capture) { return ({
         type: "codeBlock",
-        content: capture[1],
+        content: capture[1].replace(/\\```/g, "```"),
     }); },
 });
 
@@ -601,7 +602,10 @@ var re = new RegExp("^" +
     // delimters are __, **, ~~, _, *, or ~
     "(__|\\*\\*|~~|_|\\*|~)" +
     // match until the next matching delimiter
-    "([^(?:\\1)]*)?" +
+    // note: we also include escaped delimiters e.g. \* or \~
+    // note note: we don't need to replace these because
+    // the match is parsed so they will be escaped properly
+    "((?:\\\\\\1|[^(?:\\1)])*)?" +
     "\\1");
 /* harmony default export */ __webpack_exports__["a"] = ({
     order: 23,
@@ -721,7 +725,8 @@ var re = new RegExp("^\\!" +
 var re = new RegExp("^" +
     "`" +
     // match anything between `'s greedy so stops at first *
-    "([\\s\\S]+)" +
+    // note: we include escaped `'s as well
+    "((?:[\\s\\S]|\\\\`)+)" +
     "`");
 /* harmony default export */ __webpack_exports__["a"] = ({
     order: 24,
@@ -731,7 +736,7 @@ var re = new RegExp("^" +
     },
     parse: function (capture) { return ({
         type: "inlineCode",
-        content: capture[1],
+        content: capture[1].replace("\\`", "`"),
     }); },
 });
 
@@ -772,6 +777,8 @@ var listItemRE = new RegExp(
 "^( *)" +
     // followed by a bullet
     "([\\*\\-\\+]|\\d+\\.)" +
+    // followed by a space
+    " " +
     // followed by anything
     "([\\s\\S]*?)" +
     // until EOF, 2 newlines, or the same indent and a bullet
@@ -901,7 +908,7 @@ A table is a:
 - table row
 */
 // a row is
-// "|" then a repeat("not a |" then a "|") followed by a newline or EOF
+// "|" then repeat("not a |" then a "|") followed by a newline or EOF
 var tableRowRE = /^s*\|((?:[^\|\n]+\|)+)\s*(?=\n|$)/;
 // an alignment row is
 // "|" then a repeat(":---:" then a "|") followed by a newline
