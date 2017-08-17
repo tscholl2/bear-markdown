@@ -10,7 +10,7 @@ export const defaultHTMLPrinter = newPrinter(html);
 
 /*
 const p = newParser(defaultRules);
-const s = `*hello*`;
+const s = "* A\n- B\n\n";
 console.log(p(s));
 var require: any;
 const m = require("./simple.js");

@@ -10,6 +10,8 @@ import image from "./image";
 import inlineCode from "./inline-code";
 import link from "./link";
 import list from "./list";
+import inlineMath from "./inline-math";
+import blockMath from "./block-math";
 import paragraph from "./paragraph";
 import table from "./table";
 import text from "./text";
@@ -22,15 +24,17 @@ export const defaultRules: Rule[] = [
   { ...newline, order: 1 },
   { ...blockQuote, order: 2 },
   { ...heading, order: 3 },
-  { ...codeBlock, order: 4 },
-  { ...list, order: 5 },
-  { ...table, order: 6 },
-  { ...paragraph, order: 7 },
+  { ...blockMath, order: 4 },
+  { ...codeBlock, order: 5 },
+  { ...list, order: 6 },
+  { ...table, order: 7 },
+  { ...paragraph, order: 8 },
   // INLINE
-  { ...inlineCode, order: 8 },
   { ...escape, order: 9 },
-  { ...emphasis, order: 10 }, // emphasis should be after list cause could start with * in sublist
-  { ...image, order: 6 }, // should be before paragraph because image can be block
-  { ...link, order: 12 }, // link must be after image because link is subset of image match
-  { ...text, order: 13 },
+  { ...inlineCode, order: 10 },
+  { ...inlineMath, order: 11 },
+  { ...emphasis, order: 12 }, // emphasis should be after list cause could start with * in sublist
+  { ...image, order: 13 },
+  { ...link, order: 14 }, // link must be after image because link is subset of image match
+  { ...text, order: 15 },
 ];

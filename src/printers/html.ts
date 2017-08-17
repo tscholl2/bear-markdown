@@ -46,9 +46,9 @@ export default <{
   },
   image: (n: any) => {
     const i = document.createElement("img");
-    i.alt = n.alt;
-    i.src = n.src;
-    i.title = n.title;
+    i.alt = n.alt || "";
+    i.src = n.src || "";
+    i.title = n.title || "";
     return i;
   },
   heading: (n: any, s, output) => {

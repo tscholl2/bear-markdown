@@ -13,7 +13,6 @@ const re = new RegExp(
 );
 
 export default <Rule>{
-  order: 6,
   match: (s, { inline }) => (inline ? undefined : re.exec(s)),
   parse: (capture, parse, state) => ({
     type: "blockQuote",

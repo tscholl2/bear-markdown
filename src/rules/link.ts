@@ -9,7 +9,6 @@ const re = new RegExp(
 );
 
 export default <Rule>{
-  order: -1,
   match: (s, { inline }) => (inline ? re.exec(s) : null),
   parse: (capture, parse, state) => ({
     type: "link",

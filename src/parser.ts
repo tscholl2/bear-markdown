@@ -1,9 +1,10 @@
 /**
  * A rule determines how to match and parse content.
- * The order determines which rules go first.
+ * The order determines which rules go first (lower goes first).
+ * If no order is given, it is assumed to be 0.
  */
 export interface Rule<S extends {} = { inline?: boolean }> {
-  order: number;
+  order?: number;
   match(source: string, state: Readonly<S>, previousMatch: string): undefined | null | RuleCapture;
   parse(
     capture: RuleCapture,
@@ -32,7 +33,9 @@ export type Node = { type: string };
  * @returns {function} A function which parses content. 
  */
 export function newParser(Rules: Rule[]) {
-  const rules = Rules.sort((a, b) => (a.order === b.order ? 0 : a.order > b.order ? 1 : -1));
+  const rules = Rules.sort(
+    (a, b) => (a.order === b.order ? 0 : (a.order || 0) > (b.order || 0) ? 1 : -1),
+  );
   // TODO: preparse source to remove any stupid stuff? (line endings?)
   const parse = function(source: string, state = {}) {
     const result = [];

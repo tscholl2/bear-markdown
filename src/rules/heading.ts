@@ -11,7 +11,6 @@ const re = new RegExp(
 );
 
 export default <Rule>{
-  order: 0,
   match: (s, { inline }) => (inline ? undefined : re.exec(s)),
   parse: (capture, parse, state = {}) => ({
     type: "heading",

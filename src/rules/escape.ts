@@ -23,10 +23,6 @@ const re = new RegExp(
 );
 
 export default <Rule>{
-  order: -1,
-  match: (s, { inline }) => (inline ? re.exec(s) : null),
-  parse: capture => ({
-    type: "text",
-    content: capture[1],
-  }),
+  match: (s, { inline }) => (inline ? re.exec(s) : undefined),
+  parse: capture => ({ type: "text", content: capture[1] }),
 };

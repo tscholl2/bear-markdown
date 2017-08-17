@@ -10,7 +10,6 @@ const re = new RegExp(
 );
 
 export default <Rule>{
-  order: -1,
   match: (s, { inline }, previousMatch) => {
     if (inline) {
       return;

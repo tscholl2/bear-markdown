@@ -10,10 +10,10 @@ const re = new RegExp(
 );
 
 export default <Rule>{
-  order: 24,
-  match: (s, { inline }) => (inline ? null : re.exec(s)),
+  match: (s, { inline }) => (inline ? undefined : re.exec(s)),
   parse: capture => ({
     type: "codeBlock",
+    // replace any escaped delimiters
     content: capture[1].replace(/\\```/g, "```"),
   }),
 };

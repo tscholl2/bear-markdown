@@ -6,15 +6,15 @@ const listItemRE = new RegExp(
     // followed by a bullet
     "([\\*\\-\\+]|\\d+\\.)" +
     // followed by a space
-    " " +
+    "\\s" +
     // followed by anything
     "([\\s\\S]*?)" +
     // until EOF, 2 newlines, or the same indent and a bullet
+    // note: different bullet means different list
     "(?=$|\\n\\n|\\n\\1(?:[\\*\\-\\+]|\\d+\\.))",
 );
 
 export default <Rule<{ inline: boolean; _list?: boolean }>>{
-  order: 7,
   match: (source, { inline, _list }, previousMatch) => {
     // all list items must begin on a new line
     if (previousMatch && !previousMatch.endsWith("\n")) {
@@ -30,6 +30,7 @@ export default <Rule<{ inline: boolean; _list?: boolean }>>{
       return;
     }
     let match = "";
+    let bullet = "";
     const items = [];
     // while there is another list item
     while (listItemRE.test(source)) {
@@ -42,6 +43,12 @@ export default <Rule<{ inline: boolean; _list?: boolean }>>{
       // TODO: add in pre-item stuff to know if was preceded by \n\n, or just \n
       // ]
       const capture = listItemRE.exec(source)!;
+      if (capture && bullet !== "" && capture[2] !== bullet) {
+        break;
+      }
+      if (bullet === "") {
+        bullet = capture[2];
+      }
       match += capture[0];
       source = source.substr(capture[0].length);
       // if we saw 2 newlines and there is another list item (with the same indent),

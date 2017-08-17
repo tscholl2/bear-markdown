@@ -9,18 +9,17 @@ const re = new RegExp(
     // look for url
     '([^\\)"]+)?' +
     // look for an optional title
-    '\\s*(?:"([^"])")?' +
+    '\\s*(?:"([^"]+)")?' +
     // end parens
     "\\)",
 );
 
 export default <Rule>{
-  order: 17,
-  match: s => re.exec(s),
+  match: (s, { inline }) => (inline ? re.exec(s) : undefined),
   parse: capture => ({
     type: "image",
-    alt: capture[1] || "",
-    src: capture[2] || "",
-    title: capture[3] || "",
+    alt: capture[1],
+    src: capture[2].trim(),
+    title: capture[3],
   }),
 };

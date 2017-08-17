@@ -109,5 +109,42 @@
     "description": "code block with escaped \\```",
     "input": "```code\\\\```code```",
     "output": [{ "type": "codeBlock", "content": "code\\```code" }]
+  },
+  {
+    "description": "lists with 2 items",
+    "input": "* A\n* B",
+    "output": [
+      {
+        "type": "list",
+        "bullet": "*",
+        "items": [[{ "type": "text", "content": "A" }], [{ "type": "text", "content": "B" }]]
+      }
+    ]
+  },
+  {
+    "description": "lists with 2 bullets",
+    "input": "* A\n- B",
+    "output": [
+      {
+        "type": "list",
+        "bullet": "*",
+        "items": [[{ "type": "text", "content": "A" }]]
+      },
+      {
+        "type": "list",
+        "bullet": "-",
+        "items": [[{ "type": "text", "content": "B" }]]
+      }
+    ]
+  },
+  {
+    "description": "image",
+    "input": "![alt](src \"title\")",
+    "output": [
+      {
+        "type": "paragraph",
+        "children": [{ "type": "image", "alt": "alt", "title": "title", "src": "src" }]
+      }
+    ]
   }
 ]

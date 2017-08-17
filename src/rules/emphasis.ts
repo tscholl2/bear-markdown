@@ -13,8 +13,7 @@ const re = new RegExp(
 );
 
 export default <Rule>{
-  order: 23,
-  match: (s, { inline }) => (inline ? re.exec(s) : null),
+  match: (s, { inline }) => (inline ? re.exec(s) : undefined),
   parse: (capture, parse, state) => ({
     type: "emphasis",
     delimiter: capture[1],

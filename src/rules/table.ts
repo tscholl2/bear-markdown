@@ -28,7 +28,6 @@ const tableRowRE = /^s*\|((?:[^\|\n]+\|)+)\s*(?=\n|$)/;
 const tableAlignRE = /^\s*\|((?:\s*:?\-+:?\s*\|)+)\s*(?=\n)/;
 
 export default <Rule>{
-  order: 9,
   match: (source, { inline }) => {
     if (inline) {
       return;
