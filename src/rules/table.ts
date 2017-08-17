@@ -20,7 +20,7 @@ A table is a:
 */
 
 // a row is
-// "|" then a repeat("not a |" then a "|") followed by a newline or EOF
+// "|" then repeat("not a |" then a "|") followed by a newline or EOF
 const tableRowRE = /^s*\|((?:[^\|\n]+\|)+)\s*(?=\n|$)/;
 // an alignment row is
 // "|" then a repeat(":---:" then a "|") followed by a newline

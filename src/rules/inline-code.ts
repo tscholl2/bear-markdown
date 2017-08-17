@@ -4,7 +4,8 @@ const re = new RegExp(
   "^" +
     "`" +
     // match anything between `'s greedy so stops at first *
-    "([\\s\\S]+)" +
+    // note: we include escaped `'s as well
+    "((?:[\\s\\S]|\\\\`)+)" +
     "`",
 );
 
@@ -13,6 +14,6 @@ export default <Rule>{
   match: (s, { inline }) => (inline ? re.exec(s) : null),
   parse: capture => ({
     type: "inlineCode",
-    content: capture[1],
+    content: capture[1].replace("\\`", "`"),
   }),
 };

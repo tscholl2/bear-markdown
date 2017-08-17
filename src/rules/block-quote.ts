@@ -8,7 +8,7 @@ const re = new RegExp(
     "[^\\n]*" +
     // find all lines like this
     ")+" +
-    // until a newline
+    // repeat until a newline
     "\\n",
 );
 

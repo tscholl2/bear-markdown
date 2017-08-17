@@ -4,7 +4,8 @@ const re = new RegExp(
   "^" +
     "```" +
     // match anything between ```'s greedy so stops at first ```
-    "([\\s\\S]+)?" +
+    // note: we include escaped delimiters e.g. "\```"
+    "((?:[\\s\\S]|\\\\```)+)?" +
     "```",
 );
 
@@ -13,6 +14,6 @@ export default <Rule>{
   match: (s, { inline }) => (inline ? null : re.exec(s)),
   parse: capture => ({
     type: "codeBlock",
-    content: capture[1],
+    content: capture[1].replace(/\\```/g, "```"),
   }),
 };

@@ -62,5 +62,52 @@
         "items": [[{ "type": "text", "content": "hello" }, { "type": "text", "content": "*" }]]
       }
     ]
+  },
+  {
+    "description": "emphasis with escaped delimiter",
+    "input": "*\\**",
+    "output": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "emphasis",
+            "delimiter": "*",
+            "children": [{ "type": "text", "content": "*" }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "emphasis with escaped delimiter",
+    "input": "**\\****",
+    "output": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "emphasis",
+            "delimiter": "**",
+            "children": [{ "type": "text", "content": "*" }, { "type": "text", "content": "*" }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "code block",
+    "input": "```this is code```",
+    "output": [{ "type": "codeBlock", "content": "this is code" }]
+  },
+  {
+    "description": "code block with escaped ```",
+    "input": "```code\\```code```",
+    "output": [{ "type": "codeBlock", "content": "code```code" }]
+  },
+  {
+    "description": "code block with escaped \\```",
+    "input": "```code\\\\```code```",
+    "output": [{ "type": "codeBlock", "content": "code\\```code" }]
   }
 ]
