@@ -1,8 +1,8 @@
-import { PrintRule } from "../printer";
+import { Printer } from "../printer";
 import { Node } from "../parser";
 
 export default <{
-  [type: string]: PrintRule<Node, any, HTMLElement | Text | Comment>;
+  [type: string]: Printer<Node, any, HTMLElement | Text | Comment>;
 }>{
   text: (n: any) => document.createTextNode(n.content),
   table: (n: any, s, output) => {

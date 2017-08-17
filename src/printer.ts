@@ -1,13 +1,13 @@
 import { Node } from "./parser";
 
 /**
- * A PrintRule determines how to output a certain type node.
+ * A Printer determines how to output a certain type node.
  */
-export interface PrintRule<N = Node, S = {}, T = any> {
+export interface Printer<N = Node, S = {}, T = any> {
   (node: N, state: S, output: (node: Array<N>, state?: S) => Array<T>): T;
 }
 
-export function newPrinter(printers: { [type: string]: PrintRule }) {
+export function newPrinter(printers: { [type: string]: Printer }) {
   return function print(tree: Array<Node>, state = {}) {
     const output: any[] = [];
     for (let i = 0; i < tree.length; i++) {
