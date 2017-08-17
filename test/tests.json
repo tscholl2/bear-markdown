@@ -146,5 +146,20 @@
         "children": [{ "type": "image", "alt": "alt", "title": "title", "src": "src" }]
       }
     ]
+  },
+  {
+    "description": "math",
+    "input": "$1+1$",
+    "output": [
+      {
+        "type": "paragraph",
+        "children": [{ "type": "math", "delimiter": "$$", "content": "1+1" }]
+      }
+    ]
+  },
+  {
+    "description": "math",
+    "input": "$$1+1$$",
+    "output": [{ "type": "math", "delimiter": "$$$$", "content": "1+1" }]
   }
 ]
