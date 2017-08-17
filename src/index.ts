@@ -10,8 +10,8 @@ export const defaultHTMLPrinter = newPrinter(html);
 
 /*
 const p = newParser(defaultRules);
-const s = "* A\n- B\n\n";
-console.log(p(s));
+const s = "$$1+1$$";
+console.log(JSON.stringify(p(s)));
 var require: any;
 const m = require("./simple.js");
 console.log(JSON.stringify(m.defaultParse(s), null, 2));

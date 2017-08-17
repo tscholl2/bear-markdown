@@ -87,4 +87,9 @@ export default <{
     cd.appendChild(document.createTextNode(n.content));
     return cd;
   },
+  math: (n: any) => {
+    const m = document.createElement("math");
+    m.textContent = n.content;
+    return m;
+  },
 };

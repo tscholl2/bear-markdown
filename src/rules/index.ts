@@ -30,9 +30,9 @@ export const defaultRules: Rule[] = [
   { ...table, order: 7 },
   { ...paragraph, order: 8 },
   // INLINE
-  { ...escape, order: 9 },
-  { ...inlineCode, order: 10 },
-  { ...inlineMath, order: 11 },
+  { ...inlineMath, order: 9 },
+  { ...escape, order: 10 },
+  { ...inlineCode, order: 11 },
   { ...emphasis, order: 12 }, // emphasis should be after list cause could start with * in sublist
   { ...image, order: 13 },
   { ...link, order: 14 }, // link must be after image because link is subset of image match
