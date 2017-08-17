@@ -281,7 +281,7 @@ var defaultParser = Object(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* newParse
 var defaultHTMLPrinter = Object(__WEBPACK_IMPORTED_MODULE_1__printer__["a" /* newPrinter */])(__WEBPACK_IMPORTED_MODULE_2__printers__["a" /* html */]);
 /*
 const p = newParser(defaultRules);
-const s = `*hello*`;
+const s = "* A\n- B\n\n";
 console.log(p(s));
 var require: any;
 const m = require("./simple.js");
@@ -307,7 +307,7 @@ console.log(JSON.stringify(t, null, 2));
  * @returns {function} A function which parses content.
  */
 function newParser(Rules) {
-    var rules = Rules.sort(function (a, b) { return (a.order === b.order ? 0 : a.order > b.order ? 1 : -1); });
+    var rules = Rules.sort(function (a, b) { return (a.order === b.order ? 0 : (a.order || 0) > (b.order || 0) ? 1 : -1); });
     // TODO: preparse source to remove any stupid stuff? (line endings?)
     var parse = function (source, state) {
         if (state === void 0) { state = {}; }
@@ -421,9 +421,9 @@ function newPrinter(printers) {
     },
     image: function (n) {
         var i = document.createElement("img");
-        i.alt = n.alt;
-        i.src = n.src;
-        i.title = n.title;
+        i.alt = n.alt || "";
+        i.src = n.src || "";
+        i.title = n.title || "";
         return i;
     },
     heading: function (n, s, output) {
@@ -482,10 +482,14 @@ function newPrinter(printers) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__inline_code__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__link__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__list__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__paragraph__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__table__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__text__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__newline__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__inline_math__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__block_math__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__paragraph__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__table__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__text__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__newline__ = __webpack_require__(22);
+
+
 
 
 
@@ -503,19 +507,21 @@ function newPrinter(printers) {
 
 var defaultRules = [
     __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_3__comment__["a" /* default */], { order: 0 }),
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_14__newline__["a" /* default */], { order: 1 }),
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_16__newline__["a" /* default */], { order: 1 }),
     __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_1__block_quote__["a" /* default */], { order: 2 }),
     __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_6__heading__["a" /* default */], { order: 3 }),
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_2__code_block__["a" /* default */], { order: 4 }),
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_10__list__["a" /* default */], { order: 5 }),
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_12__table__["a" /* default */], { order: 6 }),
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_11__paragraph__["a" /* default */], { order: 7 }),
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_8__inline_code__["a" /* default */], { order: 8 }),
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_12__block_math__["a" /* default */], { order: 4 }),
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_2__code_block__["a" /* default */], { order: 5 }),
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_10__list__["a" /* default */], { order: 6 }),
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_14__table__["a" /* default */], { order: 7 }),
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_13__paragraph__["a" /* default */], { order: 8 }),
     __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_5__escape__["a" /* default */], { order: 9 }),
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_4__emphasis__["a" /* default */], { order: 10 }),
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_7__image__["a" /* default */], { order: 6 }),
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_9__link__["a" /* default */], { order: 12 }),
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_13__text__["a" /* default */], { order: 13 }),
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_8__inline_code__["a" /* default */], { order: 10 }),
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_11__inline_math__["a" /* default */], { order: 11 }),
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_4__emphasis__["a" /* default */], { order: 12 }),
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_7__image__["a" /* default */], { order: 13 }),
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_9__link__["a" /* default */], { order: 14 }),
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __assign */]({}, __WEBPACK_IMPORTED_MODULE_15__text__["a" /* default */], { order: 15 }),
 ];
 
 
@@ -534,7 +540,6 @@ var re = new RegExp("^(" +
     // repeat until a newline
     "\\n");
 /* harmony default export */ __webpack_exports__["a"] = ({
-    order: 6,
     match: function (s, _a) {
         var inline = _a.inline;
         return (inline ? undefined : re.exec(s));
@@ -559,13 +564,13 @@ var re = new RegExp("^" +
     "((?:[\\s\\S]|\\\\```)+)?" +
     "```");
 /* harmony default export */ __webpack_exports__["a"] = ({
-    order: 24,
     match: function (s, _a) {
         var inline = _a.inline;
-        return (inline ? null : re.exec(s));
+        return (inline ? undefined : re.exec(s));
     },
     parse: function (capture) { return ({
         type: "codeBlock",
+        // replace any escaped delimiters
         content: capture[1].replace(/\\```/g, "```"),
     }); },
 });
@@ -584,12 +589,8 @@ var re = new RegExp("^" +
     // closing -->
     "-->");
 /* harmony default export */ __webpack_exports__["a"] = ({
-    order: -1,
     match: function (s) { return re.exec(s); },
-    parse: function (capture) { return ({
-        type: "comment",
-        content: capture[1],
-    }); },
+    parse: function (capture) { return ({ type: "comment", content: capture[1] }); },
 });
 
 
@@ -608,10 +609,9 @@ var re = new RegExp("^" +
     "((?:\\\\\\1|[^(?:\\1)])*)?" +
     "\\1");
 /* harmony default export */ __webpack_exports__["a"] = ({
-    order: 23,
     match: function (s, _a) {
         var inline = _a.inline;
-        return (inline ? re.exec(s) : null);
+        return (inline ? re.exec(s) : undefined);
     },
     parse: function (capture, parse, state) { return ({
         type: "emphasis",
@@ -646,15 +646,11 @@ var re = new RegExp("^\\\\([" +
     "\\~" +
     "])");
 /* harmony default export */ __webpack_exports__["a"] = ({
-    order: -1,
     match: function (s, _a) {
         var inline = _a.inline;
-        return (inline ? re.exec(s) : null);
+        return (inline ? re.exec(s) : undefined);
     },
-    parse: function (capture) { return ({
-        type: "text",
-        content: capture[1],
-    }); },
+    parse: function (capture) { return ({ type: "text", content: capture[1] }); },
 });
 
 
@@ -673,7 +669,6 @@ var re = new RegExp("^" +
     // until the end of the line, which may have some #'s also
     "(?:\\s*#*\\s*)?(?=\n|$)");
 /* harmony default export */ __webpack_exports__["a"] = ({
-    order: 0,
     match: function (s, _a) {
         var inline = _a.inline;
         return (inline ? undefined : re.exec(s));
@@ -702,17 +697,19 @@ var re = new RegExp("^\\!" +
     // look for url
     '([^\\)"]+)?' +
     // look for an optional title
-    '\\s*(?:"([^"])")?' +
+    '\\s*(?:"([^"]+)")?' +
     // end parens
     "\\)");
 /* harmony default export */ __webpack_exports__["a"] = ({
-    order: 17,
-    match: function (s) { return re.exec(s); },
+    match: function (s, _a) {
+        var inline = _a.inline;
+        return (inline ? re.exec(s) : undefined);
+    },
     parse: function (capture) { return ({
         type: "image",
-        alt: capture[1] || "",
-        src: capture[2] || "",
-        title: capture[3] || "",
+        alt: capture[1],
+        src: capture[2].trim(),
+        title: capture[3],
     }); },
 });
 
@@ -724,18 +721,18 @@ var re = new RegExp("^\\!" +
 "use strict";
 var re = new RegExp("^" +
     "`" +
-    // match anything between `'s greedy so stops at first *
-    // note: we include escaped `'s as well
+    // match anything between "`"s greedy so stops at first *
+    // note: we include escaped "`"s as well so it doesn't end early
     "((?:[\\s\\S]|\\\\`)+)" +
     "`");
 /* harmony default export */ __webpack_exports__["a"] = ({
-    order: 24,
     match: function (s, _a) {
         var inline = _a.inline;
         return (inline ? re.exec(s) : null);
     },
     parse: function (capture) { return ({
         type: "inlineCode",
+        // we replace escaped "`"s to allow for using "`"s inside inline code
         content: capture[1].replace("\\`", "`"),
     }); },
 });
@@ -754,7 +751,6 @@ var re = new RegExp("^" +
     // look for stuff inside parens (...)
     "\\(([^\\)]+)\\)");
 /* harmony default export */ __webpack_exports__["a"] = ({
-    order: -1,
     match: function (s, _a) {
         var inline = _a.inline;
         return (inline ? re.exec(s) : null);
@@ -778,13 +774,13 @@ var listItemRE = new RegExp(
     // followed by a bullet
     "([\\*\\-\\+]|\\d+\\.)" +
     // followed by a space
-    " " +
+    "\\s" +
     // followed by anything
     "([\\s\\S]*?)" +
     // until EOF, 2 newlines, or the same indent and a bullet
+    // note: different bullet means different list
     "(?=$|\\n\\n|\\n\\1(?:[\\*\\-\\+]|\\d+\\.))");
 /* harmony default export */ __webpack_exports__["a"] = ({
-    order: 7,
     match: function (source, _a, previousMatch) {
         var inline = _a.inline, _list = _a._list;
         // all list items must begin on a new line
@@ -801,6 +797,7 @@ var listItemRE = new RegExp(
             return;
         }
         var match = "";
+        var bullet = "";
         var items = [];
         // while there is another list item
         while (listItemRE.test(source)) {
@@ -813,6 +810,12 @@ var listItemRE = new RegExp(
             // TODO: add in pre-item stuff to know if was preceded by \n\n, or just \n
             // ]
             var capture = listItemRE.exec(source);
+            if (capture && bullet !== "" && capture[2] !== bullet) {
+                break;
+            }
+            if (bullet === "") {
+                bullet = capture[2];
+            }
             match += capture[0];
             source = source.substr(capture[0].length);
             // if we saw 2 newlines and there is another list item (with the same indent),
@@ -854,6 +857,30 @@ var listItemRE = new RegExp(
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    // TODO
+    match: function () { return null; },
+    parse: function () { return ({ type: "math" }); },
+});
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    // TODO
+    match: function () { return undefined; },
+    parse: function () { return ({ type: "math" }); },
+});
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(0);
 
 // TODO: explain
@@ -863,7 +890,6 @@ var re = new RegExp("^" +
     // until the first double new line (i.e. blank line) or end
     "(?:\n\n|$)");
 /* harmony default export */ __webpack_exports__["a"] = ({
-    order: -1,
     match: function (s, _a, previousMatch) {
         var inline = _a.inline;
         if (inline) {
@@ -883,7 +909,7 @@ var re = new RegExp("^" +
 
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -915,7 +941,6 @@ var tableRowRE = /^s*\|((?:[^\|\n]+\|)+)\s*(?=\n|$)/;
 // where the ":" are optional and there can be many/few "-"'s
 var tableAlignRE = /^\s*\|((?:\s*:?\-+:?\s*\|)+)\s*(?=\n)/;
 /* harmony default export */ __webpack_exports__["a"] = ({
-    order: 9,
     match: function (source, _a) {
         var inline = _a.inline;
         if (inline) {
@@ -969,12 +994,11 @@ var tableAlignRE = /^\s*\|((?:\s*:?\-+:?\s*\|)+)\s*(?=\n)/;
 
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
-    order: -1,
     match: function (s, _a) {
         var inline = _a.inline;
         // take at least one letter (that isn't a newline)
@@ -983,20 +1007,16 @@ var tableAlignRE = /^\s*\|((?:\s*:?\-+:?\s*\|)+)\s*(?=\n)/;
         // or the end of the match
         return inline ? /^[^\n]+?(?=[^0-9A-Za-z\s\u00c0-\uffff]|\n|$)/.exec(s) : null;
     },
-    parse: function (capture) { return ({
-        type: "text",
-        content: capture[0],
-    }); },
+    parse: function (capture) { return ({ type: "text", content: capture[0] }); },
 });
 
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
-    order: -1,
     match: function (s) { return /^\n/.exec(s); },
     parse: function () { return undefined; },
 });

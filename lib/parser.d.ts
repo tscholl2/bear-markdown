@@ -1,11 +1,12 @@
 /**
  * A rule determines how to match and parse content.
- * The order determines which rules go first.
+ * The order determines which rules go first (lower goes first).
+ * If no order is given, it is assumed to be 0.
  */
 export interface Rule<S extends {} = {
     inline?: boolean;
 }> {
-    order: number;
+    order?: number;
     match(source: string, state: Readonly<S>, previousMatch: string): undefined | null | RuleCapture;
     parse(capture: RuleCapture, recusiveParse: (source: string, state: Readonly<S>) => undefined | Node | Array<Node>, state: S): undefined | Node | Array<Node>;
 }
