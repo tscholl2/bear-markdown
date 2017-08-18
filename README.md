@@ -20,7 +20,7 @@ Like [simple-markdown](https://github.com/Khan/simple-markdown), this parser
 * has some [tests](/test/tests.json)
 * parses into a simple AST (abstract syntax tree)
 which can be turned into [html](/src/printers/html), react, vue, hyperapp, etc.
-* is [small](#Benchmarks) (2.9kb minified + gzip)
+* is [small](#Benchmarks) (2.8kb minified + gzip)
 * no dependencies
 
 Unlike [simple-markdown](https://github.com/Khan/simple-markdown), this parser
@@ -38,12 +38,12 @@ to parse a string of markdown into a string of html. The benchmark can be found 
 
 | Parser | speed in op/s (higher is better) |
 | --- | --- |
-| this repo | 2350 |
-| [simple-markdown](https://github.com/Khan/simple-markdown) | 2956 |
-| [marked](https://github.com/chjj/marked) | 4252 |
-| [markdown](https://github.com/evilstreak/markdown-js) | 1889 |
-| [showdown](https://github.com/showdownjs/showdown) | 826 |
-| [micromarkdown](https://github.com/SimonWaldherr/micromarkdown.js) | 16718 |
+| this repo | 2862 |
+| [simple-markdown](https://github.com/Khan/simple-markdown) | 3052 |
+| [marked](https://github.com/chjj/marked) | 4535 |
+| [markdown](https://github.com/evilstreak/markdown-js) | 1898 |
+| [showdown](https://github.com/showdownjs/showdown) | 823 |
+| [micromarkdown](https://github.com/SimonWaldherr/micromarkdown.js) | 16652 |
 
 I wrote a file which exports the basic parse function in the benchmark
 and used the same webpack config to bundle, minify, and gzip it.
@@ -55,7 +55,7 @@ ls -lah | grep bundle
 
 | Parser | size in kb (lower is better) | minified | gziped | 
 | --- | --- | --- | --- |
-| thie repo | 30 | 9.6 | 2.9 |
+| thie repo | 30 | 9.3 | 2.8 |
 | [simple-markdown](https://github.com/Khan/simple-markdown) | 51 | 14 | 4.1 |
 | [marked](https://github.com/chjj/marked) | 32 | 17 | 5.4 |
 | [markdown](https://github.com/evilstreak/markdown-js) | 76 | 25 | 9 |

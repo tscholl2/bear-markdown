@@ -217,41 +217,39 @@ function newPrinter(printers) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-function h(tag, props) {
-    var children = [];
-    for (var _i = 2; _i < arguments.length; _i++) {
-        children[_i - 2] = arguments[_i];
-    }
-    var attr = Object.keys(props || {}).reduce(function (p, n) { return p + " \"" + n + "\"=\"" + props[n] + "\""; }, "");
-    return "<" + tag + (attr ? " " + attr : "") + ">" + children.join("") + "</" + tag + ">";
+function h(tag, props, children) {
+    if (props === void 0) { props = {}; }
+    if (children === void 0) { children = []; }
+    var attr = Object.keys(props).reduce(function (p, n) { return p + (" \"" + n + "\"=\"" + props[n] + "\""); }, "");
+    return "<" + tag + attr.trim() + ">" + children.join("") + "</" + tag + ">";
 }
 /* harmony default export */ __webpack_exports__["a"] = ({
     text: function (n) { return n.props.content; },
-    table: function (n, output) { return h.apply(void 0, ["table", undefined].concat(output(n.children))); },
-    tablehead: function (n, output) { return h.apply(void 0, ["thead", undefined].concat(output(n.children))); },
-    tableheadcolumn: function (n, output) { return h.apply(void 0, ["th", n.props].concat(output(n.children))); },
-    tablebody: function (n, output) { return h.apply(void 0, ["tbody", undefined].concat(output(n.children))); },
-    tablerow: function (n, output) { return h.apply(void 0, ["tr", undefined].concat(output(n.children))); },
-    tablecolumn: function (n, output) { return h.apply(void 0, ["td", undefined].concat(output(n.children))); },
-    paragraph: function (n, output) { return h.apply(void 0, ["p", undefined].concat(output(n.children))); },
+    table: function (n, output) { return h("table", undefined, output(n.children)); },
+    tablehead: function (n, output) { return h("thead", undefined, output(n.children)); },
+    tableheadcolumn: function (n, output) { return h("th", n.props, output(n.children)); },
+    tablebody: function (n, output) { return h("tbody", undefined, output(n.children)); },
+    tablerow: function (n, output) { return h("tr", undefined, output(n.children)); },
+    tablecolumn: function (n, output) { return h("td", undefined, output(n.children)); },
+    paragraph: function (n, output) { return h("p", undefined, output(n.children)); },
     list: function (n, output) {
-        return h.apply(void 0, [/^\d/.test(n.props.bullet) ? "ol" : "ul", undefined].concat(output(n.children)));
+        return h(/^\d/.test(n.props.bullet) ? "ol" : "ul", undefined, output(n.children));
     },
-    listitem: function (n, output) { return h.apply(void 0, ["li", undefined].concat(output(n.children))); },
-    link: function (n, output) { return h.apply(void 0, ["a", n.props].concat(output(n.children))); },
+    listitem: function (n, output) { return h("li", undefined, output(n.children)); },
+    link: function (n, output) { return h("a", n.props, output(n.children)); },
     image: function (n) { return h("img", n.props); },
-    heading: function (n, output) { return h.apply(void 0, ["h" + n.props.level, undefined].concat(output(n.children))); },
+    heading: function (n, output) { return h("h" + n.props.level, undefined, output(n.children)); },
     emphasis: function (n, output) {
         var delimiters = { __: "u", _: "em", "~~": "s", "~": "em", "**": "strong", "*": "mark" };
-        return h.apply(void 0, [delimiters[n.delimiter], undefined].concat(output(n.children)));
+        return h(delimiters[n.delimiter], undefined, output(n.children));
     },
     comment: function (n) { return "<!--" + n.props.content + "-->"; },
     code: function (n) {
         return n.props.display === "inline"
             ? h("code", undefined, n.props.content)
-            : h("pre", undefined, h("code", undefined, n.props.content));
+            : h("pre", undefined, [h("code", undefined, [n.props.content])]);
     },
-    blockquote: function (n, output) { return h.apply(void 0, ["blockquote", undefined].concat(output(n.children))); },
+    blockquote: function (n, output) { return h("blockquote", undefined, output(n.children)); },
     math: function (n) { return h("math", undefined, n.props.content); },
 });
 
@@ -810,16 +808,17 @@ var tableAlignRE = /^\s*\|((?:\s*:?\-+:?\s*\|)+)\s*(?=\n)/;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// This is taken from the text rule from simple-markdown.
+// It takes at least one letter (that isn't a newline)
+// and keep going until we get to something that
+// might possibly match something else (image, emphasis, etc.)
+// or the end of the match.
+// TODO: explain this regexp and what \u00c0-\uffff is
+var re = /^[^\n]+?(?=[^0-9A-Za-z\s\u00c0-\uffff]|\n|$)/;
 /* harmony default export */ __webpack_exports__["a"] = ({
     match: function (s, _a) {
         var inline = _a.inline;
-        // This is taken from the text rule from simple-markdown.
-        // It takes at least one letter (that isn't a newline)
-        // and keep going until we get to something that
-        // might possibly match something else (image, emphasis, etc.)
-        // or the end of the match.
-        // TODO: explain this regexp
-        return inline ? /^[^\n]+?(?=[^0-9A-Za-z\s\u00c0-\uffff]|\n|$)/.exec(s) : null;
+        return (inline ? re.exec(s) : null);
     },
     parse: function (capture) { return ({ type: "text", props: { content: capture[0] } }); },
 });
