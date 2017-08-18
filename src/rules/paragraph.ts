@@ -21,7 +21,7 @@ export default <Rule>{
     return re.exec(s);
   },
   parse: (capture, parse, state) => ({
-    tag: "paragraph",
+    type: "paragraph",
     children: parse(capture[1].trim(), Object.assign({}, state, { inline: true })),
   }),
 };

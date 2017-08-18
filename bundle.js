@@ -192,10 +192,10 @@ function newPrinter(printers) {
     return function print(tree, state) {
         if (state === void 0) { state = {}; }
         return tree.map(function (node) {
-            if (!printers.hasOwnProperty(node.tag)) {
-                throw new Error("no printer for tag " + node.tag);
+            if (!printers.hasOwnProperty(node.type)) {
+                throw new Error("no printer for type " + node.type);
             }
-            return printers[node.tag](node, print, state);
+            return printers[node.type](node, print, state);
         });
     };
 }
@@ -337,7 +337,7 @@ var re = new RegExp("^(" +
         return (inline ? undefined : re.exec(s));
     },
     parse: function (capture, parse, state) { return ({
-        tag: "blockquote",
+        type: "blockquote",
         // parse by replacing the initial ">" in front of lines
         children: parse(capture[0].replace(/^ *> ?/gm, ""), state),
     }); },
@@ -361,7 +361,7 @@ var re = new RegExp("^" +
         return (inline ? undefined : re.exec(s));
     },
     parse: function (capture) { return ({
-        tag: "code",
+        type: "code",
         // replace any escaped delimiters
         props: { display: "block", content: capture[1].replace(/\\```/g, "```") },
     }); },
@@ -382,7 +382,7 @@ var re = new RegExp("^" +
     "-->");
 /* harmony default export */ __webpack_exports__["a"] = ({
     match: function (s) { return re.exec(s); },
-    parse: function (capture) { return ({ tag: "comment", props: { content: capture[1] } }); },
+    parse: function (capture) { return ({ type: "comment", props: { content: capture[1] } }); },
 });
 
 
@@ -406,7 +406,7 @@ var re = new RegExp("^" +
         return (inline ? re.exec(s) : undefined);
     },
     parse: function (capture, parse, state) { return ({
-        tag: "emphasis",
+        type: "emphasis",
         props: { delimiter: capture[1] },
         children: parse(capture[2], state),
     }); },
@@ -442,7 +442,7 @@ var re = new RegExp("^\\\\([" +
         var inline = _a.inline;
         return (inline ? re.exec(s) : undefined);
     },
-    parse: function (capture) { return ({ tag: "text", props: { content: capture[1] } }); },
+    parse: function (capture) { return ({ type: "text", props: { content: capture[1] } }); },
 });
 
 
@@ -466,7 +466,7 @@ var re = new RegExp("^" +
     parse: function (capture, parse, state) {
         if (state === void 0) { state = {}; }
         return ({
-            tag: "heading",
+            type: "heading",
             props: { level: capture[1].length },
             children: parse(capture[2], Object.assign({}, state, { inline: true })),
         });
@@ -496,7 +496,7 @@ var re = new RegExp("^\\!" +
         return (inline ? re.exec(s) : undefined);
     },
     parse: function (capture) { return ({
-        tag: "image",
+        type: "image",
         props: {
             alt: (capture[1] || "").trim(),
             src: (capture[2] || "").trim(),
@@ -523,7 +523,7 @@ var re = new RegExp("^" +
         return (inline ? re.exec(s) : null);
     },
     parse: function (capture) { return ({
-        tag: "code",
+        type: "code",
         props: {
             // we replace escaped "`"s to allow for using "`"s inside inline code
             display: "inline",
@@ -549,7 +549,7 @@ var re = new RegExp("^" +
         return (inline ? re.exec(s) : null);
     },
     parse: function (capture, parse, state) { return ({
-        tag: "link",
+        type: "link",
         props: { href: capture[2] },
         children: parse(capture[1], Object.assign({}, state, { inline: true })),
     }); },
@@ -631,7 +631,7 @@ var listItemRE = new RegExp(
     },
     parse: function (capture, parse, state) {
         return {
-            tag: "list",
+            type: "list",
             props: { bullet: capture[1][2] },
             children: capture.slice(1).map(function (item) {
                 var content = item[3]
@@ -639,7 +639,7 @@ var listItemRE = new RegExp(
                 var containsBlock = content.includes("\n\n");
                 content = content.trim() + (containsBlock ? "\n\n" : "");
                 return {
-                    tag: "listitem",
+                    type: "listitem",
                     children: parse(content, Object.assign({}, state, { inline: !containsBlock, _list: true })),
                 };
             }),
@@ -657,7 +657,7 @@ var listItemRE = new RegExp(
 
 /* harmony default export */ __webpack_exports__["a"] = ({
     match: Object(__WEBPACK_IMPORTED_MODULE_0__utils_math__["a" /* newMathMatcher */])(true),
-    parse: function (capture) { return ({ tag: "math", props: { display: "inline", content: capture[2] } }); },
+    parse: function (capture) { return ({ type: "math", props: { display: "inline", content: capture[2] } }); },
 });
 
 
@@ -670,7 +670,7 @@ var listItemRE = new RegExp(
 
 /* harmony default export */ __webpack_exports__["a"] = ({
     match: Object(__WEBPACK_IMPORTED_MODULE_0__utils_math__["a" /* newMathMatcher */])(false),
-    parse: function (capture) { return ({ tag: "math", props: { display: "block", content: capture[2] } }); },
+    parse: function (capture) { return ({ type: "math", props: { display: "block", content: capture[2] } }); },
 });
 
 
@@ -698,7 +698,7 @@ var re = new RegExp("^" +
         return re.exec(s);
     },
     parse: function (capture, parse, state) { return ({
-        tag: "paragraph",
+        type: "paragraph",
         children: parse(capture[1].trim(), Object.assign({}, state, { inline: true })),
     }); },
 });
@@ -773,28 +773,28 @@ var tableAlignRE = /^\s*\|((?:\s*:?\-+:?\s*\|)+)\s*(?=\n)/;
             return left === right ? "center" : left ? "left" : "right";
         });
         return {
-            tag: "table",
+            type: "table",
             children: [
                 {
-                    tag: "tablehead",
+                    type: "tablehead",
                     children: capture[1]
                         .replace(/^\s*\|\s*|\s*\|\s*$/g, "") // remove beggenning and ending |'s
                         .split(/\s*\|\s*/) // split on |'s
                         .map(function (c, i) { return ({
-                        tag: "tableheadcolumn",
+                        type: "tableheadcolumn",
                         props: { align: align[i] },
                         children: parse(c, Object.assign({}, state, { inline: true })),
                     }); }),
                 },
                 {
-                    tag: "tablebody",
+                    type: "tablebody",
                     children: capture.slice(3).map(function (r) { return ({
-                        tag: "tablerow",
+                        type: "tablerow",
                         children: r
                             .replace(/^\s*\|\s*|\s*\|\s*$/g, "") // remove beggenning and ending |'s
                             .split(/\s*\|\s*/) // split on |'s
                             .map(function (c) { return ({
-                            tag: "tablecolumn",
+                            type: "tablecolumn",
                             children: parse(c, Object.assign({}, state, { inline: true })),
                         }); }),
                     }); }),
@@ -813,13 +813,15 @@ var tableAlignRE = /^\s*\|((?:\s*:?\-+:?\s*\|)+)\s*(?=\n)/;
 /* harmony default export */ __webpack_exports__["a"] = ({
     match: function (s, _a) {
         var inline = _a.inline;
-        // take at least one letter (that isn't a newline)
+        // This is taken from the text rule from simple-markdown.
+        // It takes at least one letter (that isn't a newline)
         // and keep going until we get to something that
         // might possibly match something else (image, emphasis, etc.)
-        // or the end of the match
+        // or the end of the match.
+        // TODO: explain this regexp
         return inline ? /^[^\n]+?(?=[^0-9A-Za-z\s\u00c0-\uffff]|\n|$)/.exec(s) : null;
     },
-    parse: function (capture) { return ({ tag: "text", props: { content: capture[0] } }); },
+    parse: function (capture) { return ({ type: "text", props: { content: capture[0] } }); },
 });
 
 

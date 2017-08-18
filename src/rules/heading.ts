@@ -13,7 +13,7 @@ const re = new RegExp(
 export default <Rule>{
   match: (s, { inline }) => (inline ? undefined : re.exec(s)),
   parse: (capture, parse, state = {}) => ({
-    tag: "heading",
+    type: "heading",
     props: { level: capture[1].length },
     children: parse(capture[2], Object.assign({}, state, { inline: true })),
   }),

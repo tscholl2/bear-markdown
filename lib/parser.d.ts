@@ -19,11 +19,11 @@ export interface Rule<S extends {} = {
  */
 export declare type RuleCapture = RegExpExecArray | Array<string>;
 /**
- * Nodes in the AST are plain objects with at least a key: `tag` declaring what
- * kind of node they are. A `string` node is a shortcut for {tag: "text", props: {content: "..."}}
+ * Nodes in the AST are plain objects with at least a key: `type` declaring what
+ * kind of node they are. A `string` node is a shortcut for {type: "text", props: {content: "..."}}
  */
 export declare type Node = {
-    tag: string;
+    type: string;
     props?: {
         [key: string]: any;
     };

@@ -71,7 +71,7 @@ export default <Rule<{ inline: boolean; _list?: boolean }>>{
   },
   parse: (capture, parse, state) => {
     return {
-      tag: "list",
+      type: "list",
       props: { bullet: capture[1][2] },
       children: capture.slice(1).map(item => {
         let content = item[3]
@@ -80,7 +80,7 @@ export default <Rule<{ inline: boolean; _list?: boolean }>>{
         const containsBlock = content.includes("\n\n");
         content = content.trim() + (containsBlock ? "\n\n" : "");
         return {
-          tag: "listitem",
+          type: "listitem",
           children: parse(
             content,
             Object.assign({}, state, { inline: !containsBlock, _list: true }),

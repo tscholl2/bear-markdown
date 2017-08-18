@@ -12,5 +12,5 @@ const re = new RegExp(
 
 export default <Rule>{
   match: s => re.exec(s),
-  parse: capture => ({ tag: "comment", props: { content: capture[1] } }),
+  parse: capture => ({ type: "comment", props: { content: capture[1] } }),
 };

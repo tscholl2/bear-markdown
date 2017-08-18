@@ -9,5 +9,5 @@ export default <Rule>{
     // or the end of the match.
     // TODO: explain this regexp
     inline ? /^[^\n]+?(?=[^0-9A-Za-z\s\u00c0-\uffff]|\n|$)/.exec(s) : null,
-  parse: capture => ({ tag: "text", props: { content: capture[0] } }),
+  parse: capture => ({ type: "text", props: { content: capture[0] } }),
 };

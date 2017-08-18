@@ -12,7 +12,7 @@ const re = new RegExp(
 export default <Rule>{
   match: (s, { inline }) => (inline ? undefined : re.exec(s)),
   parse: capture => ({
-    tag: "code",
+    type: "code",
     // replace any escaped delimiters
     props: { display: "block", content: capture[1].replace(/\\```/g, "```") },
   }),

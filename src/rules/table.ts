@@ -65,28 +65,28 @@ export default <Rule>{
         return left === right ? "center" : left ? "left" : "right";
       });
     return {
-      tag: "table",
+      type: "table",
       children: [
         {
-          tag: "tablehead",
+          type: "tablehead",
           children: capture[1]
             .replace(/^\s*\|\s*|\s*\|\s*$/g, "") // remove beggenning and ending |'s
             .split(/\s*\|\s*/) // split on |'s
             .map((c, i) => ({
-              tag: "tableheadcolumn",
+              type: "tableheadcolumn",
               props: { align: align[i] },
               children: parse(c, Object.assign({}, state, { inline: true })),
             })),
         },
         {
-          tag: "tablebody",
+          type: "tablebody",
           children: capture.slice(3).map(r => ({
-            tag: "tablerow",
+            type: "tablerow",
             children: r
               .replace(/^\s*\|\s*|\s*\|\s*$/g, "") // remove beggenning and ending |'s
               .split(/\s*\|\s*/) // split on |'s
               .map(c => ({
-                tag: "tablecolumn",
+                type: "tablecolumn",
                 children: parse(c, Object.assign({}, state, { inline: true })),
               })),
           })),

@@ -24,5 +24,5 @@ const re = new RegExp(
 
 export default <Rule>{
   match: (s, { inline }) => (inline ? re.exec(s) : undefined),
-  parse: capture => ({ tag: "text", props: { content: capture[1] } }),
+  parse: capture => ({ type: "text", props: { content: capture[1] } }),
 };

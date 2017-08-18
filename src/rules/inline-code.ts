@@ -12,7 +12,7 @@ const re = new RegExp(
 export default <Rule>{
   match: (s, { inline }) => (inline ? re.exec(s) : null),
   parse: capture => ({
-    tag: "code",
+    type: "code",
     props: {
       // we replace escaped "`"s to allow for using "`"s inside inline code
       display: "inline",

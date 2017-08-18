@@ -10,10 +10,10 @@ export interface Printer<N = Node, S = {}, T = any> {
 export function newPrinter(printers: { [type: string]: Printer }) {
   return function print(tree: Array<Node>, state = {}): any[] {
     return tree.map(node => {
-      if (!printers.hasOwnProperty(node.tag)) {
-        throw new Error(`no printer for tag ${node.tag}`);
+      if (!printers.hasOwnProperty(node.type)) {
+        throw new Error(`no printer for type ${node.type}`);
       }
-      return printers[node.tag](node, print, state);
+      return printers[node.type](node, print, state);
     });
   };
 }
