@@ -12,6 +12,7 @@
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\",\"rootDir\":\".\"}' mocha --require ts-node/register test/*",
     "bench": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\",\"rootDir\":\".\"}' ts-node -F -I -D benchmark/index.ts",
     "run": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -F -I -D src/index.ts",
+    "presize": "yarn run build",
     "size": "size-limit"
   },
   "devDependencies": {

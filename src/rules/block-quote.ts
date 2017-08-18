@@ -15,7 +15,7 @@ const re = new RegExp(
 export default <Rule>{
   match: (s, { inline }) => (inline ? undefined : re.exec(s)),
   parse: (capture, parse, state) => ({
-    type: "blockQuote",
+    tag: "blockquote",
     // parse by replacing the initial ">" in front of lines
     children: parse(capture[0].replace(/^ *> ?/gm, ""), state),
   }),

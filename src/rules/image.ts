@@ -17,9 +17,11 @@ const re = new RegExp(
 export default <Rule>{
   match: (s, { inline }) => (inline ? re.exec(s) : undefined),
   parse: capture => ({
-    type: "image",
-    alt: capture[1],
-    src: capture[2].trim(),
-    title: capture[3],
+    tag: "image",
+    props: {
+      alt: capture[1],
+      src: capture[2].trim(),
+      title: capture[3],
+    },
   }),
 };

@@ -15,8 +15,8 @@ const re = new RegExp(
 export default <Rule>{
   match: (s, { inline }) => (inline ? re.exec(s) : undefined),
   parse: (capture, parse, state) => ({
-    type: "emphasis",
-    delimiter: capture[1],
+    tag: "emphasis",
+    props: { delimiter: capture[1] },
     children: parse(capture[2], state),
   }),
 };

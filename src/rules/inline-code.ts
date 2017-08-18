@@ -12,8 +12,8 @@ const re = new RegExp(
 export default <Rule>{
   match: (s, { inline }) => (inline ? re.exec(s) : null),
   parse: capture => ({
-    type: "inlineCode",
+    tag: "code",
     // we replace escaped "`"s to allow for using "`"s inside inline code
-    content: capture[1].replace("\\`", "`"),
+    children: [capture[1].replace("\\`", "`")],
   }),
 };

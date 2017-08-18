@@ -1,7 +1,7 @@
 import { Rule } from "../parser";
 
 import blockQuote from "./block-quote";
-import codeBlock from "./code-block";
+import blockCode from "./block-code";
 import comment from "./comment";
 import emphasis from "./emphasis";
 import escape from "./escape";
@@ -25,7 +25,7 @@ export const defaultRules: Rule[] = [
   { ...blockQuote, order: 2 },
   { ...heading, order: 3 },
   { ...blockMath, order: 4 },
-  { ...codeBlock, order: 5 },
+  { ...blockCode, order: 5 },
   { ...list, order: 6 },
   { ...table, order: 7 },
   { ...paragraph, order: 8 },

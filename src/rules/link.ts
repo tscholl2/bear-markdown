@@ -11,8 +11,8 @@ const re = new RegExp(
 export default <Rule>{
   match: (s, { inline }) => (inline ? re.exec(s) : null),
   parse: (capture, parse, state) => ({
-    type: "link",
-    href: capture[2],
+    tag: "link",
+    props: { href: capture[2] },
     children: parse(capture[1], { ...state, inline: true }),
   }),
 };

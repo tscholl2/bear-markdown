@@ -71,15 +71,21 @@ export default <Rule<{ inline: boolean; _list?: boolean }>>{
   },
   parse: (capture, parse, state) => {
     return {
-      type: "list",
-      bullet: capture[1][2],
-      items: capture.slice(1).map(item => {
+      tag: "list",
+      props: { bullet: capture[1][2] },
+      children: capture.slice(1).map(item => {
         let content = item[3]
           // remove all indents on each line
           .replace(new RegExp(`^${item[1]}`, "gm"), "");
         const containsBlock = content.includes("\n\n");
         content = content.trim() + (containsBlock ? "\n\n" : "");
-        return parse(content, Object.assign({}, state, { inline: !containsBlock, _list: true }));
+        return {
+          tag: "listitem",
+          children: parse(
+            content,
+            Object.assign({}, state, { inline: !containsBlock, _list: true }),
+          ),
+        };
       }),
     };
   },

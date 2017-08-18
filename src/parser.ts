@@ -8,7 +8,7 @@ export interface Rule<S extends {} = { inline?: boolean }> {
   match(source: string, state: Readonly<S>, previousMatch: string): undefined | null | RuleCapture;
   parse(
     capture: RuleCapture,
-    recusiveParse: (source: string, state: Readonly<S>) => undefined | Node | Array<Node>,
+    recusiveParse: (source: string, state: Readonly<S>) => undefined | Array<Node>,
     state: S,
   ): undefined | Node | Array<Node>;
 }
@@ -22,10 +22,10 @@ export interface Rule<S extends {} = { inline?: boolean }> {
  */
 export type RuleCapture = RegExpExecArray | Array<string>;
 /**
- * Nodes in the AST are plain objects with at least a key: "type" declaring what
- * kind of node they are.
+ * Nodes in the AST are plain objects with at least a key: `tag` declaring what
+ * kind of node they are. A `string` node is a shortcut for {tag: "text", props: {content: "..."}}
  */
-export type Node = { type: string };
+export type Node = string | { tag: string; props?: { [key: string]: any }; children?: Node[] };
 
 /**
  * A parser-creator.

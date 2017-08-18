@@ -4,19 +4,17 @@ import { Node } from "./parser";
  * A Printer determines how to output a certain type node.
  */
 export interface Printer<N = Node, S = {}, T = any> {
-  (node: N, state: S, output: (node: Array<N>, state?: S) => Array<T>): T;
+  (node: N, output: (node: Array<N>, state?: S) => Array<T>, state: S): T;
 }
 
 export function newPrinter(printers: { [type: string]: Printer }) {
-  return function print(tree: Array<Node>, state = {}) {
-    const output: any[] = [];
-    for (let i = 0; i < tree.length; i++) {
-      const node = tree[i];
-      if (!printers.hasOwnProperty(node.type)) {
-        throw new Error(`no printer for type ${node.type}`);
+  return function print(tree: Array<Node>, state = {}): any[] {
+    return tree.map(n => {
+      const node = typeof n === "string" ? { tag: "text", props: { content: n } } : n;
+      if (!printers.hasOwnProperty(node.tag)) {
+        throw new Error(`no printer for tag ${node.tag}`);
       }
-      output.push(printers[node.type](node, state, print));
-    }
-    return output;
+      return printers[node.tag](node, print, state);
+    });
   };
 }

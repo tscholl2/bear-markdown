@@ -1,95 +1,49 @@
 import { Printer } from "../printer";
 import { Node } from "../parser";
 
+function h(
+  tag: string,
+  props?: { [key: string]: any },
+  ...children: (string | Comment | HTMLElement)[]
+) {
+  // return { tag, props, children };
+  const attr = Object.keys(props || {}).reduce(
+    (p, n) => `${p} "${n}"=${JSON.stringify(props![n])}`,
+    "",
+  );
+  console.log("children = ", children);
+  return `<${tag}${attr ? " " + attr : ""}>${children.join("")}</${tag}>`;
+}
+
 export default <{
-  [type: string]: Printer<Node, any, HTMLElement | Text | Comment>;
+  [type: string]: Printer<Node, any, HTMLElement | string | Comment>;
 }>{
-  text: (n: any) => document.createTextNode(n.content),
-  table: (n: any, s, output) => {
-    const table = document.createElement("table");
-    const head = document.createElement("thead");
-    output(n.head).forEach((c, i) => {
-      const th = document.createElement("th");
-      th.align = n.align[i];
-      th.appendChild(c);
-      head.appendChild(th);
-    });
-    table.appendChild(head);
-    const body = document.createElement("tbody");
-    (n.rows as any[]).map((r: any) => output(r, s)).forEach(r => {
-      const row = document.createElement("tr");
-      r.forEach(c => row.appendChild(c));
-      body.appendChild(row);
-    });
-    table.appendChild(body);
-    return table;
+  text: (n: any) => n.props.content,
+  table: (n: any, output) => h("table", undefined, ...output(n.children)),
+  tablehead: (n: any, output) => h("thead", undefined, ...output(n.children)),
+  tableheadcolumn: (n: any, output) => h("th", undefined, ...output(n.children)),
+  tablebody: (n: any, output) => h("tbody", undefined, ...output(n.children)),
+  tablerow: (n: any, output) => h("tr", undefined, ...output(n.children)),
+  tablecolumn: (n: any, output) => h("td", undefined, ...output(n.children)),
+  paragraph: (n: any, output) =>
+    console.log("CHILDREN = ", n.children) || h("p", undefined, ...output(n.children)),
+  list: (n: any, output) =>
+    h(
+      /^\d/.test(n.props.bullet) ? "ol" : "ul",
+      undefined,
+      n.items.map((i: any) => h("li", undefined, ...output(i))),
+    ),
+  link: (n: any, output) => h("a", n.props, ...output(n.children)),
+  image: (n: any, output) => h("img", n.props, ...output(n.children)),
+  heading: (n: any, output) => h(`h${n.level}`, undefined, ...output(n.children)),
+  emphasis: (n: any, output) => {
+    const delimiters: any = { __: "u", _: "em", "~~": "s", "~": "em", "**": "strong", "*": "mark" };
+    return h(delimiters[n.delimiter], undefined, ...output(n.children));
   },
-  paragraph: (n: any, s, output) => {
-    const p = document.createElement("p");
-    output(n.children, s).forEach((c: any) => p.appendChild(c));
-    return p;
-  },
-  list: (n: any, s, output) => {
-    const l = document.createElement(/^\d/.test(n.bullet) ? "ol" : "ul");
-    (n.items as any[]).forEach(item => {
-      const i = document.createElement("li");
-      output(item, s).forEach((c: any) => i.appendChild(c));
-      l.appendChild(i);
-    });
-    return l;
-  },
-  link: (n: any, s, output) => {
-    const a = document.createElement("a");
-    a.href = n.href;
-    output(n.children, s).forEach((c: any) => a.appendChild(c));
-    return a;
-  },
-  image: (n: any) => {
-    const i = document.createElement("img");
-    i.alt = n.alt || "";
-    i.src = n.src || "";
-    i.title = n.title || "";
-    return i;
-  },
-  heading: (n: any, s, output) => {
-    const h = document.createElement(`h${n.level}`);
-    output(n.children, s).forEach((c: any) => h.appendChild(c));
-    return h;
-  },
-  emphasis: (n: any, s, output) => {
-    const delimiters: { [key: string]: string } = {
-      __: "u",
-      _: "em",
-      "~~": "s",
-      "~": "em",
-      "**": "strong",
-      "*": "mark",
-    };
-    const e = document.createElement(delimiters[n.delimiter]);
-    output(n.children, s).forEach((c: any) => e.appendChild(c));
-    return e;
-  },
-  comment: (n: any) => document.createComment(n.content),
-  codeBlock: (n: any) => {
-    const pr = document.createElement("pre");
-    const c = document.createElement("code");
-    c.appendChild(document.createTextNode(n.content));
-    pr.appendChild(c);
-    return pr;
-  },
-  blockQuote: (n: any, s, output) => {
-    const bq = document.createElement("blockquote");
-    output(n.children, s).forEach((c: any) => bq.appendChild(c));
-    return bq;
-  },
-  inlineCode: (n: any) => {
-    const cd = document.createElement("code");
-    cd.appendChild(document.createTextNode(n.content));
-    return cd;
-  },
-  math: (n: any) => {
-    const m = document.createElement("math");
-    m.textContent = n.content;
-    return m;
-  },
+  comment: (n: any) => `<!--${n.props.content}-->`,
+  blockcode: (n: any, output) => h("pre", undefined, h("code", undefined, ...output(n.children))),
+  blockquote: (n: any, output) => h("blockquote", undefined, ...output(n.children)),
+  inlinecode: (n: any, output) => h("code", undefined, ...output(n.children)),
+  blockMath: (n: any, output) => h("math", undefined, ...output(n.children)),
+  math: (n: any, output) => h("math", undefined, ...output(n.children)),
 };

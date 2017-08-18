@@ -1,9 +1,3 @@
-import * as Benchmark from "benchmark";
-import { defaultParser, defaultHTMLPrinter } from "../src/index";
-declare const require: any;
-
-// this
-const parse = (s: string) => defaultHTMLPrinter(defaultParser(s));
 // marked
 const marked = require("marked");
 function MarkedParse(s) {
@@ -36,42 +30,14 @@ const mmd = require("micromarkdown");
 function MicroMarkdownParse(s) {
   return mmd.parse(s);
 }
-
 const s = `
-# header
-
-![alt](http://url)
-
-This is a paragraph
-
-* This
-* is
-* a
-* list
+| A | B |
+| - | - |
+| c | d |
 `;
 
-new (Benchmark as any).Suite()
-  .add("parser", () => {
-    parse(s);
-  })
-  .add("marked", () => {
-    MarkedParse(s);
-  })
-  .add("simple markdown", () => {
-    SimpleMarkdownParse(s);
-  })
-  .add("markdown", () => {
-    MarkdownParse(s);
-  })
-  .add("showdown", () => {
-    ShowDownParse(s);
-  })
-  .add("micromarkdown", () => {
-    MicroMarkdownParse(s);
-  })
-  // add listeners
-  .on("cycle", (event: any) => {
-    console.log(String(event.target));
-  })
-  // run async
-  .run({ async: false });
+console.log(JSON.stringify(MarkedParse(s)));
+console.log(JSON.stringify(SimpleMarkdownParse(s)));
+console.log(JSON.stringify(MarkdownParse(s)));
+console.log(JSON.stringify(ShowDownParse(s)));
+console.log(JSON.stringify(MicroMarkdownParse(s)));

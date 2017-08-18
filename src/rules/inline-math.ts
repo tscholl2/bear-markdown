@@ -3,5 +3,5 @@ import { newMathMatcher } from "./math";
 
 export default <Rule>{
   match: newMathMatcher(true),
-  parse: capture => ({ type: "math", delimiter: capture[1], content: capture[2] }),
+  parse: capture => ({ tag: "math", children: [capture[2]] }),
 };
