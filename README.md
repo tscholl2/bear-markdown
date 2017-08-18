@@ -21,6 +21,7 @@ Like [simple-markdown](https://github.com/Khan/simple-markdown), this parser
 * parses into a simple AST (abstract syntax tree)
 which can be turned into [html](/src/printers/html), react, vue, hyperapp, etc.
 * is [small](#Benchmarks) (2.9kb minified + gzip)
+* no dependencies
 
 Unlike [simple-markdown](https://github.com/Khan/simple-markdown), this parser
 
