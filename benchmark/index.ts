@@ -4,11 +4,6 @@ declare const require: any;
 
 // this
 const parse = (s: string) => defaultHTMLPrinter(defaultParser(s));
-// marked
-const marked = require("marked");
-function MarkedParse(s) {
-  return marked(s);
-}
 // simple markdown
 const SimpleMarkdown = require("simple-markdown");
 const rules = SimpleMarkdown.defaultRules;
@@ -20,20 +15,25 @@ const SimpleMarkdownParse = function(source) {
   const outputResult = htmlOutput(parseTree);
   return outputResult;
 };
+// marked
+const marked = require("marked");
+function MarkedParse(s: string) {
+  return marked(s);
+}
 // markdown
 const markdown = require("markdown").markdown;
-function MarkdownParse(s) {
+function MarkdownParse(s: string) {
   return markdown.toHTML(s);
 }
 // showdown
 const showdown = require("showdown");
 const converter = new showdown.Converter();
-function ShowDownParse(s) {
+function ShowDownParse(s: string) {
   return converter.makeHtml(s);
 }
 // micromarkdown
 const mmd = require("micromarkdown");
-function MicroMarkdownParse(s) {
+function MicroMarkdownParse(s: string) {
   return mmd.parse(s);
 }
 
@@ -49,7 +49,7 @@ This is a [_link_](url)
 * a
 * list
 
-| this | is a |
+| this | is |
 | --- | --- |
 | a | table |
 

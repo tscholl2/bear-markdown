@@ -1,32 +1,62 @@
-initial rules:
+Yet another markdown parser.
 
-| TODO | type | order |
-| :---: | :---: | :---: |
-| [x] | comment | -1 |
-| [x] | heading | 0 |
-| [ ] | nptable | 1 |
-| [ ] | lheading | 2 |
-| [x] | hr | 3 |
-| [x] | codeBlock | 4 |
-| [ ] | fence | 5 |
-| [x] | blockQuote | 6 |
-| [x] | list | 7 |
-| [ ] | def | 8 |
-| [x] | table | 9 |
-| [x] | newline | 10 |
-| [x] | paragraph | 11 |
-| [ ] | escape | 12 |
-| [ ] | autolink | 13 |
-| [ ] | mailto | 14 |
-| [ ] | url | 15 |
-| [x] | link | 16 |
-| [x] | image | 17 |
-| [ ] | reflink | 18 |
-| [ ] | refimage | 19 |
-| [x] | strong | 20 |
-| [x] | u | 21 |
-| [x] | em | 22 |
-| [x] | del | 23 |
-| [x] | inlineCode | 24 |
-| [x] | br | 25 |
-| [x] | text | 26 |
+## What
+
+A markdown parser based on [simple-markdown](TODO).
+
+## Why
+
+I wanted to learn how markdown parsers work and learn more about [simple-markdown](TODO).
+
+Spoiler: markdown is hard to get right so I didn't.
+
+## Features
+
+Like [simple-markdown](TODO), this parser
+
+* is easily extensible (i.e. it is easy to add rules to parse custom things like [math](TODO))
+* is reasonably [fast](#Benchmarks)
+* is fairly well documented code
+* has some [tests](TODO)
+* parses into a simple AST (abstract syntax tree)
+which can be turned into [html](TODO), react, vue, hyperapp, etc.
+* is [small](#Benchmarks) (2.9kb minified + gzip)
+
+Unlike [simple-markdown](TODO), this parser
+
+* does not handle all edge cases
+* does not confrom to commonmark or any other standard
+* is a little slower
+* has a slightly different (possibly a little more consistent) AST format
+* is written in typescript
+
+## Benchmarks
+
+I found several other markdown parsers and, with the least amount of effort, tried use them
+to parse a string of markdown into a string of html. The benchmark can be found [here](TODO).
+
+| Parser | speed in op/s (higher is better) |
+| --- | --- |
+| this repo | 2644 |
+| [simple markdown](TODO) | 3045 |
+| [marked](TODO) | 4546 |
+| [markdown](TODO) | 1866 |
+| [showdown](TODO) | 791 |
+| [micromarkdown](TODO) | 16490 |
+
+I wrote a file which exports the basic parse function in the benchmark
+and used the same webpack config to bundle, minify, and gzip it.
+Essentially I ran this
+```
+yarn run bundle && gzip -c bundle.min.js > bundle.min.js.gzip
+ls -lah | grep bundle
+```
+
+| Parser | size in kb (lower is better) | minified | gziped | 
+| --- | --- | --- | --- |
+| thie repo | 30 | 9.6 | 2.9 |
+| [simple markdown](TODO) | 51 | 14 | 4.1 |
+| [marked](TODO) | 32 | 17 | 5.4 |
+| [markdown](TODO) | 76 | 25 | 9 |
+| [showdown](TODO) | 92 | 38 | 11 |
+| [micromarkdown](TODO) | 20 | 11 | 4.7 |
