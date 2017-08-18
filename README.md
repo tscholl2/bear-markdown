@@ -38,12 +38,12 @@ to parse a string of markdown into a string of html. The benchmark can be found 
 
 | Parser | speed in op/s (higher is better) |
 | --- | --- |
-| this repo | 2644 |
-| [simple-markdown](https://github.com/Khan/simple-markdown) | 3045 |
-| [marked](https://github.com/chjj/marked) | 4546 |
-| [markdown](https://github.com/evilstreak/markdown-js) | 1866 |
-| [showdown](https://github.com/showdownjs/showdown) | 791 |
-| [micromarkdown](https://github.com/SimonWaldherr/micromarkdown.js) | 16490 |
+| this repo | 2350 |
+| [simple-markdown](https://github.com/Khan/simple-markdown) | 2956 |
+| [marked](https://github.com/chjj/marked) | 4252 |
+| [markdown](https://github.com/evilstreak/markdown-js) | 1889 |
+| [showdown](https://github.com/showdownjs/showdown) | 826 |
+| [micromarkdown](https://github.com/SimonWaldherr/micromarkdown.js) | 16718 |
 
 I wrote a file which exports the basic parse function in the benchmark
 and used the same webpack config to bundle, minify, and gzip it.
