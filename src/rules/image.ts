@@ -19,9 +19,9 @@ export default <Rule>{
   parse: capture => ({
     tag: "image",
     props: {
-      alt: capture[1],
-      src: capture[2].trim(),
-      title: capture[3],
+      alt: (capture[1] || "").trim(),
+      src: (capture[2] || "").trim(),
+      title: (capture[3] || "").trim(), // TODO remove if absent
     },
   }),
 };

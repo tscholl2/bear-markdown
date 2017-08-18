@@ -2,20 +2,22 @@
   {
     "description": "plain text",
     "input": "something",
-    "output": [{ "type": "paragraph", "children": [{ "type": "text", "content": "something" }] }]
+    "output": [
+      { "tag": "paragraph", "children": [{ "tag": "text", "props": { "content": "something" } }] }
+    ]
   },
   {
     "description": "emphasis",
     "input": "this is **something**",
     "output": [
       {
-        "type": "paragraph",
+        "tag": "paragraph",
         "children": [
-          { "type": "text", "content": "this is " },
+          { "tag": "text", "props": { "content": "this is " } },
           {
-            "type": "emphasis",
-            "delimiter": "**",
-            "children": [{ "type": "text", "content": "something" }]
+            "tag": "emphasis",
+            "props": { "delimiter": "**" },
+            "children": [{ "tag": "text", "props": { "content": "something" } }]
           }
         ]
       }
@@ -26,12 +28,12 @@
     "input": "* A\n* B\n* C",
     "output": [
       {
-        "type": "list",
-        "bullet": "*",
-        "items": [
-          [{ "type": "text", "content": "A" }],
-          [{ "type": "text", "content": "B" }],
-          [{ "type": "text", "content": "C" }]
+        "tag": "list",
+        "props": { "bullet": "*" },
+        "children": [
+          { "tag": "listitem", "children": [{ "tag": "text", "props": { "content": "A" } }] },
+          { "tag": "listitem", "children": [{ "tag": "text", "props": { "content": "B" } }] },
+          { "tag": "listitem", "children": [{ "tag": "text", "props": { "content": "C" } }] }
         ]
       }
     ]
@@ -41,12 +43,12 @@
     "input": "*hello*",
     "output": [
       {
-        "type": "paragraph",
+        "tag": "paragraph",
         "children": [
           {
-            "type": "emphasis",
-            "delimiter": "*",
-            "children": [{ "type": "text", "content": "hello" }]
+            "tag": "emphasis",
+            "props": { "delimiter": "*" },
+            "children": [{ "tag": "text", "props": { "content": "hello" } }]
           }
         ]
       }
@@ -57,9 +59,17 @@
     "input": "* hello*",
     "output": [
       {
-        "type": "list",
-        "bullet": "*",
-        "items": [[{ "type": "text", "content": "hello" }, { "type": "text", "content": "*" }]]
+        "tag": "list",
+        "props": { "bullet": "*" },
+        "children": [
+          {
+            "tag": "listitem",
+            "children": [
+              { "tag": "text", "props": { "content": "hello" } },
+              { "tag": "text", "props": { "content": "*" } }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -68,12 +78,12 @@
     "input": "*\\**",
     "output": [
       {
-        "type": "paragraph",
+        "tag": "paragraph",
         "children": [
           {
-            "type": "emphasis",
-            "delimiter": "*",
-            "children": [{ "type": "text", "content": "*" }]
+            "tag": "emphasis",
+            "props": { "delimiter": "*" },
+            "children": [{ "tag": "text", "props": { "content": "*" } }]
           }
         ]
       }
@@ -84,12 +94,15 @@
     "input": "**\\****",
     "output": [
       {
-        "type": "paragraph",
+        "tag": "paragraph",
         "children": [
           {
-            "type": "emphasis",
-            "delimiter": "**",
-            "children": [{ "type": "text", "content": "*" }, { "type": "text", "content": "*" }]
+            "tag": "emphasis",
+            "props": { "delimiter": "**" },
+            "children": [
+              { "tag": "text", "props": { "content": "*" } },
+              { "tag": "text", "props": { "content": "*" } }
+            ]
           }
         ]
       }
@@ -98,26 +111,29 @@
   {
     "description": "code block",
     "input": "```this is code```",
-    "output": [{ "type": "codeBlock", "content": "this is code" }]
+    "output": [{ "tag": "code", "props": { "display": "block", "content": "this is code" } }]
   },
   {
     "description": "code block with escaped ```",
     "input": "```code\\```code```",
-    "output": [{ "type": "codeBlock", "content": "code```code" }]
+    "output": [{ "tag": "code", "props": { "display": "block", "content": "code```code" } }]
   },
   {
     "description": "code block with escaped \\```",
     "input": "```code\\\\```code```",
-    "output": [{ "type": "codeBlock", "content": "code\\```code" }]
+    "output": [{ "tag": "code", "props": { "display": "block", "content": "code\\```code" } }]
   },
   {
     "description": "lists with 2 items",
     "input": "* A\n* B",
     "output": [
       {
-        "type": "list",
-        "bullet": "*",
-        "items": [[{ "type": "text", "content": "A" }], [{ "type": "text", "content": "B" }]]
+        "tag": "list",
+        "props": { "bullet": "*" },
+        "children": [
+          { "tag": "listitem", "children": [{ "tag": "text", "props": { "content": "A" } }] },
+          { "tag": "listitem", "children": [{ "tag": "text", "props": { "content": "B" } }] }
+        ]
       }
     ]
   },
@@ -126,14 +142,18 @@
     "input": "* A\n- B",
     "output": [
       {
-        "type": "list",
-        "bullet": "*",
-        "items": [[{ "type": "text", "content": "A" }]]
+        "tag": "list",
+        "props": { "bullet": "*" },
+        "children": [
+          { "tag": "listitem", "children": [{ "tag": "text", "props": { "content": "A" } }] }
+        ]
       },
       {
-        "type": "list",
-        "bullet": "-",
-        "items": [[{ "type": "text", "content": "B" }]]
+        "tag": "list",
+        "props": { "bullet": "-" },
+        "children": [
+          { "tag": "listitem", "children": [{ "tag": "text", "props": { "content": "B" } }] }
+        ]
       }
     ]
   },
@@ -142,8 +162,8 @@
     "input": "![alt](src \"title\")",
     "output": [
       {
-        "type": "paragraph",
-        "children": [{ "type": "image", "alt": "alt", "title": "title", "src": "src" }]
+        "tag": "paragraph",
+        "children": [{ "tag": "image", "props": { "alt": "alt", "title": "title", "src": "src" } }]
       }
     ]
   },
@@ -152,14 +172,58 @@
     "input": "$1+1$",
     "output": [
       {
-        "type": "paragraph",
-        "children": [{ "type": "math", "delimiter": "$$", "content": "1+1" }]
+        "tag": "paragraph",
+        "children": [{ "tag": "math", "props": { "display": "inline", "content": "1+1" } }]
       }
     ]
   },
   {
     "description": "math",
     "input": "$$1+1$$",
-    "output": [{ "type": "math", "delimiter": "$$$$", "content": "1+1" }]
+    "output": [{ "tag": "math", "props": { "display": "block", "content": "1+1" } }]
+  },
+  {
+    "description": "basic table",
+    "input": "| A | B |\n| - | - |\n| c | d |",
+    "output": [
+      {
+        "tag": "table",
+        "children": [
+          {
+            "tag": "tablehead",
+            "children": [
+              {
+                "tag": "tableheadcolumn",
+                "props": { "align": "center" },
+                "children": [{ "tag": "text", "props": { "content": "A" } }]
+              },
+              {
+                "tag": "tableheadcolumn",
+                "props": { "align": "center" },
+                "children": [{ "tag": "text", "props": { "content": "B" } }]
+              }
+            ]
+          },
+          {
+            "tag": "tablebody",
+            "children": [
+              {
+                "tag": "tablerow",
+                "children": [
+                  {
+                    "tag": "tablecolumn",
+                    "children": [{ "tag": "text", "props": { "content": "c" } }]
+                  },
+                  {
+                    "tag": "tablecolumn",
+                    "children": [{ "tag": "text", "props": { "content": "d" } }]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]

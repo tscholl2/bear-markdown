@@ -12,8 +12,8 @@ const re = new RegExp(
 export default <Rule>{
   match: (s, { inline }) => (inline ? undefined : re.exec(s)),
   parse: capture => ({
-    tag: "blockcode",
+    tag: "code",
     // replace any escaped delimiters
-    content: capture[1].replace(/\\```/g, "```"),
+    props: { display: "block", content: capture[1].replace(/\\```/g, "```") },
   }),
 };

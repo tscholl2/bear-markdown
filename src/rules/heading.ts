@@ -15,6 +15,6 @@ export default <Rule>{
   parse: (capture, parse, state = {}) => ({
     tag: "heading",
     props: { level: capture[1].length },
-    children: parse(capture[2], { ...state, inline: true }),
+    children: parse(capture[2], Object.assign({}, state, { inline: true })),
   }),
 };

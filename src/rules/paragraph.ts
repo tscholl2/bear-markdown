@@ -22,6 +22,6 @@ export default <Rule>{
   },
   parse: (capture, parse, state) => ({
     tag: "paragraph",
-    children: parse(capture[1].trim(), { ...state, inline: true }),
+    children: parse(capture[1].trim(), Object.assign({}, state, { inline: true })),
   }),
 };

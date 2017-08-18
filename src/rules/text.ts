@@ -7,5 +7,5 @@ export default <Rule>{
     // might possibly match something else (image, emphasis, etc.)
     // or the end of the match
     inline ? /^[^\n]+?(?=[^0-9A-Za-z\s\u00c0-\uffff]|\n|$)/.exec(s) : null,
-  parse: capture => capture[0],
+  parse: capture => ({ tag: "text", props: { content: capture[0] } }),
 };

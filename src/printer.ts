@@ -9,8 +9,7 @@ export interface Printer<N = Node, S = {}, T = any> {
 
 export function newPrinter(printers: { [type: string]: Printer }) {
   return function print(tree: Array<Node>, state = {}): any[] {
-    return tree.map(n => {
-      const node = typeof n === "string" ? { tag: "text", props: { content: n } } : n;
+    return tree.map(node => {
       if (!printers.hasOwnProperty(node.tag)) {
         throw new Error(`no printer for tag ${node.tag}`);
       }

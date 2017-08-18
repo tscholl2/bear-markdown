@@ -13,7 +13,10 @@ export default <Rule>{
   match: (s, { inline }) => (inline ? re.exec(s) : null),
   parse: capture => ({
     tag: "code",
-    // we replace escaped "`"s to allow for using "`"s inside inline code
-    children: [capture[1].replace("\\`", "`")],
+    props: {
+      // we replace escaped "`"s to allow for using "`"s inside inline code
+      display: "inline",
+      content: capture[1].replace("\\`", "`"),
+    },
   }),
 };

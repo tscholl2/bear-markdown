@@ -1,7 +1,7 @@
 import { Rule } from "../parser";
-import { newMathMatcher } from "./math";
+import { newMathMatcher } from "../utils/math";
 
 export default <Rule>{
   match: newMathMatcher(false),
-  parse: capture => ({ tag: "blockmath", children: [capture[2]] }),
+  parse: capture => ({ tag: "math", props: { display: "block", content: capture[2] } }),
 };

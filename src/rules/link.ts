@@ -13,6 +13,6 @@ export default <Rule>{
   parse: (capture, parse, state) => ({
     tag: "link",
     props: { href: capture[2] },
-    children: parse(capture[1], { ...state, inline: true }),
+    children: parse(capture[1], Object.assign({}, state, { inline: true })),
   }),
 };

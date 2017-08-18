@@ -10,8 +10,8 @@ import image from "./image";
 import inlineCode from "./inline-code";
 import link from "./link";
 import list from "./list";
-import inlineMath from "./inline-math";
-import blockMath from "./block-math";
+// import inlineMath from "./inline-math";
+// import blockMath from "./block-math";
 import paragraph from "./paragraph";
 import table from "./table";
 import text from "./text";
@@ -19,22 +19,22 @@ import newline from "./newline";
 
 export const defaultRules: Rule[] = [
   // ANY
-  { ...comment, order: 0 },
+  Object.assign({}, comment, { order: 0 }),
   // BLOCKS
-  { ...newline, order: 1 },
-  { ...blockQuote, order: 2 },
-  { ...heading, order: 3 },
-  { ...blockMath, order: 4 },
-  { ...blockCode, order: 5 },
-  { ...list, order: 6 },
-  { ...table, order: 7 },
-  { ...paragraph, order: 8 },
+  Object.assign({}, newline, { order: 1 }),
+  Object.assign({}, blockQuote, { order: 2 }),
+  Object.assign({}, heading, { order: 3 }),
+//  Object.assign({}, blockMath, { order: 4 }),
+  Object.assign({}, blockCode, { order: 5 }),
+  Object.assign({}, list, { order: 6 }),
+  Object.assign({}, table, { order: 7 }),
+  Object.assign({}, paragraph, { order: 8 }),
   // INLINE
-  { ...inlineMath, order: 9 },
-  { ...escape, order: 10 },
-  { ...inlineCode, order: 11 },
-  { ...emphasis, order: 12 }, // emphasis should be after list cause could start with * in sublist
-  { ...image, order: 13 },
-  { ...link, order: 14 }, // link must be after image because link is subset of image match
-  { ...text, order: 15 },
+ //  Object.assign({}, inlineMath, { order: 9 }),
+  Object.assign({}, escape, { order: 10 }),
+  Object.assign({}, inlineCode, { order: 11 }),
+  Object.assign({}, emphasis, { order: 12 }), // emphasis should be after list cause could start with * in sublist
+  Object.assign({}, image, { order: 13 }),
+  Object.assign({}, link, { order: 14 }), // link must be after image because link is subset of image match
+  Object.assign({}, text, { order: 15 }),
 ];

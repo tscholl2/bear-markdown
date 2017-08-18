@@ -75,7 +75,7 @@ export default <Rule>{
             .map((c, i) => ({
               tag: "tableheadcolumn",
               props: { align: align[i] },
-              children: parse(c, { ...state, inline: true }),
+              children: parse(c, Object.assign({}, state, { inline: true })),
             })),
         },
         {
@@ -87,7 +87,7 @@ export default <Rule>{
               .split(/\s*\|\s*/) // split on |'s
               .map(c => ({
                 tag: "tablecolumn",
-                children: parse(c, { ...state, inline: true }),
+                children: parse(c, Object.assign({}, state, { inline: true })),
               })),
           })),
         },

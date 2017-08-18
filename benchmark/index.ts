@@ -40,25 +40,30 @@ function MicroMarkdownParse(s) {
 const s = `
 # header
 
-![alt](http://url)
+This is an *image* ![alt](url)
 
-This is a paragraph
+This is a [_link_](url)
 
 * This
 * is
 * a
 * list
+
+| this | is a |
+| --- | --- |
+| a | table |
+
 `;
 
 new (Benchmark as any).Suite()
   .add("parser", () => {
     parse(s);
   })
-  .add("marked", () => {
-    MarkedParse(s);
-  })
   .add("simple markdown", () => {
     SimpleMarkdownParse(s);
+  })
+  .add("marked", () => {
+    MarkedParse(s);
   })
   .add("markdown", () => {
     MarkdownParse(s);

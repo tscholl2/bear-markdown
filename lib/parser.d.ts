@@ -22,7 +22,7 @@ export declare type RuleCapture = RegExpExecArray | Array<string>;
  * Nodes in the AST are plain objects with at least a key: `tag` declaring what
  * kind of node they are. A `string` node is a shortcut for {tag: "text", props: {content: "..."}}
  */
-export declare type Node = string | {
+export declare type Node = {
     tag: string;
     props?: {
         [key: string]: any;

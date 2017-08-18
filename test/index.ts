@@ -6,7 +6,7 @@ import { defaultParser } from "../src";
 
 const J = JSON.stringify;
 
-describe("default rules", () => {
+describe("default rules:", () => {
   require("./tests.json").forEach((t: any) => {
     it(`${t.description || ""}: parses ${J(t.input)}`, () =>
       assert.deepEqual(defaultParser(t.input), t.output));
