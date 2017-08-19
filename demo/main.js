@@ -69,7 +69,7 @@ const HTMLPreview = ({ value, isLoading, error }) =>
       ? h("progress", undefined)
       : h("pre", {
           style: { display: "inline-block", border: `2px solid green` },
-          innerHTML: !value ? "" : new XMLSerializer().serializeToString(value),
+          innerHTML: value,
         }),
   );
 
@@ -115,12 +115,7 @@ app({
             actions.update({
               preview: Object.assign(state.preview, {
                 value: tree,
-                html: (() => {
-                  const body = document.createElement("div");
-                  const arr = defaultHTMLPrinter(tree);
-                  arr.forEach(a => body.appendChild(a));
-                  return body;
-                })(),
+                html: defaultHTMLPrinter(tree).join(""),
                 error: undefined,
                 loading: false,
               }),
@@ -128,7 +123,7 @@ app({
           )
           .catch(
             error =>
-              console.log(error) ||
+              console.error(error) ||
               actions.update({
                 preview: Object.assign(state.preview, {
                   value: null,
