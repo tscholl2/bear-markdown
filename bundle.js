@@ -250,7 +250,7 @@ function newHTMLPrinters(h) {
         comment: function (n) { return "<!--" + n.props.content + "-->"; },
         code: function (n, _, s) {
             return n.props.display === "inline"
-                ? h("code", { id: inc(s) }, n.props.content)
+                ? h("code", { id: inc(s) }, [n.props.content])
                 : h("pre", { id: inc(s) }, [h("code", { id: inc(s) }, [n.props.content])]);
         },
         blockquote: function (n, print, s) { return h("blockquote", { id: inc(s) }, print(n.children, s)); },
