@@ -1,7 +1,5 @@
-import { newParser, Node } from "./parser";
-import { newPrinter } from "./printer";
-import { defaultRules } from "./rules";
-export { newParser, defaultRules, Node };
-export { newPrinter };
-export declare const defaultParser: (source: string, state?: {}) => Node[];
-export declare const defaultHTMLPrinter: (tree: Node[], state?: {}) => any[];
+declare const require: any;
+declare const commonmark: any;
+declare const reader: any;
+declare const writer: any;
+declare function CommonmarkParse(s: string): any;

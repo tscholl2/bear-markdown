@@ -23,6 +23,9 @@ export function newMathMatcher(inlineMatcher: boolean): Rule["match"] {
     let brace = 0;
     let escaped = false;
     while (!s.startsWith(end) || brace !== 0 || escaped) {
+      if (s === "") {
+        return;
+      }
       escaped = s.startsWith("\\");
       brace += s.startsWith("{") ? 1 : s.startsWith("}") ? -1 : 0;
       match += s[0];

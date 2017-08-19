@@ -102,6 +102,9 @@ function newMathMatcher(inlineMatcher) {
         var brace = 0;
         var escaped = false;
         while (!s.startsWith(end) || brace !== 0 || escaped) {
+            if (s === "") {
+                return;
+            }
             escaped = s.startsWith("\\");
             brace += s.startsWith("{") ? 1 : s.startsWith("}") ? -1 : 0;
             match += s[0];
@@ -123,7 +126,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parser__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__printer__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__printers__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__rules__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__rules__ = __webpack_require__(5);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "newParser", function() { return __WEBPACK_IMPORTED_MODULE_0__parser__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "defaultRules", function() { return __WEBPACK_IMPORTED_MODULE_3__rules__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "newPrinter", function() { return __WEBPACK_IMPORTED_MODULE_1__printer__["a"]; });
@@ -206,10 +209,66 @@ function newPrinter(printers) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__html__ = __webpack_require__(5);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__html__["a"]; });
-
-
+/* unused harmony export newHTMLPrinters */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return html; });
+var inc = function (s) {
+    s.id = (s.id || 0) + 1;
+    return s.id;
+};
+function newHTMLPrinters(h) {
+    return {
+        text: function (n) { return n.props.content; },
+        table: function (n, print, s) { return h("table", { id: inc(s) }, print(n.children, s)); },
+        tablehead: function (n, print, s) { return h("thead", { id: inc(s) }, print(n.children, s)); },
+        tableheadcolumn: function (n, print, s) {
+            return h("th", Object.assign({}, n.props, { id: inc(s) }), print(n.children, s));
+        },
+        tablebody: function (n, print, s) { return h("tbody", { id: inc(s) }, print(n.children, s)); },
+        tablerow: function (n, print, s) { return h("tr", { id: inc(s) }, print(n.children, s)); },
+        tablecolumn: function (n, print, s) { return h("td", { id: inc(s) }, print(n.children, s)); },
+        paragraph: function (n, print, s) { return h("p", { id: inc(s) }, print(n.children, s)); },
+        list: function (n, print, s) {
+            return h(/^\d/.test(n.props.bullet) ? "ol" : "ul", { id: inc(s) }, print(n.children, s));
+        },
+        listitem: function (n, print, s) { return h("li", { id: inc(s) }, print(n.children, s)); },
+        link: function (n, print, s) {
+            return h("a", Object.assign({}, n.props, { id: inc(s) }), print(n.children, s));
+        },
+        image: function (n, _, s) { return h("img", Object.assign({}, n.props, { id: inc(s) })); },
+        heading: function (n, print, s) { return h("h" + n.props.level, { id: inc(s) }, print(n.children, s)); },
+        emphasis: function (n, print, s) {
+            var delimiters = {
+                __: "u",
+                _: "em",
+                "~~": "s",
+                "~": "em",
+                "**": "strong",
+                "*": "mark",
+            };
+            return h(delimiters[n.props.delimiter], { id: inc(s) }, print(n.children, s));
+        },
+        comment: function (n) { return "<!--" + n.props.content + "-->"; },
+        code: function (n, _, s) {
+            return n.props.display === "inline"
+                ? h("code", { id: inc(s) }, n.props.content)
+                : h("pre", { id: inc(s) }, [h("code", { id: inc(s) }, [n.props.content])]);
+        },
+        blockquote: function (n, print, s) { return h("blockquote", { id: inc(s) }, print(n.children, s)); },
+        math: function (n, _, s) { return h("math", { id: inc(s) }, n.props.content); },
+    };
+}
+var html = newHTMLPrinters(function (tag, attr, children) {
+    if (attr === void 0) { attr = {}; }
+    if (children === void 0) { children = []; }
+    var a = "";
+    for (var key in attr) {
+        if (attr.hasOwnProperty(key) && key != "id") {
+            a += " \"" + key + "\"=\"" + attr[key] + "\"";
+        }
+    }
+    return "<" + tag + a + ">" + children.join("") + "</" + tag + ">";
+});
+// export const react = newHTMLPrinters((tag, attr = {}, children = []) => {});
 
 
 /***/ }),
@@ -217,65 +276,23 @@ function newPrinter(printers) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-function h(tag, props, children) {
-    if (props === void 0) { props = {}; }
-    if (children === void 0) { children = []; }
-    var attr = Object.keys(props).reduce(function (p, n) { return p + (" \"" + n + "\"=\"" + props[n] + "\""); }, "");
-    return "<" + tag + attr.trim() + ">" + children.join("") + "</" + tag + ">";
-}
-/* harmony default export */ __webpack_exports__["a"] = ({
-    text: function (n) { return n.props.content; },
-    table: function (n, output) { return h("table", undefined, output(n.children)); },
-    tablehead: function (n, output) { return h("thead", undefined, output(n.children)); },
-    tableheadcolumn: function (n, output) { return h("th", n.props, output(n.children)); },
-    tablebody: function (n, output) { return h("tbody", undefined, output(n.children)); },
-    tablerow: function (n, output) { return h("tr", undefined, output(n.children)); },
-    tablecolumn: function (n, output) { return h("td", undefined, output(n.children)); },
-    paragraph: function (n, output) { return h("p", undefined, output(n.children)); },
-    list: function (n, output) {
-        return h(/^\d/.test(n.props.bullet) ? "ol" : "ul", undefined, output(n.children));
-    },
-    listitem: function (n, output) { return h("li", undefined, output(n.children)); },
-    link: function (n, output) { return h("a", n.props, output(n.children)); },
-    image: function (n) { return h("img", n.props); },
-    heading: function (n, output) { return h("h" + n.props.level, undefined, output(n.children)); },
-    emphasis: function (n, output) {
-        var delimiters = { __: "u", _: "em", "~~": "s", "~": "em", "**": "strong", "*": "mark" };
-        return h(delimiters[n.delimiter], undefined, output(n.children));
-    },
-    comment: function (n) { return "<!--" + n.props.content + "-->"; },
-    code: function (n) {
-        return n.props.display === "inline"
-            ? h("code", undefined, n.props.content)
-            : h("pre", undefined, [h("code", undefined, [n.props.content])]);
-    },
-    blockquote: function (n, output) { return h("blockquote", undefined, output(n.children)); },
-    math: function (n) { return h("math", undefined, n.props.content); },
-});
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return defaultRules; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__block_quote__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__block_code__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__comment__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__emphasis__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__escape__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__heading__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__image__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inline_code__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__link__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__list__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__inline_math__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__block_math__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__paragraph__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__table__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__text__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__newline__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__block_quote__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__block_code__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__comment__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__emphasis__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__escape__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__heading__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__image__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inline_code__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__link__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__list__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__inline_math__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__block_math__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__paragraph__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__table__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__text__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__newline__ = __webpack_require__(21);
 
 
 
@@ -316,7 +333,7 @@ var defaultRules = [
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -343,7 +360,7 @@ var re = new RegExp("^(" +
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -367,7 +384,7 @@ var re = new RegExp("^" +
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -385,7 +402,7 @@ var re = new RegExp("^" +
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -412,7 +429,7 @@ var re = new RegExp("^" +
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -445,7 +462,7 @@ var re = new RegExp("^\\\\([" +
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -473,7 +490,7 @@ var re = new RegExp("^" +
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -505,7 +522,7 @@ var re = new RegExp("^\\!" +
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -532,7 +549,7 @@ var re = new RegExp("^" +
 
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -555,7 +572,7 @@ var re = new RegExp("^" +
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -647,7 +664,7 @@ var listItemRE = new RegExp(
 
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -660,7 +677,7 @@ var listItemRE = new RegExp(
 
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -673,7 +690,7 @@ var listItemRE = new RegExp(
 
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -703,7 +720,7 @@ var re = new RegExp("^" +
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -727,7 +744,7 @@ A table is a:
 */
 // a row is
 // "|" then repeat("not a |" then a "|") followed by a newline or EOF
-var tableRowRE = /^s*\|((?:[^\|\n]+\|)+)\s*(?=\n|$)/;
+var tableRowRE = /^\s*\|((?:[^\|\n]+\|)+)\s*(?=\n|$)/;
 // an alignment row is
 // "|" then a repeat(":---:" then a "|") followed by a newline
 // where the ":" are optional and there can be many/few "-"'s
@@ -804,7 +821,7 @@ var tableAlignRE = /^\s*\|((?:\s*:?\-+:?\s*\|)+)\s*(?=\n)/;
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -825,12 +842,12 @@ var re = /^[^\n]+?(?=[^0-9A-Za-z\s\u00c0-\uffff]|\n|$)/;
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
-    match: function (s) { return /^\n/.exec(s); },
+    match: function (s) { return /^\s*\n/.exec(s); },
     parse: function () { return undefined; },
 });
 

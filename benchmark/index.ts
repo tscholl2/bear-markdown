@@ -3,13 +3,19 @@ import { defaultParser, defaultHTMLPrinter } from "../src/index";
 declare const require: any;
 
 // this
-const parse = (s: string) => defaultHTMLPrinter(defaultParser(s));
+const parse = (s: string) => {
+  // return defaultParser(s)
+  return defaultHTMLPrinter(defaultParser(s));
+};
 // simple markdown
 const SimpleMarkdown = require("simple-markdown");
 const rules = SimpleMarkdown.defaultRules;
 const parser = SimpleMarkdown.parserFor(rules);
 const htmlOutput = SimpleMarkdown.reactFor(SimpleMarkdown.ruleOutput(rules, "html"));
 const SimpleMarkdownParse = function(source) {
+  /*
+  return SimpleMarkdown.defaultParse(source+"\n\n")
+  */
   const blockSource = source + "\n\n";
   const parseTree = parser(blockSource, { inline: false });
   const outputResult = htmlOutput(parseTree);
@@ -36,6 +42,16 @@ const mmd = require("micromarkdown");
 function MicroMarkdownParse(s: string) {
   return mmd.parse(s);
 }
+// commonmark
+const commonmark = require("commonmark");
+const reader = new commonmark.Parser();
+const writer = new commonmark.HtmlRenderer();
+function CommonmarkParse(s: string) {
+  const parsed = reader.parse(s); // parsed is a 'Node' tree
+  // transform parsed if you like...
+  const result = writer.render(parsed); // result is a String
+  return result;
+}
 
 const s = `
 # header
@@ -49,9 +65,11 @@ This is a [_link_](url)
 * a
 * list
 
-| this | is |
-| --- | --- |
-| a | table |
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | \\$1600 |
+| col 2 is      | centered      |   \\$12 |
+| zebra stripes | are neat      |    \\$1 |
 
 `;
 
@@ -73,6 +91,9 @@ new (Benchmark as any).Suite()
   })
   .add("micromarkdown", () => {
     MicroMarkdownParse(s);
+  })
+  .add("commonmark", () => {
+    CommonmarkParse(s);
   })
   // add listeners
   .on("cycle", (event: any) => {
