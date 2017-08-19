@@ -54,7 +54,7 @@ export function newHTMLPrinters(
     comment: n => `<!--${n.props!.content}-->`,
     code: (n, _, s) =>
       n.props!.display === "inline"
-        ? h("code", { id: inc(s) }, n.props!.content)
+        ? h("code", { id: inc(s) }, [n.props!.content])
         : h("pre", { id: inc(s) }, [h("code", { id: inc(s) }, [n.props!.content])]),
     blockquote: (n, print, s) => h("blockquote", { id: inc(s) }, print(n.children!, s)),
     math: (n, _, s) => h("math", { id: inc(s) }, n.props!.content),
