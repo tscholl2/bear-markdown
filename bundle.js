@@ -211,31 +211,32 @@ function newPrinter(printers) {
 "use strict";
 /* unused harmony export newHTMLPrinters */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return html; });
+/* unused harmony export hyperapp */
 var inc = function (s) {
-    s.id = (s.id || 0) + 1;
-    return s.id;
+    s.key = (s.key || 0) + 1;
+    return s.key;
 };
 function newHTMLPrinters(h) {
     return {
         text: function (n) { return n.props.content; },
-        table: function (n, print, s) { return h("table", { id: inc(s) }, print(n.children, s)); },
-        tablehead: function (n, print, s) { return h("thead", { id: inc(s) }, print(n.children, s)); },
+        table: function (n, print, s) { return h("table", { key: inc(s) }, print(n.children, s)); },
+        tablehead: function (n, print, s) { return h("thead", { key: inc(s) }, print(n.children, s)); },
         tableheadcolumn: function (n, print, s) {
-            return h("th", Object.assign({}, n.props, { id: inc(s) }), print(n.children, s));
+            return h("th", Object.assign({}, n.props, { key: inc(s) }), print(n.children, s));
         },
-        tablebody: function (n, print, s) { return h("tbody", { id: inc(s) }, print(n.children, s)); },
-        tablerow: function (n, print, s) { return h("tr", { id: inc(s) }, print(n.children, s)); },
-        tablecolumn: function (n, print, s) { return h("td", { id: inc(s) }, print(n.children, s)); },
-        paragraph: function (n, print, s) { return h("p", { id: inc(s) }, print(n.children, s)); },
+        tablebody: function (n, print, s) { return h("tbody", { key: inc(s) }, print(n.children, s)); },
+        tablerow: function (n, print, s) { return h("tr", { key: inc(s) }, print(n.children, s)); },
+        tablecolumn: function (n, print, s) { return h("td", { key: inc(s) }, print(n.children, s)); },
+        paragraph: function (n, print, s) { return h("p", { key: inc(s) }, print(n.children, s)); },
         list: function (n, print, s) {
-            return h(/^\d/.test(n.props.bullet) ? "ol" : "ul", { id: inc(s) }, print(n.children, s));
+            return h(/^\d/.test(n.props.bullet) ? "ol" : "ul", { key: inc(s) }, print(n.children, s));
         },
-        listitem: function (n, print, s) { return h("li", { id: inc(s) }, print(n.children, s)); },
+        listitem: function (n, print, s) { return h("li", { key: inc(s) }, print(n.children, s)); },
         link: function (n, print, s) {
-            return h("a", Object.assign({}, n.props, { id: inc(s) }), print(n.children, s));
+            return h("a", Object.assign({}, n.props, { key: inc(s) }), print(n.children, s));
         },
-        image: function (n, _, s) { return h("img", Object.assign({}, n.props, { id: inc(s) })); },
-        heading: function (n, print, s) { return h("h" + n.props.level, { id: inc(s) }, print(n.children, s)); },
+        image: function (n, _, s) { return h("img", Object.assign({}, n.props, { key: inc(s) })); },
+        heading: function (n, print, s) { return h("h" + n.props.level, { key: inc(s) }, print(n.children, s)); },
         emphasis: function (n, print, s) {
             var delimiters = {
                 __: "u",
@@ -245,16 +246,16 @@ function newHTMLPrinters(h) {
                 "**": "strong",
                 "*": "mark",
             };
-            return h(delimiters[n.props.delimiter], { id: inc(s) }, print(n.children, s));
+            return h(delimiters[n.props.delimiter], { key: inc(s) }, print(n.children, s));
         },
         comment: function (n) { return "<!--" + n.props.content + "-->"; },
         code: function (n, _, s) {
             return n.props.display === "inline"
-                ? h("code", { id: inc(s) }, [n.props.content])
-                : h("pre", { id: inc(s) }, [h("code", { id: inc(s) }, [n.props.content])]);
+                ? h("code", { key: inc(s) }, [n.props.content])
+                : h("pre", { key: inc(s) }, [h("code", { key: inc(s) }, [n.props.content])]);
         },
-        blockquote: function (n, print, s) { return h("blockquote", { id: inc(s) }, print(n.children, s)); },
-        math: function (n, _, s) { return h("math", { id: inc(s) }, n.props.content); },
+        blockquote: function (n, print, s) { return h("blockquote", { key: inc(s) }, print(n.children, s)); },
+        math: function (n, _, s) { return h("math", { key: inc(s) }, n.props.content); },
     };
 }
 var html = newHTMLPrinters(function (tag, attr, children) {
@@ -268,7 +269,26 @@ var html = newHTMLPrinters(function (tag, attr, children) {
     }
     return "<" + tag + a + ">" + children.join("") + "</" + tag + ">";
 });
-// export const react = newHTMLPrinters((tag, attr = {}, children = []) => {});
+/*
+const TYPE_SYMBOL =
+  (typeof Symbol === "function" && Symbol.for && Symbol.for("react.element")) || 0xeac7;
+export const react = newHTMLPrinters((type, { key, ...props }: any = {}, children = []) => ({
+  type,
+  key,
+  props: { children, ...props },
+  $$typeof: TYPE_SYMBOL,
+  _store: null,
+}));
+*/
+var hyperapp = newHTMLPrinters(function (tag, data, children) {
+    if (data === void 0) { data = {}; }
+    if (children === void 0) { children = []; }
+    return ({
+        tag: tag,
+        data: data,
+        children: children,
+    });
+});
 
 
 /***/ }),

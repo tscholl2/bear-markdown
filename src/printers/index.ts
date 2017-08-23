@@ -13,9 +13,9 @@ export type HTMLPrinter = (
   children?: (PrintNode | string)[],
 ) => any;
 
-const inc = (s: { id?: number }) => {
-  s.id = (s.id || 0) + 1;
-  return s.id;
+const inc = (s: { key?: number }) => {
+  s.key = (s.key || 0) + 1;
+  return s.key;
 };
 
 export function newHTMLPrinters(
@@ -25,21 +25,21 @@ export function newHTMLPrinters(
 } {
   return {
     text: n => n.props!.content,
-    table: (n, print, s) => h("table", { id: inc(s) }, print(n.children!, s)),
-    tablehead: (n, print, s) => h("thead", { id: inc(s) }, print(n.children!, s)),
+    table: (n, print, s) => h("table", { key: inc(s) }, print(n.children!, s)),
+    tablehead: (n, print, s) => h("thead", { key: inc(s) }, print(n.children!, s)),
     tableheadcolumn: (n, print, s) =>
-      h("th", Object.assign({}, n.props, { id: inc(s) }), print(n.children!, s)),
-    tablebody: (n, print, s) => h("tbody", { id: inc(s) }, print(n.children!, s)),
-    tablerow: (n, print, s) => h("tr", { id: inc(s) }, print(n.children!, s)),
-    tablecolumn: (n, print, s) => h("td", { id: inc(s) }, print(n.children!, s)),
-    paragraph: (n, print, s) => h("p", { id: inc(s) }, print(n.children!, s)),
+      h("th", Object.assign({}, n.props, { key: inc(s) }), print(n.children!, s)),
+    tablebody: (n, print, s) => h("tbody", { key: inc(s) }, print(n.children!, s)),
+    tablerow: (n, print, s) => h("tr", { key: inc(s) }, print(n.children!, s)),
+    tablecolumn: (n, print, s) => h("td", { key: inc(s) }, print(n.children!, s)),
+    paragraph: (n, print, s) => h("p", { key: inc(s) }, print(n.children!, s)),
     list: (n, print, s) =>
-      h(/^\d/.test(n.props!.bullet) ? "ol" : "ul", { id: inc(s) }, print(n.children!, s)),
-    listitem: (n, print, s) => h("li", { id: inc(s) }, print(n.children!, s)),
+      h(/^\d/.test(n.props!.bullet) ? "ol" : "ul", { key: inc(s) }, print(n.children!, s)),
+    listitem: (n, print, s) => h("li", { key: inc(s) }, print(n.children!, s)),
     link: (n, print, s) =>
-      h("a", Object.assign({}, n.props, { id: inc(s) }), print(n.children!, s)),
-    image: (n, _, s) => h("img", Object.assign({}, n.props, { id: inc(s) })),
-    heading: (n, print, s) => h(`h${n.props!.level}`, { id: inc(s) }, print(n.children!, s)),
+      h("a", Object.assign({}, n.props, { key: inc(s) }), print(n.children!, s)),
+    image: (n, _, s) => h("img", Object.assign({}, n.props, { key: inc(s) })),
+    heading: (n, print, s) => h(`h${n.props!.level}`, { key: inc(s) }, print(n.children!, s)),
     emphasis: (n, print, s) => {
       const delimiters: any = {
         __: "u",
@@ -49,15 +49,15 @@ export function newHTMLPrinters(
         "**": "strong",
         "*": "mark",
       };
-      return h(delimiters[n.props!.delimiter], { id: inc(s) }, print(n.children!, s));
+      return h(delimiters[n.props!.delimiter], { key: inc(s) }, print(n.children!, s));
     },
     comment: n => `<!--${n.props!.content}-->`,
     code: (n, _, s) =>
       n.props!.display === "inline"
-        ? h("code", { id: inc(s) }, [n.props!.content])
-        : h("pre", { id: inc(s) }, [h("code", { id: inc(s) }, [n.props!.content])]),
-    blockquote: (n, print, s) => h("blockquote", { id: inc(s) }, print(n.children!, s)),
-    math: (n, _, s) => h("math", { id: inc(s) }, n.props!.content),
+        ? h("code", { key: inc(s) }, [n.props!.content])
+        : h("pre", { key: inc(s) }, [h("code", { key: inc(s) }, [n.props!.content])]),
+    blockquote: (n, print, s) => h("blockquote", { key: inc(s) }, print(n.children!, s)),
+    math: (n, _, s) => h("math", { key: inc(s) }, n.props!.content),
   };
 }
 
@@ -71,4 +71,20 @@ export const html = newHTMLPrinters((tag, attr = {}, children = []) => {
   return `<${tag}${a}>${children.join("")}</${tag}>`;
 });
 
-// export const react = newHTMLPrinters((tag, attr = {}, children = []) => {});
+/*
+const TYPE_SYMBOL =
+  (typeof Symbol === "function" && Symbol.for && Symbol.for("react.element")) || 0xeac7;
+export const react = newHTMLPrinters((type, { key, ...props }: any = {}, children = []) => ({
+  type,
+  key,
+  props: { children, ...props },
+  $$typeof: TYPE_SYMBOL,
+  _store: null,
+}));
+*/
+
+export const hyperapp = newHTMLPrinters((tag, data = {}, children = []) => ({
+  tag,
+  data,
+  children,
+}));
