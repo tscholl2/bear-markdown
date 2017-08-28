@@ -2911,9 +2911,9 @@ preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
-prettier@^1.5.3:
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.5.3.tgz#59dadc683345ec6b88f88b94ed4ae7e1da394bfe"
+prettier@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.6.0.tgz#23e9c68251f440feb847f558821bead21765919a"
 
 process-nextick-args@~1.0.6:
   version "1.0.7"
@@ -3298,9 +3298,9 @@ shebang-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
 
-showdown@^1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/showdown/-/showdown-1.7.2.tgz#bf99da9f3af00fad1d73421e112fdc352e1249de"
+showdown@^1.7.3:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/showdown/-/showdown-1.7.3.tgz#8d27f501a0850f33a0c25f1a6b7a10b9fc464633"
   dependencies:
     yargs "^8.0.1"
 
@@ -3773,9 +3773,9 @@ uglify-js@^2.8.29:
   optionalDependencies:
     uglify-to-browserify "~1.0.0"
 
-uglify-js@^3.0.27:
-  version "3.0.27"
-  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.0.27.tgz#a97db8c8ba6b9dba4e2f88d86aa9548fa6320034"
+uglify-js@^3.0.28:
+  version "3.0.28"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.0.28.tgz#96b8495f0272944787b5843a1679aa326640d5f7"
   dependencies:
     commander "~2.11.0"
     source-map "~0.5.1"

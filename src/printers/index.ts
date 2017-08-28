@@ -71,17 +71,11 @@ export const html = newHTMLPrinters((tag, attr = {}, children = []) => {
   return `<${tag}${a}>${children.join("")}</${tag}>`;
 });
 
-/*
-const TYPE_SYMBOL =
-  (typeof Symbol === "function" && Symbol.for && Symbol.for("react.element")) || 0xeac7;
 export const react = newHTMLPrinters((type, { key, ...props }: any = {}, children = []) => ({
   type,
   key,
   props: { children, ...props },
-  $$typeof: TYPE_SYMBOL,
-  _store: null,
 }));
-*/
 
 export const hyperapp = newHTMLPrinters((tag, data = {}, children = []) => ({
   tag,

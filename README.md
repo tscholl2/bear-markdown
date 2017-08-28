@@ -38,13 +38,13 @@ to parse a string of markdown into a string of html. The benchmark can be found 
 
 | Parser | speed in op/s (higher is better) |
 | --- | --- |
-| this repo | 1991 |
-| [simple-markdown](https://github.com/Khan/simple-markdown) | 2066 |
-| [marked](https://github.com/chjj/marked) | 3348 |
-| [markdown](https://github.com/evilstreak/markdown-js) | 1762* |
-| [showdown](https://github.com/showdownjs/showdown) | 774* |
-| [micromarkdown](https://github.com/SimonWaldherr/micromarkdown.js) | 14509* |
-| [commonmarkjs](https://github.com/commonmark/commonmark.js) | 4541* |
+| this repo | 1772 |
+| [simple-markdown](https://github.com/Khan/simple-markdown) | 1954 |
+| [marked](https://github.com/chjj/marked) | 3075 |
+| [markdown](https://github.com/evilstreak/markdown-js) | 2101* |
+| [showdown](https://github.com/showdownjs/showdown) | 760* |
+| [micromarkdown](https://github.com/SimonWaldherr/micromarkdown.js) | 16343* |
+| [commonmarkjs](https://github.com/commonmark/commonmark.js) | 4811* |
 
 *I don't think I'm using these correctly, they do not seem to be parsing tables.
 
