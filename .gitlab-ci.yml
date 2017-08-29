@@ -1,7 +1,0 @@
-pages:
-	stage: deploy
-	script:
-	- cp -r demo/* public/
-	artifacts:
-		paths:
-		- public
