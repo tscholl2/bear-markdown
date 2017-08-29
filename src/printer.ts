@@ -9,11 +9,14 @@ export interface Printer<N = Node, S = {}, T = any> {
 
 export function newPrinter(printers: { [type: string]: Printer }) {
   return function print(tree: Array<Node>, state = {}): any[] {
-    return tree.map(node => {
+    const output: any[] = [];
+    for (let i = 0; i < tree.length; i++) {
+      const node = tree[i];
       if (!printers.hasOwnProperty(node.type)) {
-        throw new Error(`no printer for type ${node.type}`);
+        throw new Error(`no printer for type: ${node.type}`);
       }
-      return printers[node.type](node, print, state);
-    });
+      output.push(printers[node.type](node, print, state));
+    }
+    return output;
   };
 }
