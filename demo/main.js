@@ -1,137 +1,127 @@
 // Returns a function, that, as long as it continues to be invoked, will not
-// be triggered. The function will be called after it stops being called for
-// N milliseconds. If `immediate` is passed, trigger the function on the
+// be triggered. The function `fn` will be called after it stops being called for
+// `N` milliseconds. If `immediate` is passed, trigger the function on the
 // leading edge, instead of the trailing.
-function debounce(wait, func, immediate) {
-  var timeout;
-  return function() {
-    var context = this,
-      args = arguments;
-    var later = function() {
+function debounce(N, fn, immediate = false) {
+  let timeout;
+  return function(...args) {
+    const later = function() {
       timeout = null;
-      if (!immediate) func.apply(context, args);
+      if (!immediate) fn(...args);
     };
-    var callNow = immediate && !timeout;
+    const callNow = immediate && !timeout;
     clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
+    timeout = setTimeout(later, N);
+    if (callNow) fn(...args);
   };
 }
 
+// These are imported from ./bundle.min.js
 // parser
 const parse = defaultParser;
-
-function render(markdown) {
-  // its done this way because i copied it from
-  // something that did an async network call
-  // and im too lazy to un-promisfy it
-  return new Promise((resolve, reject) => {
-    try {
-      resolve(parse(markdown));
-    } catch (e) {
-      reject(e);
-    }
-  });
-}
-
-// view stuff
+// printer
+const print = defaultHTMLPrinter;
+// This is imported from hyperapp.js on unpkg
 const { h, app } = hyperapp;
+
+// Components
 
 const Input = ({ value, update }) =>
   h("textarea", {
-    style: {
-      minWidth: "400px",
-      minHeight: "300px",
-    },
+    class: "main-input",
     oninput: ({ target: { value } }) => update(value),
     value,
     placeholder: "input",
   });
 
-const Preview = ({ value, isLoading, error }) =>
+const HTMLPreview = ({ html }) => h("div", { class: "markdown", innerHTML: html });
+
+const TreePreview = ({ tree }) => h("pre", { class: "tree" }, JSON.stringify(tree, null, 2));
+
+const Toggle = ({ value, ontoggle, label }) =>
+  h("label", undefined, [
+    h("input", {
+      type: "checkbox",
+      checked: value,
+      onchange: ontoggle,
+    }),
+    label,
+  ]);
+
+const Loading = () => h("progress");
+
+const Err = ({ error }) => h("pre", { class: "error" }, `${error}`);
+
+const LeftSide = (state, actions) =>
   h(
     "div",
-    undefined,
-    isLoading
-      ? h("progress", undefined)
-      : h(
-          "pre",
-          { style: { display: "inline-block", border: `2px solid ${error ? "red" : "green"}` } },
-          error ? `${error}` : JSON.stringify(value, null, 2),
-        ),
+    { class: "left-side" },
+    Toggle({
+      value: state.preview === "html",
+      ontoggle: () => actions.update({ preview: state.preview === "html" ? "tree" : "html" }),
+      label: "HTML",
+    }),
+    Input({ value: state.input, update: actions.updateInput }),
   );
 
-const HTMLPreview = ({ value, isLoading, error }) =>
-  h(
-    "div",
-    undefined,
-    isLoading || error
-      ? h("progress", undefined)
-      : h("pre", {
-          style: { display: "inline-block", border: `2px solid green` },
-          innerHTML: value,
-        }),
-  );
+const RightSide = (state, actions) => {
+  const children = [];
+  if (state.preview === "html") {
+    const { html, htmlError } = state.parsed;
+    if (html != null) {
+      children.push(HTMLPreview({ html }));
+    } else if (htmlError != null) {
+      children.push(Err({ error: htmlError }));
+    } else {
+      children.push(Loading());
+    }
+  } else {
+    const { tree, treeError } = state.parsed;
+    if (tree != null) {
+      children.push(TreePreview({ tree }));
+    } else if (treeError != null) {
+      children.push(Err({ error: treeError }));
+    } else {
+      children.push(Loading());
+    }
+  }
+  return h("div", { class: "right-side" }, children);
+};
 
 app({
   state: {
-    value: "",
-    preview: {
-      value: [],
-      html: undefined,
-      error: undefined,
-      loading: false,
+    input: "", // string
+    preview: "html", // "html" | "tree"
+    parsed: {
+      html: "", // string
+      htmlError: undefined, // any
+      tree: [], // any[]
+      treeError: undefined, // any
     },
   },
   view: (state, actions) =>
-    h(
-      "div",
-      undefined,
-      Input({
-        value: state.value,
-        update: value => {
-          setTimeout(actions.requestPreview, 100);
-          actions.update({ value, preview: Object.assign(state.preview, { loading: true }) });
-        },
-      }),
-      h("br"),
-      HTMLPreview({
-        value: state.preview.html,
-        isLoading: state.preview.loading,
-        error: state.preview.error,
-      }),
-      Preview({
-        value: state.preview.value,
-        isLoading: state.preview.loading,
-        error: state.preview.error,
-      }),
-    ),
+    h("main", undefined, [LeftSide(state, actions), RightSide(state, actions)]),
   actions: {
-    update: (state, actions, stuff) => Object.assign({}, state, stuff),
-    requestPreview: (() =>
-      debounce(250, (state, actions) =>
-        render(state.value)
-          .then(tree =>
-            actions.update({
-              preview: Object.assign(state.preview, {
-                value: tree,
-                html: defaultHTMLPrinter(tree).join(""),
-                error: undefined,
-                loading: false,
-              }),
-            }),
-          )
-          .catch(
-            error =>
-              console.error(error) ||
-              actions.update({
-                preview: Object.assign(state.preview, {
-                  value: null,
-                  error,
-                  loading: false,
-                }),
-              }),
-          ),
-      ))(),
+    update: (_, __, s) => s,
+    updateInput: (_, actions, input) => {
+      actions.update({ input, parsed: {} });
+      actions.updatePreviews();
+    },
+    updatePreviews: (() =>
+      debounce(250, (state, actions) => {
+        const { input } = state;
+        let tree, treeError, html, htmlError;
+        try {
+          tree = parse(input);
+        } catch (e) {
+          treeError = e;
+        }
+        try {
+          if (tree) html = print(tree).join("");
+        } catch (e) {
+          htmlError = e;
+        }
+        actions.update({ parsed: { tree, treeError, html, htmlError } });
+      }))(),
   },
 });
