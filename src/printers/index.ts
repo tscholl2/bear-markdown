@@ -71,10 +71,10 @@ export const html = newHTMLPrinters((tag, attr = {}, children = []) => {
   return `<${tag}${a}>${children.join("")}</${tag}>`;
 });
 
-export const react = newHTMLPrinters((type, { key, ...props }: any = {}, children = []) => ({
+export const react = newHTMLPrinters((type, data = {}, children = []) => ({
   type,
-  key,
-  props: { children, ...props },
+  key: data.key,
+  props: Object.assign({ children }, data, { key: undefined }),
 }));
 
 export const hyperapp = newHTMLPrinters((tag, data = {}, children = []) => ({

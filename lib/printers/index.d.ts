@@ -16,6 +16,9 @@ export declare function newHTMLPrinters(h: HTMLPrinter): {
 export declare const html: {
     [type: string]: Printer<Node, any, string | PrintNode>;
 };
+export declare const react: {
+    [type: string]: Printer<Node, any, string | PrintNode>;
+};
 export declare const hyperapp: {
     [type: string]: Printer<Node, any, string | PrintNode>;
 };

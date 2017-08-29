@@ -194,12 +194,15 @@ function newParser(Rules) {
 function newPrinter(printers) {
     return function print(tree, state) {
         if (state === void 0) { state = {}; }
-        return tree.map(function (node) {
+        var output = [];
+        for (var i = 0; i < tree.length; i++) {
+            var node = tree[i];
             if (!printers.hasOwnProperty(node.type)) {
-                throw new Error("no printer for type " + node.type);
+                throw new Error("no printer for type: " + node.type);
             }
-            return printers[node.type](node, print, state);
-        });
+            output.push(printers[node.type](node, print, state));
+        }
+        return output;
     };
 }
 
@@ -211,10 +214,19 @@ function newPrinter(printers) {
 "use strict";
 /* unused harmony export newHTMLPrinters */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return html; });
+/* unused harmony export react */
 /* unused harmony export hyperapp */
 var inc = function (s) {
     s.key = (s.key || 0) + 1;
     return s.key;
+};
+var delimiters = {
+    __: "u",
+    _: "em",
+    "~~": "s",
+    "~": "em",
+    "**": "strong",
+    "*": "mark",
 };
 function newHTMLPrinters(h) {
     return {
@@ -238,14 +250,6 @@ function newHTMLPrinters(h) {
         image: function (n, _, s) { return h("img", Object.assign({}, n.props, { key: inc(s) })); },
         heading: function (n, print, s) { return h("h" + n.props.level, { key: inc(s) }, print(n.children, s)); },
         emphasis: function (n, print, s) {
-            var delimiters = {
-                __: "u",
-                _: "em",
-                "~~": "s",
-                "~": "em",
-                "**": "strong",
-                "*": "mark",
-            };
             return h(delimiters[n.props.delimiter], { key: inc(s) }, print(n.children, s));
         },
         comment: function (n) { return "<!--" + n.props.content + "-->"; },
@@ -269,17 +273,15 @@ var html = newHTMLPrinters(function (tag, attr, children) {
     }
     return "<" + tag + a + ">" + children.join("") + "</" + tag + ">";
 });
-/*
-const TYPE_SYMBOL =
-  (typeof Symbol === "function" && Symbol.for && Symbol.for("react.element")) || 0xeac7;
-export const react = newHTMLPrinters((type, { key, ...props }: any = {}, children = []) => ({
-  type,
-  key,
-  props: { children, ...props },
-  $$typeof: TYPE_SYMBOL,
-  _store: null,
-}));
-*/
+var react = newHTMLPrinters(function (type, data, children) {
+    if (data === void 0) { data = {}; }
+    if (children === void 0) { children = []; }
+    return ({
+        type: type,
+        key: data.key,
+        props: Object.assign({ children: children }, data, { key: undefined }),
+    });
+});
 var hyperapp = newHTMLPrinters(function (tag, data, children) {
     if (data === void 0) { data = {}; }
     if (children === void 0) { children = []; }

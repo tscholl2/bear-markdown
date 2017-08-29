@@ -38,15 +38,16 @@ to parse a string of markdown into a string of html. The benchmark can be found 
 
 | Parser | speed in op/s (higher is better) |
 | --- | --- |
-| this repo | 1772 |
-| [simple-markdown](https://github.com/Khan/simple-markdown) | 1954 |
-| [marked](https://github.com/chjj/marked) | 3075 |
-| [markdown](https://github.com/evilstreak/markdown-js) | 2101* |
-| [showdown](https://github.com/showdownjs/showdown) | 760* |
-| [micromarkdown](https://github.com/SimonWaldherr/micromarkdown.js) | 16343* |
-| [commonmarkjs](https://github.com/commonmark/commonmark.js) | 4811* |
+| this repo | 2107 |
+| [simple-markdown](https://github.com/Khan/simple-markdown) | 1974 |
+| [marked](https://github.com/chjj/marked) | 3140 |
+| [markdown](https://github.com/evilstreak/markdown-js) | 1862* |
+| [showdown](https://github.com/showdownjs/showdown) | 822* |
+| [micromarkdown](https://github.com/SimonWaldherr/micromarkdown.js) | 8366* |
+| [commonmarkjs](https://github.com/commonmark/commonmark.js) | 5677* |
 
-*I don't think I'm using these correctly, they do not seem to be parsing tables.
+*I had to edit the benchmark for these because they use a slightly different dialect.
+The test isn't exactly apples-to-apples, but it's close.
 
 # Size
 
@@ -60,7 +61,7 @@ ls -lah | grep bundle
 
 | Parser | size in kb (lower is better) | minified | gziped | 
 | --- | --- | --- | --- |
-| thie repo | 31 | 9.5 | 2.9 |
+| thie repo | 31 | 9.8 | 2.9 |
 | [simple-markdown](https://github.com/Khan/simple-markdown) | 51 | 14 | 4.1 |
 | [marked](https://github.com/chjj/marked) | 32 | 17 | 5.4 |
 | [markdown](https://github.com/evilstreak/markdown-js) | 76 | 25 | 9 |

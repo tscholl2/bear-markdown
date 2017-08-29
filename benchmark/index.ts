@@ -13,9 +13,6 @@ const rules = SimpleMarkdown.defaultRules;
 const parser = SimpleMarkdown.parserFor(rules);
 const htmlOutput = SimpleMarkdown.reactFor(SimpleMarkdown.ruleOutput(rules, "html"));
 const SimpleMarkdownParse = function(source) {
-  /*
-  return SimpleMarkdown.defaultParse(source+"\n\n")
-  */
   const blockSource = source + "\n\n";
   const parseTree = parser(blockSource, { inline: false });
   const outputResult = htmlOutput(parseTree);
@@ -84,16 +81,86 @@ new (Benchmark as any).Suite()
     MarkedParse(s);
   })
   .add("markdown", () => {
-    MarkdownParse(s);
+    MarkdownParse(`
+
+# header
+
+This is an *image* ![alt](url)
+
+This is a [_link_](url)
+
+* This
+* is
+* a
+* list
+
+Vessel     | Captain
+-----------|-------------
+NCC-1701   | James T Kirk
+NCC-1701 A | James T Kirk
+NCC-1701 D | Picard
+
+
+`);
   })
   .add("showdown", () => {
-    ShowDownParse(s);
+    ShowDownParse(`
+
+# header
+
+This is an *image* ![alt](url)
+
+This is a [_link_](url)
+
+* This
+* is
+* a
+* list
+
+<table><thead><th \"align\"=\"center\">Tables</th><th \"align\"=\"center\">Are</th><th \"align\"=\"right\">Cool</th></thead><tbody><tr><td>col 3 is</td><td>right-aligned</td><td>$1600</td></tr><tr><td>col 2 is</td><td>centered</td><td>$12</td></tr><tr><td>zebra stripes</td><td>are neat</td><td>$1</td></tr></tbody></table>
+
+`);
   })
   .add("micromarkdown", () => {
-    MicroMarkdownParse(s);
+    MicroMarkdownParse(`
+# header
+
+This is an *image* ![alt](url)
+
+This is a [_link_](url)
+
+* This
+* is
+* a
+* list
+
+this | *left* | center   | right
+-----|:-------|:--------:|------:
+with | sample | content  | for
+lorem| ipsum  | dolor    | sit
+sit  | amet   | sed      | do
+do   | eiusom | tempor   | with
+
+
+`);
   })
   .add("commonmark", () => {
-    CommonmarkParse(s);
+    CommonmarkParse(`
+
+# header
+
+This is an *image* ![alt](url)
+
+This is a [_link_](url)
+
+* This
+* is
+* a
+* list
+
+<table><thead><th \"align\"=\"center\">Tables</th><th \"align\"=\"center\">Are</th><th \"align\"=\"right\">Cool</th></thead><tbody><tr><td>col 3 is</td><td>right-aligned</td><td>$1600</td></tr><tr><td>col 2 is</td><td>centered</td><td>$12</td></tr><tr><td>zebra stripes</td><td>are neat</td><td>$1</td></tr></tbody></table>
+
+`);
   })
   // add listeners
   .on("cycle", (event: any) => {
