@@ -18,6 +18,15 @@ const inc = (s: { key?: number }) => {
   return s.key;
 };
 
+const delimiters: any = {
+  __: "u",
+  _: "em",
+  "~~": "s",
+  "~": "em",
+  "**": "strong",
+  "*": "mark",
+};
+
 export function newHTMLPrinters(
   h: HTMLPrinter,
 ): {
@@ -40,17 +49,8 @@ export function newHTMLPrinters(
       h("a", Object.assign({}, n.props, { key: inc(s) }), print(n.children!, s)),
     image: (n, _, s) => h("img", Object.assign({}, n.props, { key: inc(s) })),
     heading: (n, print, s) => h(`h${n.props!.level}`, { key: inc(s) }, print(n.children!, s)),
-    emphasis: (n, print, s) => {
-      const delimiters: any = {
-        __: "u",
-        _: "em",
-        "~~": "s",
-        "~": "em",
-        "**": "strong",
-        "*": "mark",
-      };
-      return h(delimiters[n.props!.delimiter], { key: inc(s) }, print(n.children!, s));
-    },
+    emphasis: (n, print, s) =>
+      h(delimiters[n.props!.delimiter], { key: inc(s) }, print(n.children!, s)),
     comment: n => `<!--${n.props!.content}-->`,
     code: (n, _, s) =>
       n.props!.display === "inline"
