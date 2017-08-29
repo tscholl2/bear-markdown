@@ -1,0 +1,19 @@
+main {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.left-side {
+  order: 1;
+  flex: 0 0 50%;
+}
+
+.right-side {
+  order: 2;
+  flex: 0 0 50%;
+}
+
+.main-input {
+  min-width: 300px;
+  width: 100%;
+}
