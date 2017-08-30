@@ -53,44 +53,65 @@ const Loading = () => h("progress");
 const Err = ({ error }) => h("pre", { class: "error" }, `${error}`);
 
 const LeftSide = (state, actions) =>
-  h(
-    "div",
-    { class: "left-side" },
-    Toggle({
-      value: state.preview === "html",
-      ontoggle: () => actions.update({ preview: state.preview === "html" ? "tree" : "html" }),
-      label: "HTML",
-    }),
+  h("div", { class: "left-side" }, [
+    h("h2", undefined, "Markdown"),
     Input({ value: state.input, update: actions.updateInput }),
-  );
+  ]);
 
 const RightSide = (state, actions) => {
-  const children = [];
+  let preview;
   if (state.preview === "html") {
     const { html, htmlError } = state.parsed;
     if (html != null) {
-      children.push(HTMLPreview({ html }));
+      preview = HTMLPreview({ html });
     } else if (htmlError != null) {
-      children.push(Err({ error: htmlError }));
+      preview = Err({ error: htmlError });
     } else {
-      children.push(Loading());
+      preview = Loading();
     }
   } else {
     const { tree, treeError } = state.parsed;
     if (tree != null) {
-      children.push(TreePreview({ tree }));
+      preview = TreePreview({ tree });
     } else if (treeError != null) {
-      children.push(Err({ error: treeError }));
+      preview = Err({ error: treeError });
     } else {
-      children.push(Loading());
+      preview = Loading();
     }
   }
-  return h("div", { class: "right-side" }, children);
+  return h("div", { class: "right-side" }, [
+    h("h2", undefined, "Preview"),
+    h(
+      "nav",
+      undefined,
+      h(
+        "ul",
+        undefined,
+        h(
+          "li",
+          {
+            onclick: () => actions.update({ preview: "html" }),
+            selected: state.preview === "html",
+          },
+          "HTML",
+        ),
+        h(
+          "li",
+          {
+            onclick: () => actions.update({ preview: "tree" }),
+            selected: state.preview === "tree",
+          },
+          "AST",
+        ),
+      ),
+    ),
+    h("div", { class: "main-preview" }, preview),
+  ]);
 };
 
 app({
   state: {
-    input: "", // string
+    input: "hello world", // string
     preview: "html", // "html" | "tree"
     parsed: {
       html: "", // string
@@ -98,6 +119,9 @@ app({
       tree: [], // any[]
       treeError: undefined, // any
     },
+  },
+  events: {
+    load: (_, actions) => actions.updatePreviews(),
   },
   view: (state, actions) =>
     h("main", undefined, [LeftSide(state, actions), RightSide(state, actions)]),
