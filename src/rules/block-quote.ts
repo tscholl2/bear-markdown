@@ -8,8 +8,8 @@ const re = new RegExp(
     "[^\\n]*" +
     // find all lines like this
     ")+" +
-    // repeat until a newline
-    "\\n",
+    // repeat until a newline or end
+    "(\\n|$)",
 );
 
 export default <Rule>{
@@ -17,6 +17,6 @@ export default <Rule>{
   parse: (capture, parse, state) => ({
     type: "blockquote",
     // parse by replacing the initial ">" in front of lines
-    children: parse(capture[0].replace(/^ *> ?/gm, ""), state),
+    children: parse(capture[0].replace(/^\s*> ?/gm, ""), state),
   }),
 };

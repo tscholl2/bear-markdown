@@ -42,11 +42,10 @@ export function newParser(Rules: Rule[]) {
     let previousCapture = "";
     while (source) {
       for (let i = 0; i < rules.length; i++) {
-        const rule = rules[i];
-        const capture = rule.match(source, state, previousCapture);
+        const capture = rules[i].match(source, state, previousCapture);
         if (capture) {
           source = source.substring(capture[0].length);
-          const node = rule.parse(capture, parse, state);
+          const node = rules[i].parse(capture, parse, state);
           if (Array.isArray(node)) {
             result.push(...node);
           } else if (node != null) {

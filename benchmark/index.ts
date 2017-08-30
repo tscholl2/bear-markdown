@@ -4,7 +4,6 @@ declare const require: any;
 
 // this
 const parse = (s: string) => {
-  // return defaultParser(s)
   return defaultHTMLPrinter(defaultParser(s));
 };
 // simple markdown
