@@ -18,7 +18,6 @@ import text from "./text";
 import newline from "./newline";
 
 export const defaultRules: Rule[] = [
-  // ANY
   Object.assign({}, comment, { order: 0 }),
   // BLOCKS
   Object.assign({}, newline, { order: 1 }),

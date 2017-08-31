@@ -1,4 +1,8 @@
-Yet another markdown parser.
+`bear-markdown`: Another markdown parser that "bear"-ly works.
+
+[Try it online!](https://whatwhathuhhuh.gitlab.io/bear-markdown/)
+
+![bear](logo.svg)
 
 # What
 
@@ -6,7 +10,10 @@ A markdown parser based on [simple-markdown](https://github.com/Khan/simple-mark
 
 # Why
 
-I wanted to learn how markdown parsers work and learn more about [simple-markdown](https://github.com/Khan/simple-markdown).
+I wanted to learn how markdown parsers work and learn more
+about [simple-markdown](https://github.com/Khan/simple-markdown).
+Markdown is full of features that I don't use, so I wondered how compact
+I could make a parser that suppported only what I needed.
 
 Spoiler: markdown is hard to get right so I didn't.
 
@@ -14,27 +21,28 @@ Spoiler: markdown is hard to get right so I didn't.
 
 Like [simple-markdown](https://github.com/Khan/simple-markdown), this parser
 
-* is easily extensible (i.e. it is easy to add rules to parse custom things like [math](/src/rules/inline-math))
+* is easily extensible (i.e. it is easy to add rules to parse custom things like [math](/src/rules/image.ts))
+* is modular (i.e. it is easy to [add/modify/remove](/src/rules/index.ts) rules)
 * is reasonably [fast](#Speed)
 * is fairly well documented code
 * has some [tests](/test/tests.json)
-* parses into a simple AST (abstract syntax tree)
+* parses raw markdown into a simple AST (abstract syntax tree)
 which can be turned into [html](/src/printers/html), react, vue, hyperapp, etc.
-* is [small](#Size) (2.8kb minified + gzip)
-* no dependencies
+* is [small](#Size) (2.9kb minified + gzip)
+* no [dependencies](/package.json)
 
 Unlike [simple-markdown](https://github.com/Khan/simple-markdown), this parser
 
-* does not handle all edge cases
+* does not handle many edge cases
 * does not confrom to commonmark or any other standard
-* is a little slower
 * has a slightly different (possibly a little more consistent) AST format
 * is written in typescript
 
 # Speed
 
 I found several other markdown parsers and, with the least amount of effort, tried use them
-to parse a string of markdown into a string of html. The benchmark can be found [here](/benchmark/index.ts).
+to parse a string of markdown into a string of html.
+The benchmark can be found [here](/benchmark/index.ts).
 
 | Parser | speed in op/s (higher is better) |
 | --- | --- |
@@ -46,7 +54,7 @@ to parse a string of markdown into a string of html. The benchmark can be found 
 | [micromarkdown](https://github.com/SimonWaldherr/micromarkdown.js) | 8366* |
 | [commonmarkjs](https://github.com/commonmark/commonmark.js) | 5677* |
 
-*I had to edit the benchmark for these because they use a slightly different dialect.
+*I had to edit the benchmark for these because they use a slightly different dialect of markdown.
 The test isn't exactly apples-to-apples, but it's close.
 
 # Size
@@ -59,7 +67,7 @@ yarn run bundle && gzip -c bundle.min.js > bundle.min.js.gzip
 ls -lah | grep bundle
 ```
 
-| Parser | size in kb (lower is better) | minified | gziped | 
+| Parser | bundle size in kb (lower is better) | minified | gziped | 
 | --- | --- | --- | --- |
 | thie repo | 31 | 9.8 | 2.9 |
 | [simple-markdown](https://github.com/Khan/simple-markdown) | 51 | 14 | 4.1 |
