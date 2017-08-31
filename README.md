@@ -2,7 +2,7 @@
 
 [Try it online!](https://whatwhathuhhuh.gitlab.io/bear-markdown/)
 
-![bear](logo.svg)
+![bear](logo.png)
 
 # What
 
