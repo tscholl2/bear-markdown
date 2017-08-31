@@ -57,7 +57,7 @@ export function newHTMLPrinters(
         ? h("code", { key: inc(s) }, [n.props!.content])
         : h("pre", { key: inc(s) }, [h("code", { key: inc(s) }, [n.props!.content])]),
     blockquote: (n, print, s) => h("blockquote", { key: inc(s) }, print(n.children!, s)),
-    math: (n, _, s) => h("math", { key: inc(s) }, n.props!.content),
+    math: (n, _, s) => h("math", { key: inc(s) }, [n.props!.content]),
   };
 }
 
