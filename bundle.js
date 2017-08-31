@@ -101,10 +101,7 @@ function newMathMatcher(inlineMatcher) {
         var match = "";
         var brace = 0;
         var escaped = false;
-        while (!s.startsWith(end) || brace !== 0 || escaped) {
-            if (s === "") {
-                return;
-            }
+        while ((!s.startsWith(end) || brace !== 0 || escaped) && s !== "") {
             escaped = s.startsWith("\\");
             brace += s.startsWith("{") ? 1 : s.startsWith("}") ? -1 : 0;
             match += s[0];
@@ -160,11 +157,10 @@ function newParser(Rules) {
         var previousCapture = "";
         while (source) {
             for (var i = 0; i < rules.length; i++) {
-                var rule = rules[i];
-                var capture = rule.match(source, state, previousCapture);
+                var capture = rules[i].match(source, state, previousCapture);
                 if (capture) {
                     source = source.substring(capture[0].length);
-                    var node = rule.parse(capture, parse, state);
+                    var node = rules[i].parse(capture, parse, state);
                     if (Array.isArray(node)) {
                         result.push.apply(result, node);
                     }
@@ -332,7 +328,6 @@ var hyperapp = newHTMLPrinters(function (tag, data, children) {
 
 
 var defaultRules = [
-    // ANY
     Object.assign({}, __WEBPACK_IMPORTED_MODULE_2__comment__["a" /* default */], { order: 0 }),
     // BLOCKS
     Object.assign({}, __WEBPACK_IMPORTED_MODULE_15__newline__["a" /* default */], { order: 1 }),
@@ -366,8 +361,8 @@ var re = new RegExp("^(" +
     "[^\\n]*" +
     // find all lines like this
     ")+" +
-    // repeat until a newline
-    "\\n");
+    // repeat until a newline or end
+    "(\\n|$)");
 /* harmony default export */ __webpack_exports__["a"] = ({
     match: function (s, _a) {
         var inline = _a.inline;
@@ -376,7 +371,7 @@ var re = new RegExp("^(" +
     parse: function (capture, parse, state) { return ({
         type: "blockquote",
         // parse by replacing the initial ">" in front of lines
-        children: parse(capture[0].replace(/^ *> ?/gm, ""), state),
+        children: parse(capture[0].replace(/^\s*> ?/gm, ""), state),
     }); },
 });
 

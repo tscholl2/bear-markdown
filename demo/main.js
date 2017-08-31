@@ -138,11 +138,13 @@ app({
         try {
           tree = parse(input);
         } catch (e) {
+          console.error(e);
           treeError = e;
         }
         try {
           if (tree) html = print(tree).join("");
         } catch (e) {
+          console.error(e);
           htmlError = e;
         }
         actions.update({ parsed: { tree, treeError, html, htmlError } });
