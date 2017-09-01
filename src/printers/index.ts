@@ -54,10 +54,10 @@ export function newHTMLPrinters(
     comment: n => `<!--${n.props!.content}-->`,
     code: (n, _, s) =>
       n.props!.display === "inline"
-        ? h("code", { key: inc(s) }, [n.props!.content])
-        : h("pre", { key: inc(s) }, [h("code", { key: inc(s) }, [n.props!.content])]),
+        ? h("code", { key: inc(s) }, [n.props!.content.trim()])
+        : h("pre", { key: inc(s) }, [h("code", { key: inc(s) }, [n.props!.content.trim()])]),
     blockquote: (n, print, s) => h("blockquote", { key: inc(s) }, print(n.children!, s)),
-    math: (n, _, s) => h("math", { key: inc(s) }, [n.props!.content]),
+    math: (n, _, s) => h("math", { key: inc(s) }, [n.props!.content.trim()]),
   };
 }
 

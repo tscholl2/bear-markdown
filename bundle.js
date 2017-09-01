@@ -251,8 +251,8 @@ function newHTMLPrinters(h) {
         comment: function (n) { return "<!--" + n.props.content + "-->"; },
         code: function (n, _, s) {
             return n.props.display === "inline"
-                ? h("code", { key: inc(s) }, [n.props.content])
-                : h("pre", { key: inc(s) }, [h("code", { key: inc(s) }, [n.props.content])]);
+                ? h("code", { key: inc(s) }, [n.props.content.trim()])
+                : h("pre", { key: inc(s) }, [h("code", { key: inc(s) }, [n.props.content.trim()])]);
         },
         blockquote: function (n, print, s) { return h("blockquote", { key: inc(s) }, print(n.children, s)); },
         math: function (n, _, s) { return h("math", { key: inc(s) }, [n.props.content]); },

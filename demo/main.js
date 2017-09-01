@@ -134,7 +134,34 @@ const RightSide = (state, actions) => {
 
 app({
   state: {
-    input: "hello world", // string
+    input: ` hello world
+
+| A | B | C |
+| - | - | - |
+| _different_ | ~italics~ | *here* |
+| inline| \`code\` | here |
+| other | stuff | there |
+
+<!--comment-->
+
+\`\`\`
+var a = 11;
+function foo(x) {
+    return x + 1;
+}
+\`\`\`
+
+This is another paragraph.
+
+* One
+* Two
+* Three
+
+1. A
+1. B
+1. C
+
+This could be math: $1+1$.`, // string
     preview: "html", // "html" | "tree"
     parsed: {
       html: "", // string

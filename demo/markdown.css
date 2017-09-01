@@ -1,0 +1,20 @@
+.markdown table th,
+td {
+  padding: 6px 13px;
+  border: 1px solid #e8e8e8;
+}
+
+.markdown tbody > tr:nth-child(2n) {
+  background-color: #f9f9f9;
+}
+
+.markdown pre,
+code {
+  background-color: #f6f6f6;
+}
+
+.markdown pre {
+  display: block;
+  padding: 5px;
+  margin: 5%;
+}
