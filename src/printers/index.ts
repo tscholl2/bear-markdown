@@ -22,7 +22,7 @@ const delimiters: any = {
   __: "u",
   _: "em",
   "~~": "s",
-  "~": "em",
+  "~": "del",
   "**": "strong",
   "*": "mark",
 };

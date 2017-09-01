@@ -138,9 +138,9 @@ app({
 
 | A | B | C |
 | - | - | - |
-| _different_ | ~italics~ | *here* |
-| inline| \`code\` | here |
-| other | stuff | there |
+| _emph_ | ~strike~ | *mark* |
+| __underline__| ~~del~~ | **bold** |
+| other | \`inline code\` | text |
 
 <!--comment-->
 

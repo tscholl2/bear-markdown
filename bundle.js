@@ -220,7 +220,7 @@ var delimiters = {
     __: "u",
     _: "em",
     "~~": "s",
-    "~": "em",
+    "~": "del",
     "**": "strong",
     "*": "mark",
 };
@@ -255,7 +255,7 @@ function newHTMLPrinters(h) {
                 : h("pre", { key: inc(s) }, [h("code", { key: inc(s) }, [n.props.content.trim()])]);
         },
         blockquote: function (n, print, s) { return h("blockquote", { key: inc(s) }, print(n.children, s)); },
-        math: function (n, _, s) { return h("math", { key: inc(s) }, [n.props.content]); },
+        math: function (n, _, s) { return h("math", { key: inc(s) }, [n.props.content.trim()]); },
     };
 }
 var html = newHTMLPrinters(function (tag, attr, children) {
