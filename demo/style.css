@@ -1,21 +1,24 @@
 main {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .left-side {
   order: 1;
-  flex: 0 0 50%;
+  flex: 0 0 45%;
 }
 
 .right-side {
   order: 2;
-  flex: 0 0 50%;
+  flex: 0 0 45%;
 }
 
 .main-input {
   min-width: 300px;
+  min-height: 400px;
   width: 100%;
+  height: 75%;
 }
 
 progress {
@@ -24,26 +27,45 @@ progress {
 
 /* tabs */
 
-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
-/*TODO*/
-nav li {
-  display: inline;
-  background: #eee;
-  margin-left: 5px;
-  margin-right: 5px;
+nav a {
+  padding: 5px;
+  cursor: pointer;
+  border: solid black;
+  border-width: 2px 2px 0 2px;
 }
 
-/*TODO*/
-nav li[selected] {
-  background: white;
+nav a[selected] {
+  margin-bottom: -2px;
+  border-bottom: 3px solid #fff;
 }
 
-/*TODO*/
 .main-preview {
-  background: white;
+  border: 2px solid black;
+}
+
+/* json */
+.string {
+  color: green;
+}
+
+.number {
+  color: darkorange;
+}
+
+.boolean {
+  color: blue;
+}
+
+.null {
+  color: magenta;
+}
+
+.key {
+  color: red;
 }

@@ -36,7 +36,36 @@ const Input = ({ value, update }) =>
 
 const HTMLPreview = ({ html }) => h("div", { class: "markdown", innerHTML: html });
 
-const TreePreview = ({ tree }) => h("pre", { class: "tree" }, JSON.stringify(tree, null, 2));
+const TreePreview = ({ tree }) => h("pre", { class: "tree" }, PrintJson(tree));
+
+const PrintJson = json => {
+  if (typeof json != "string") {
+    json = JSON.stringify(json, undefined, 2);
+  }
+  const html = json
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(
+      /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+      function(match) {
+        var cls = "number";
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = "key";
+          } else {
+            cls = "string";
+          }
+        } else if (/true|false/.test(match)) {
+          cls = "boolean";
+        } else if (/null/.test(match)) {
+          cls = "null";
+        }
+        return '<span class="' + cls + '">' + match + "</span>";
+      },
+    );
+  return h("div", { innerHTML: html });
+};
 
 const Toggle = ({ value, ontoggle, label }) =>
   h("label", undefined, [
@@ -81,30 +110,24 @@ const RightSide = (state, actions) => {
   }
   return h("div", { class: "right-side" }, [
     h("h2", undefined, "Preview"),
-    h(
-      "nav",
-      undefined,
+    h("nav", undefined, [
       h(
-        "ul",
-        undefined,
-        h(
-          "li",
-          {
-            onclick: () => actions.update({ preview: "html" }),
-            selected: state.preview === "html",
-          },
-          "HTML",
-        ),
-        h(
-          "li",
-          {
-            onclick: () => actions.update({ preview: "tree" }),
-            selected: state.preview === "tree",
-          },
-          "AST",
-        ),
+        "a",
+        {
+          onclick: () => actions.update({ preview: "html" }),
+          selected: state.preview === "html",
+        },
+        "HTML",
       ),
-    ),
+      h(
+        "a",
+        {
+          onclick: () => actions.update({ preview: "tree" }),
+          selected: state.preview === "tree",
+        },
+        "AST",
+      ),
+    ]),
     h("div", { class: "main-preview" }, preview),
   ]);
 };
