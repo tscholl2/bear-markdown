@@ -1,4 +1,4 @@
-`bear-markdown`: Another markdown parser that "bear"-ly works.
+`bear-markdown`: A very "bare" markdown parser.
 
 [Try it online!](https://whatwhathuhhuh.gitlab.io/bear-markdown/)
 
