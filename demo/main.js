@@ -132,9 +132,8 @@ const RightSide = (state, actions) => {
   ]);
 };
 
-app({
-  state: {
-    input: ` hello world
+const state = {
+  input: ` hello world
 
 | A | B | C |
 | - | - | - |
@@ -147,7 +146,7 @@ app({
 \`\`\`
 var a = 11;
 function foo(x) {
-    return x + 1;
+  return x + 1;
 }
 \`\`\`
 
@@ -162,42 +161,43 @@ This is another paragraph.
 1. C
 
 This could be math: $1+1$.`, // string
-    preview: "html", // "html" | "tree"
-    parsed: {
-      html: "", // string
-      htmlError: undefined, // any
-      tree: [], // any[]
-      treeError: undefined, // any
-    },
+  preview: "html", // "html" | "tree"
+  parsed: {
+    html: "", // string
+    htmlError: undefined, // any
+    tree: [], // any[]
+    treeError: undefined, // any
   },
-  events: {
-    load: (_, actions) => actions.updatePreviews(),
+};
+
+const actions = {
+  update: s => () => s,
+  updateInput: input => (_, actions) => {
+    actions.update({ input, parsed: {} });
+    actions.updatePreviews();
   },
-  view: (state, actions) =>
-    h("main", undefined, [LeftSide(state, actions), RightSide(state, actions)]),
-  actions: {
-    update: (_, __, s) => s,
-    updateInput: (_, actions, input) => {
-      actions.update({ input, parsed: {} });
-      actions.updatePreviews();
-    },
-    updatePreviews: (() =>
-      debounce(250, (state, actions) => {
-        const { input } = state;
-        let tree, treeError, html, htmlError;
-        try {
-          tree = parse(input);
-        } catch (e) {
-          console.error(e);
-          treeError = e;
-        }
-        try {
-          if (tree) html = print(tree).join("");
-        } catch (e) {
-          console.error(e);
-          htmlError = e;
-        }
-        actions.update({ parsed: { tree, treeError, html, htmlError } });
-      }))(),
+  updatePreviews: () => ({ input }, actions) => {
+    console.log("updating previews");
+    let tree, treeError, html, htmlError;
+    try {
+      tree = parse(input);
+    } catch (e) {
+      console.error(e);
+      treeError = e;
+    }
+    try {
+      if (tree) html = print(tree).join("");
+    } catch (e) {
+      console.error(e);
+      htmlError = e;
+    }
+    actions.update({ parsed: { tree, treeError, html, htmlError } });
   },
-});
+};
+
+const view = (state, actions) =>
+  h("main", undefined, [LeftSide(state, actions), RightSide(state, actions)]);
+
+const main = app(state, actions, view, document.body);
+
+main.updatePreviews();
