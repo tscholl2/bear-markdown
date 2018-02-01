@@ -59,20 +59,18 @@ The test isn't exactly apples-to-apples, but it's close.
 
 # Size
 
-I wrote a file which exports the basic parse function in the benchmark
-and used the same webpack config to bundle, minify, and gzip it.
-Essentially I ran this
-```
-yarn run bundle && gzip -c bundle.min.js > bundle.min.js.gzip
-ls -lah | grep bundle
-```
-
 | Parser | bundle size in kb (lower is better) | minified | gziped | 
 | --- | --- | --- | --- |
-| thie repo | 31 | 9.8 | 2.9 |
-| [simple-markdown](https://github.com/Khan/simple-markdown) | 51 | 14 | 4.1 |
-| [marked](https://github.com/chjj/marked) | 32 | 17 | 5.4 |
-| [markdown](https://github.com/evilstreak/markdown-js) | 76 | 25 | 9 |
-| [showdown](https://github.com/showdownjs/showdown) | 92 | 38 | 11 |
-| [micromarkdown](https://github.com/SimonWaldherr/micromarkdown.js) | 20 | 11 | 4.7 |
+| this repo | 31 | 11 | 3.0 |
+| [simple-markdown](https://github.com/Khan/simple-markdown) | 51 | 13 | 4.2 |
+| [marked](https://github.com/chjj/marked) | 34 | 17 | 5.6 |
+| [markdown](https://github.com/evilstreak/markdown-js) | 76 | 26 | 9 |
+| [showdown](https://github.com/showdownjs/showdown) | 173 | 98 | 33 |
+| [micromarkdown](https://github.com/SimonWaldherr/micromarkdown.js) | 22 | 11 | 4.7 |
 | [commonmarkjs](https://github.com/commonmark/commonmark.js) | 160 | 86 | 34 |
+
+This table was made by manually editing `lib/index.js` so that it only requires one of the following libraries (e.g. `require("simple-markdown")`) and running
+```
+yarn run bundle && ls -lah dist/ | grep bundle
+```
+to measure the size of including each library.

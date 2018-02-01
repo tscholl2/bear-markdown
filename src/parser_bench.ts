@@ -11,7 +11,7 @@ const SimpleMarkdown = require("simple-markdown");
 const rules = SimpleMarkdown.defaultRules;
 const parser = SimpleMarkdown.parserFor(rules);
 const htmlOutput = SimpleMarkdown.reactFor(SimpleMarkdown.ruleOutput(rules, "html"));
-const SimpleMarkdownParse = function(source) {
+const SimpleMarkdownParse = function(source: string) {
   const blockSource = source + "\n\n";
   const parseTree = parser(blockSource, { inline: false });
   const outputResult = htmlOutput(parseTree);
@@ -69,7 +69,7 @@ This is a [_link_](url)
 
 `;
 
-new (Benchmark as any).Suite()
+new Benchmark.Suite()
   .add("parser", () => {
     parse(s);
   })
@@ -162,7 +162,7 @@ This is a [_link_](url)
 `);
   })
   // add listeners
-  .on("cycle", (event: any) => {
+  .on("cycle", event => {
     console.log(String(event.target));
   })
   // run async

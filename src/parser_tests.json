@@ -1,0 +1,229 @@
+[
+  {
+    "description": "plain text",
+    "input": "something",
+    "output": [
+      { "type": "paragraph", "children": [{ "type": "text", "props": { "content": "something" } }] }
+    ]
+  },
+  {
+    "description": "emphasis",
+    "input": "this is **something**",
+    "output": [
+      {
+        "type": "paragraph",
+        "children": [
+          { "type": "text", "props": { "content": "this is " } },
+          {
+            "type": "emphasis",
+            "props": { "delimiter": "**" },
+            "children": [{ "type": "text", "props": { "content": "something" } }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "list",
+    "input": "* A\n* B\n* C",
+    "output": [
+      {
+        "type": "list",
+        "props": { "bullet": "*" },
+        "children": [
+          { "type": "listitem", "children": [{ "type": "text", "props": { "content": "A" } }] },
+          { "type": "listitem", "children": [{ "type": "text", "props": { "content": "B" } }] },
+          { "type": "listitem", "children": [{ "type": "text", "props": { "content": "C" } }] }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "emphasis not list",
+    "input": "*hello*",
+    "output": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "emphasis",
+            "props": { "delimiter": "*" },
+            "children": [{ "type": "text", "props": { "content": "hello" } }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "list not emphasis",
+    "input": "* hello*",
+    "output": [
+      {
+        "type": "list",
+        "props": { "bullet": "*" },
+        "children": [
+          {
+            "type": "listitem",
+            "children": [
+              { "type": "text", "props": { "content": "hello" } },
+              { "type": "text", "props": { "content": "*" } }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "emphasis with escaped delimiter",
+    "input": "*\\**",
+    "output": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "emphasis",
+            "props": { "delimiter": "*" },
+            "children": [{ "type": "text", "props": { "content": "*" } }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "emphasis with escaped delimiter",
+    "input": "**\\****",
+    "output": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "emphasis",
+            "props": { "delimiter": "**" },
+            "children": [
+              { "type": "text", "props": { "content": "*" } },
+              { "type": "text", "props": { "content": "*" } }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "code block",
+    "input": "```this is code```",
+    "output": [{ "type": "code", "props": { "display": "block", "content": "this is code" } }]
+  },
+  {
+    "description": "code block with escaped ```",
+    "input": "```code\\```code```",
+    "output": [{ "type": "code", "props": { "display": "block", "content": "code```code" } }]
+  },
+  {
+    "description": "code block with escaped \\```",
+    "input": "```code\\\\```code```",
+    "output": [{ "type": "code", "props": { "display": "block", "content": "code\\```code" } }]
+  },
+  {
+    "description": "lists with 2 items",
+    "input": "* A\n* B",
+    "output": [
+      {
+        "type": "list",
+        "props": { "bullet": "*" },
+        "children": [
+          { "type": "listitem", "children": [{ "type": "text", "props": { "content": "A" } }] },
+          { "type": "listitem", "children": [{ "type": "text", "props": { "content": "B" } }] }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "lists with 2 bullets",
+    "input": "* A\n- B",
+    "output": [
+      {
+        "type": "list",
+        "props": { "bullet": "*" },
+        "children": [
+          { "type": "listitem", "children": [{ "type": "text", "props": { "content": "A" } }] }
+        ]
+      },
+      {
+        "type": "list",
+        "props": { "bullet": "-" },
+        "children": [
+          { "type": "listitem", "children": [{ "type": "text", "props": { "content": "B" } }] }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "image",
+    "input": "![alt](src \"title\")",
+    "output": [
+      {
+        "type": "paragraph",
+        "children": [{ "type": "image", "props": { "alt": "alt", "title": "title", "src": "src" } }]
+      }
+    ]
+  },
+  {
+    "description": "math",
+    "input": "$1+1$",
+    "output": [
+      {
+        "type": "paragraph",
+        "children": [{ "type": "math", "props": { "display": "inline", "content": "1+1" } }]
+      }
+    ]
+  },
+  {
+    "description": "math",
+    "input": "$$1+1$$",
+    "output": [{ "type": "math", "props": { "display": "block", "content": "1+1" } }]
+  },
+  {
+    "description": "basic table",
+    "input": "| A | B |\n| - | - |\n| c | d |",
+    "output": [
+      {
+        "type": "table",
+        "children": [
+          {
+            "type": "tablehead",
+            "children": [
+              {
+                "type": "tableheadcolumn",
+                "props": { "align": "center" },
+                "children": [{ "type": "text", "props": { "content": "A" } }]
+              },
+              {
+                "type": "tableheadcolumn",
+                "props": { "align": "center" },
+                "children": [{ "type": "text", "props": { "content": "B" } }]
+              }
+            ]
+          },
+          {
+            "type": "tablebody",
+            "children": [
+              {
+                "type": "tablerow",
+                "children": [
+                  {
+                    "type": "tablecolumn",
+                    "children": [{ "type": "text", "props": { "content": "c" } }]
+                  },
+                  {
+                    "type": "tablecolumn",
+                    "children": [{ "type": "text", "props": { "content": "d" } }]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

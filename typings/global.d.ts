@@ -1,3 +1,3 @@
-declare const process: any;
-declare const require: any;
+declare const process: { argv: Array<string> };
+declare const require: (name: string) => any;
 declare const __dirname: string;
