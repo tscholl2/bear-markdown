@@ -8,9 +8,14 @@ td {
   background-color: #f9f9f9;
 }
 
-.markdown pre,
-code {
+.markdown code {
+  display:inline-block;
   background-color: #f6f6f6;
+}
+
+.markdown pre>code {
+  display:block;
+  padding: 5px;
 }
 
 .markdown pre {
