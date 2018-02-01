@@ -2,6 +2,7 @@
   "name": "rmd",
   "version": "0.0.1",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "prebuild": "rm -rf lib/* && copyfiles -u 1 \"@(src)/**/*.@(json|js)\" lib",
     "build": "tsc --project .",
@@ -13,6 +14,7 @@
     "bench": "node scripts/bench.js",
     "run": "TS_NODE_COMPILER_OPTIONS='{\"rootDir\":\".\"}' ts-node"
   },
+  "dependencies": {},
   "devDependencies": {
     "benchmark": "^2.1.4",
     "commonmark": "^0.28.1",
@@ -32,7 +34,6 @@
     "typescript": "^2.7.1",
     "webpack": "^3.10.0"
   },
-  "dependencies": {},
   "size-limit": [
     {
       "path": "lib/index.js",
