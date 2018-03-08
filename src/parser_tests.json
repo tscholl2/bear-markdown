@@ -168,7 +168,7 @@
     ]
   },
   {
-    "description": "math",
+    "description": "inline math",
     "input": "$1+1$",
     "output": [
       {
@@ -178,9 +178,31 @@
     ]
   },
   {
-    "description": "math",
+    "description": "block math",
     "input": "$$1+1$$",
     "output": [{ "type": "math", "props": { "display": "block", "content": "1+1" } }]
+  },
+  {
+    "description": "@ blocks",
+    "input": "some text $some math$ @@@{}@@@",
+    "output": [
+      {
+        "type": "paragraph",
+        "children": [
+          { "type": "text", "props": { "content": "some text " } },
+          { "type": "math", "props": { "display": "inline", "content": "some math" } },
+          { "type": "text", "props": { "content": " " } },
+          { "type": "text", "props": { "content": "@" } },
+          { "type": "text", "props": { "content": "@" } },
+          { "type": "text", "props": { "content": "@" } },
+          { "type": "text", "props": { "content": "{" } },
+          { "type": "text", "props": { "content": "}" } },
+          { "type": "text", "props": { "content": "@" } },
+          { "type": "text", "props": { "content": "@" } },
+          { "type": "text", "props": { "content": "@" } }
+        ]
+      }
+    ]
   },
   {
     "description": "basic table",

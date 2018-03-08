@@ -8,7 +8,8 @@ const START_TO_END_DELIMITER: any = {
 };
 
 export function newMathMatcher(inlineMatcher: boolean): Rule["match"] {
-  return (s, { inline = false }, previousCapture) => {
+  return (s, state, previousCapture) => {
+    const inline = state.inline || false;
     if (previousCapture.endsWith("\\") || inline != inlineMatcher) {
       return;
     }
