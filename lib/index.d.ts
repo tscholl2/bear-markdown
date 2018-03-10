@@ -1,8 +1,7 @@
-import { newParser, Node } from "./parser";
-import { newPrinter } from "./printer";
-import { defaultRules } from "./rules";
-export { newParser, defaultRules, Node };
-export { newPrinter };
-export { newHTMLPrinters } from "./printers";
+import { Node } from "./parser";
 export declare const defaultParser: (source: string, state?: {}) => Node[];
 export declare const defaultHTMLPrinter: (tree: Node[], state?: {}) => any[];
+export { newParser, Rule, Node } from './parser';
+export { newHTMLPrinters } from "./printers";
+export { Printer } from './printer';
+export { defaultRules } from './rules';

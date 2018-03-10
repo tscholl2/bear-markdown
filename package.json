@@ -14,7 +14,9 @@
     "bench": "node scripts/bench.js",
     "run": "ts-node -O '{\"rootDir\":\".\"}' "
   },
-  "dependencies": {},
+  "dependencies": {
+    "tslib": "1.9.0"
+  },
   "devDependencies": {
     "benchmark": "2.1.4",
     "commonmark": "0.28.1",
@@ -30,9 +32,9 @@
     "tap-summary": "4.0.0",
     "tape": "4.9.0",
     "ts-node": "5.0.1",
-    "tslib": "1.9.0",
     "typescript": "2.7.2",
-    "webpack-cli": "^2.0.10"
+    "webpack": "4.0.0-beta.1",
+    "webpack-cli": "2.0.11"
   },
   "size-limit": [
     {
