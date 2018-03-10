@@ -6,8 +6,7 @@ import { html } from "./printers";
 export const defaultParser = newParser(defaultRules);
 export const defaultHTMLPrinter = newPrinter(html);
 
-export {newParser, Rule, Node} from './parser';
+export { newParser, newPrinter, defaultRules };
+export { Rule, Node } from "./parser";
 export { newHTMLPrinters } from "./printers";
-export {Printer} from './printer';
-export {defaultRules} from './rules';
-
+export { Printer } from "./printer";
