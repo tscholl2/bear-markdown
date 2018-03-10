@@ -13,10 +13,7 @@ export type HTMLPrinter = (
   children?: (PrintNode | string)[],
 ) => any;
 
-const inc = (s: { key?: number }) => {
-  s.key = (s.key || 0) + 1;
-  return s.key;
-};
+const inc = (s: { key?: number }) => (s.key = (s.key || 0) + 1);
 
 const delimiters: any = {
   __: "u",
