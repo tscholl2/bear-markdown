@@ -10,7 +10,7 @@
     "bundle": "webpack-cli --output-library-target umd lib/index.js -o dist/bundle.js",
     "postbundle": "webpack-cli -p --output-library-target umd lib/index.js -o dist/bundle.min.js && gzip -c dist/bundle.min.js > dist/bundle.min.js.gzip",
     "lint": "prettier --print-width 100 --trailing-comma all --write \"src/**/*.ts\"",
-    "test": "node scripts/test.js",
+    "test": "node scripts/test.js | tap-summary",
     "bench": "node scripts/bench.js",
     "run": "ts-node -O '{\"rootDir\":\".\"}' "
   },

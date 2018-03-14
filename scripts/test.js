@@ -10,5 +10,5 @@ const files = FileHound.create()
   .ext("ts")
   .match(glob)
   .find()
-  .each(f => console.log(f))
+  .each(f => console.log(`# ${f}`))
   .each(f => require(f));
