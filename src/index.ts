@@ -1,12 +1,18 @@
-import { newParser, Node } from "./parser";
-import { newPrinter } from "./printer";
+import { newParser, Node, Rule } from "./parser";
+import { newPrinter, Printer, newNodePrinters } from "./printer";
 import { defaultRules } from "./rules";
-import { html } from "./printers";
 
 export const defaultParser = newParser(defaultRules);
-export const defaultHTMLPrinter = newPrinter(html);
+export const defaultHTMLPrinter = newPrinter(
+  newNodePrinters((tag, attr = {}, children = []) => {
+    let a = "";
+    for (let key in attr) {
+      if (key != "id") {
+        a += ` "${key}"="${attr[key]}"`;
+      }
+    }
+    return `<${tag}${a}>${children.join("")}</${tag}>`;
+  }),
+);
 
-export { newParser, newPrinter, defaultRules };
-export { Rule, Node } from "./parser";
-export { newHTMLPrinters } from "./printers";
-export { Printer } from "./printer";
+export { Node, Rule, Printer, newParser, newPrinter, defaultRules, newNodePrinters };
