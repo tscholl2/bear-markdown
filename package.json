@@ -7,8 +7,8 @@
     "prebuild": "rm -rf lib/* && copyfiles -u 1 \"@(src)/**/*.@(json|js)\" lib",
     "build": "tsc --project .",
     "postbuild": "size-limit",
-    "bundle": "webpack-cli --output-library-target umd lib/index.js -o dist/bundle.js",
-    "postbundle": "webpack-cli -p --output-library-target umd lib/index.js -o dist/bundle.min.js && gzip -c dist/bundle.min.js > dist/bundle.min.js.gzip",
+    "bundle": "webpack-cli --mode development --output-library-target umd  lib/index.js --output dist/bundle.js",
+    "postbundle": "webpack-cli -p --mode production --output-library-target umd lib/index.js --output dist/bundle.min.js && gzip -c dist/bundle.min.js > dist/bundle.min.js.gzip",
     "lint": "prettier --print-width 100 --trailing-comma all --write \"src/**/*.ts\"",
     "test": "node scripts/test.js | tap-summary",
     "bench": "node scripts/bench.js",
@@ -20,21 +20,21 @@
   "devDependencies": {
     "benchmark": "2.1.4",
     "commonmark": "0.28.1",
-    "copyfiles": "1.2.0",
+    "copyfiles": "2.0.0",
     "filehound": "1.16.2",
     "markdown": "0.5.0",
-    "marked": "0.3.17",
+    "marked": "0.3.18",
     "micromarkdown": "0.3.4-a",
     "prettier": "1.11.1",
     "showdown": "1.8.6",
-    "simple-markdown": "0.3.2",
-    "size-limit": "0.16.2",
+    "simple-markdown": "0.3.3",
+    "size-limit": "0.17.0",
     "tap-summary": "4.0.0",
     "tape": "4.9.0",
     "ts-node": "5.0.1",
     "typescript": "2.7.2",
-    "webpack": "4.0.0-beta.1",
-    "webpack-cli": "2.0.11"
+    "webpack": "4.2.0",
+    "webpack-cli": "2.0.13"
   },
   "size-limit": [
     {
