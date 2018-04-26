@@ -43,7 +43,8 @@ export default <Rule<{ inline: boolean; _list?: boolean }>>{
       // TODO: add in pre-item stuff to know if was preceded by \n\n, or just \n
       // ]
       const capture = listItemRE.exec(source)!;
-      if (capture && bullet !== "" && capture[2] !== bullet) {
+      // if this is a new type of bullet (other than a blank bullet) then break
+      if (bullet !== "" && (/\d/.test(bullet) ? !/\d/.test(capture[2]) : capture[2] !== bullet)) {
         break;
       }
       if (bullet === "") {
@@ -51,6 +52,9 @@ export default <Rule<{ inline: boolean; _list?: boolean }>>{
       }
       match += capture[0];
       source = source.substr(capture[0].length);
+      //
+      // TODO: combine these two with a regexp
+      //
       // if we saw 2 newlines and there is another list item (with the same indent),
       // then skip over the newlines
       if (source.startsWith("\n\n") && listItemRE.test(source.substr(2))) {
