@@ -39,6 +39,21 @@
     ]
   },
   {
+    "description": "ordered list",
+    "input": "1. A\n2. B\n3. C",
+    "output": [
+      {
+        "type": "list",
+        "props": { "bullet": "1." },
+        "children": [
+          { "type": "listitem", "children": [{ "type": "text", "props": { "content": "A" } }] },
+          { "type": "listitem", "children": [{ "type": "text", "props": { "content": "B" } }] },
+          { "type": "listitem", "children": [{ "type": "text", "props": { "content": "C" } }] }
+        ]
+      }
+    ]
+  },
+  {
     "description": "emphasis not list",
     "input": "*hello*",
     "output": [
