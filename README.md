@@ -1,6 +1,6 @@
 `bear-markdown`: A very "bare" markdown parser.
 
-[Try it online!](https://whatwhathuhhuh.gitlab.io/bear-markdown/)
+[Try it online!](https://tscholl2.github.io/bear-markdown/)
 
 ![bear](logo.png)
 
