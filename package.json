@@ -27,7 +27,7 @@
     "micromarkdown": "0.3.4-a",
     "prettier": "1.11.1",
     "showdown": "1.9.1",
-    "simple-markdown": "0.3.3",
+    "simple-markdown": "0.5.2",
     "size-limit": "0.17.0",
     "tap-summary": "4.0.0",
     "tape": "4.9.0",
