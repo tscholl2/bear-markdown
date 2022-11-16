@@ -23,7 +23,7 @@
     "copyfiles": "2.0.0",
     "filehound": "1.16.2",
     "markdown": "0.5.0",
-    "marked": "0.3.18",
+    "marked": "4.0.10",
     "micromarkdown": "0.3.4-a",
     "prettier": "1.11.1",
     "showdown": "1.8.6",
